@@ -1,6 +1,6 @@
 /**
- * Declaration for external JS module
- * After that we can use it at the TS modules
+ * 外部JS模块的声明
+ * 之后，我们可以在TS模块上使用它
  */
 declare module 'html-janitor' {
   interface Config {

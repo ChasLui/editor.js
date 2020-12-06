@@ -1,43 +1,42 @@
 # Editor.js API
 
 ---
-Most actual API described by [this interface](../types/api/index.d.ts).
+[此接口](../types/api/index.d.ts)描述的大多数实际API。
 
 ---
-📃 See official API documentation [https://editorjs.io/api](https://editorjs.io/api)
+📃 请参阅官方API文档 [https://editorjs.io/api](https://editorjs.io/api)
 
 ---
 
-Tools have access to the public methods provided by Editor.js API Module. Plugin and Tune Developers
-can use Editor\`s API as they want.
+API模块提供的公共方法。 插件和调优开发人员可以根据需要使用Editor的API。
 
-## Block API
+## 块 API
 
-API for certain Block methods and properties. You can access it through `editor.api.block.getBlockByIndex` method or get it form `block` property of [Tool constructor](../types/tools/block-tool.d.ts) argument.
+特定块方法和属性的API。您可以通过 `editor.api.block.getBlockByIndex` 方法或获取[工具构造函数](../types/tools/block-tool.d.ts)参数。
 
-`name: string` — Block's Tool name (key, specified in `tools` property of initial configuration)
+`name: string` — 块的工具名称(key，在初始配置的`tools`属性中指定)
 
-`config: ToolConfig` — Tool config passed on Editor initialization
+`config: ToolConfig` — 编辑器初始化时传递的工具配置
 
-`holder: HTMLElement` — HTML Element that wraps Tool's HTML content
+`holder: HTMLElement` — 包装工具的 HTML 内容的 HTML 元素
 
-`isEmpty: boolean` — `true` if Block has any editable content
+`isEmpty: boolean` — `true` 如果块具有任何可编辑的内容
 
-`selected: boolean` - `true` if Block is selected with Cross-Block Selection
+`selected: boolean` - `true` 如果块是通过跨块选择选择的
 
-`set stretched(state: boolean)` — set Block's stretch state
+`set stretched(state: boolean)` — 设置块的拉伸状态
 
-`stretched: boolean` — `true` if Block is stretched
+`stretched: boolean` — `true` 如果块被拉伸
 
-`call(methodName: string, param?: object): void` — method to call any Tool's instance methods with checks and error handlers under-the-hood. For example, [Block lifecycle hooks](./tools.md#block-lifecycle-hooks)
+`call(methodName: string, param?: object): void` — 方法，可在内部使用检查和错误处理程序调用任何工具的实例方法。 例如[Block 生命周期钩子](./tools.md#block-lifecycle-hooks)
 
-`save(): Promise<void|SavedData>` — returns data saved from current Block's state, including Tool name and saving exec time
+`save(): Promise<void|SavedData>` — 返回从当前块状态保存的数据，包括工具名称和节省执行时间
 
-`validate(data: BlockToolData): Promise<boolean>` — calls Tool's validate method if exists
+`validate(data: BlockToolData): Promise<boolean>` — 如果存在，调用工具的校验方法
 
-## Api object description
+## Api 对象描述
 
-Common API interface.
+通用 API 接口。
 
 ```js
 export interface API {
@@ -49,43 +48,42 @@ export interface API {
  }
  ```
 
-#### BlocksAPI
+#### 块的 API
 
-Methods that working with Blocks
+块的方法
 
-`render(data)` - render passed JSON data
+`render(data)` - 渲染传递的JSON数据
 
-`renderFromHTML(data)` - parse and render passed HTML string (*not for production use*)
+`renderFromHTML(data)` - 解析并渲染所传递的 HTML 字符串（不适用于生产）
 
-`swap(fromIndex, toIndex)` - swaps two Blocks by their positions (deprecated:
-use 'move' instead)
+`swap(fromIndex, toIndex)` - 按索引位置交换两个块(不建议使用：使用 `move` 代替)
 
-`move(toIndex, fromIndex)` - moves block from one index to another position.
-`fromIndex` will be the current block's index by default.
+`move(toIndex, fromIndex)` - 将块从一个索引移动到另一位置。
+`fromIndex` 默认情况下将是当前块的索引。
 
-`delete(blockIndex?: Number)` - deletes Block with passed index
+`delete(blockIndex?: Number)` - 删除传入索引的块
 
-`getCurrentBlockIndex()` - current Block index
+`getCurrentBlockIndex()` - 当前块的索引
 
-`getBlockByIndex(index: Number)` - returns Block API object by passed index
+`getBlockByIndex(index: Number)` - 通过传入的索引返回Block API对象
 
-`getBlocksCount()` - returns Blocks count
+`getBlocksCount()` - 返回块数
 
-`stretchBlock(index: number, status: boolean)` - _Deprecated. Use Block API interface instead._ make Block stretched.
+`stretchBlock(index: number, status: boolean)` - _不推荐使用。使用块API接口代替_。块延伸。
 
-`insertNewBlock()` - __Deprecated__ insert new Block after working place
+`insertNewBlock()` - __不推荐使用__ 运行完毕后插入新的块体
 
-`insert(type?: string, data?: BlockToolData, config?: ToolConfig, index?: number, needToFocus?: boolean)` - insert new Block with passed parameters
+`insert(type?: string, data?: BlockToolData, config?: ToolConfig, index?: number, needToFocus?: boolean)` - 使用传递的参数插入新的块
 
-#### SanitizerAPI
+#### 清理 API
 
-`clean(taintString, config)` - method uses HTMLJanitor to clean taint string.
+`clean(taintString, config)` - 方法使用 HTMLJanitor 清洁污染字符串。
 
-Editor.js provides basic config without attributes, but you can inherit by passing your own config.
+Editor.js提供了不带属性的基本配置，但是您可以通过传递自己的配置来继承。
 
-If Tool enables inline-tools, we get it's sanitizing rules and merge with your passed custom rules.
+如果工具启用了内联工具，我们将得到它的清理规则，并与您传递的自定义规则合并。
 
-Usage:
+使用:
 
 ```js
 let taintString = '<div><p style="font-size: 5em;"><b></b>BlockWithText<a onclick="void(0)"></div>'
@@ -98,163 +96,162 @@ let customConfig = {
 this.api.sanitizer.clean(taintString, customConfig);
 ```
 
-### ToolbarAPI
+### 工具栏 API
 
-Methods that working with Toolbar
+使用工具栏的方法
 
-`open()` - opens toolbar
+`open()` - 打开工具栏
 
-`close()` - closes toolbar, toolbox and blockSettings if they are opened
+`close()` - 关闭工具栏、工具箱和块设置(如果它们已打开)
 
-### InlineToolbarAPI
+### 内联工具栏 API
 
-Methods that works with inline toolbar
+与内联工具栏一起使用的方法
 
-`open()` - opens inline toolbar, (opens for the current selection)
+`open()` - 打开内联工具箱, (打开当前选中)
 
-`close()` - closes inline toolbar
+`close()` - 关闭内联工具箱
 
-### ListenerAPI
+### 监听器 API
 
-Methods that allows to work with DOM listener. Useful when you forgot to remove listener. Module collects all listeners and destroys automatically
+允许与 DOM 监听器一起使用的方法。 当您忘记删除监听器时很有用。 模块收集所有侦听器并自动销毁
 
-`on(element: HTMLElement, eventType: string, handler: Function, useCapture?: boolean)` - add event listener to HTML element
+`on(element: HTMLElement, eventType: string, handler: Function, useCapture?: boolean)` - 将事件侦听器添加到 HTML 元素
 
-`off(element: HTMLElement, eventType: string, handler: Function)` - remove event handler from HTML element
+`off(element: HTMLElement, eventType: string, handler: Function)` - 从 HTML 元素中删除事件处理程序
 
 
-### CaretAPI
+### 插入符 API
 
-Methods to manage caret position.
+管理插入位置的方法。
 
-Each method accept `position` and `offset` parameters. `Offset` should be used to shift caret by passed amount of characters.
+每个方法接受`位置(position)`和`偏移量(offset)`参数。`偏移量(offset)`应用于根据传递的字符数量对插入符号进行移位。
 
-`Position` can be one of the following values:
+`Position` 可以是以下值之一：
 
-| Value     | Description
+| 值     | 描述
 | --------- | -----------
-| `start`   | Caret will be set at the Block's beginning
-| `end`     | Caret will be set at the Block end
-| `default` | More or less emulates browser behaviour, in most cases behaves as `start`
+| `start`   | 插入符号将设置在块的开始处
+| `end`     | 插入符号将设置在块的末尾
+| `default` | 或多或少地模仿浏览器的行为，在大多数情况下表现为 `start`
 
-Each method returns `boolean` value: true if caret is set successfully or false otherwise (e.g. when there is no Block at index);
+每个方法都返回`布尔(boolean)`值：如果插入符号设置成功，则返回 `true`；否则返回 `false`（例如，当索引处没有Block时）；
 
-`setToFirstBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — set caret to the first Block
+`setToFirstBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — 将插入符设置到第一个块
 
-`setToLastBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — set caret to the last Block
+`setToLastBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — 将插入符设置到最后一个块
 
-`setToNextBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — set caret to the next Block
+`setToNextBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — 将插入符设置到下一个块
 
-`setToPreviousBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — set caret to the previous Block
+`setToPreviousBlock(position?: 'end'|'start'|'default', offset?: number): boolean;` — 将插入符号设置为上一个块
 
-`setToBlock(index: number, position?: 'end'|'start'|'default', offset?: number): boolean;` — set caret to the Block by passed `index`
+`setToBlock(index: number, position?: 'end'|'start'|'default', offset?: number): boolean;` — 将插入符设置为按传递的索引的块
 
-`focus(atEnd?: boolean): boolean;` — set caret to the Editor. If `atEnd` is true, set it at the end.
+`focus(atEnd?: boolean): boolean;` — 为编辑器设置插入符号。如果`atEnd`为 `true`，则在末尾设置它。
 
-### NotifierAPI
+### 通知器 API
 
-If you need to show any messages for success or failure events you can use notifications module.
+如果您需要显示任何成功或失败事件的消息，您可以使用通知模块。
 
-Call on target Editor:
+调用目标编辑器：
 
 ```javascript
 let editor = new EditorJS({
   onReady: () => {
     editor.notifier.show({
-      message: 'Editor is ready!'
+      message: '编辑器已准备就绪！'
     });
   },
 });
 ```
 
-In Tool's class:
+在工具类中：
 
 ```javascript
 this.api.notifier.show({
-  message: 'Cannot upload image. Wrong mime-type.',
+  message: '无法上传图像。 错误的mime类型。',
   style: 'error',
 });
 ```
 
 ![](https://capella.pics/14fcdbe4-d6eb-41d4-b66e-e0e86ccf1a4b.jpg)
 
+在 GitHub 上查看[`codex-notifier` 包页面](https://github.com/codex-team/js-notifier)，以找到文档，参数和示例。
 
-Check out [`codex-notifier` package page](https://github.com/codex-team/js-notifier) on GitHub to find docs, params and examples.
+### 毁坏 API
 
-### Destroy API
+如果有必要从页面中删除 Editor.js 实例，则可以使用 `destroy()` 方法。
 
-If there are necessity to remove Editor.js instance from the page you can use `destroy()` method.
+它执行以下步骤：
 
-It makes following steps:
+1. 通过将 holder 元素的 innerHTML 设置为空字符串来清除 holder 元素
 
-1. Clear the holder element by setting it\`s innerHTML to empty string
+2. 删除所有与 Editor.js 相关的事件监听器
 
-2. Remove all event listeners related to Editor.js
+3. 从实例对象中删除所有属性，并将其原型设置为 `null`
 
-3. Delete all properties from instance object and set it\`s prototype to `null`
+执行 `destroy` 方法后，编辑器 incident 变为空对象。 这样，您将在页面上释放占用的JS堆。
 
-After executing the `destroy` method, editor inctance becomes an empty object. This way you will free occupied JS Heap on your page.
+### 工具提示(Tooltip) API
 
-### Tooltip API
-
-Methods for showing Tooltip helper near your elements. Parameters are the same as in [CodeX Tooltips](http://github.com/codex-team/codex.tooltips) lib.
+在元素附近显示工具提示助手的方法。 参数与[CodeX Tooltips](http://github.com/codex-team/codex.tooltips) 库中的参数相同。
 
 ![](https://capella.pics/00e7094a-fdb9-429b-8015-9c56f19b4ef5.jpg)
 
-#### Show
+#### 显示
 
-Method shows tooltip with custom content on passed element
+方法在传递的元素上显示带有自定义内容的工具提示
 
 ```js
 this.api.tooltip.show(element, content, options);
 ```
 
-| parameter | type | description |
+| 参数 | 类型 | 描述 |
 | -- | -- | -- |
-| `element` | _HTMLElement_ | Tooltip will be showed near this element |
-| `content` | _String_ or _Node_ | Content that will be appended to the Tooltip |
-| `options` | _Object_ | Some displaying options, see below |
+| `element` | _HTMLElement_ | 工具提示将显示在此元素附近 |
+| `content` | _String_ or _Node_ | 将附加到工具提示的内容 |
+| `options` | _Object_ | 一些显示选项，请参见下文 |
 
-Available showing options
+可用的显示选项
 
-| name | type | action |
+| 名称 | 类型 | 动作 |
 | -- | -- | -- |
-| placement | `top`, `bottom`, `left`, `right` | Where to place the tooltip. Default value is `bottom' |
-| marginTop | _Number_ | Offset above the tooltip with `top` placement |
-| marginBottom | _Number_ | Offset below the tooltip with `bottom` placement |
-| marginLeft | _Number_ | Offset at left from the tooltip with `left` placement |
-| marginRight | _Number_ | Offset at right from the tooltip with `right` placement |
-| delay | _Number_ | Delay before showing, in ms. Default is `70` |
-| hidingDelay | _Number_ | Delay before hiding, in ms. Default is `0` |
+| placement | `top`, `bottom`, `left`, `right` | 工具提示的放置位置。 默认值为 `bottom' |
+| marginTop | _Number_ | 在工具提示上方偏移顶部位置 |
+| marginBottom | _Number_ | 在工具提示下方偏移顶部位置 |
+| marginLeft | _Number_ | 从工具提示左侧偏移到左侧位置 |
+| marginRight | _Number_ | 从工具提示右侧偏移到右侧位置 |
+| delay | _Number_ | 显示前的延迟，以毫秒为单位。 默认值为 `70` |
+| hidingDelay | _Number_ | 隐藏之前的延迟，以毫秒为单位。 默认为 `0` |
 
-#### Hide
+#### 隐藏
 
-Method hides the Tooltip.
+方法隐藏工具提示。
 
 ```js
 this.api.tooltip.hide();
 ```
 
-#### onHover
+#### 悬停
 
-Decorator for showing tooltip near some element by "mouseenter" and hide by "mouseleave".
+装饰器，用于通过 "mouseenter" 在某个元素附近显示工具提示，并通过 "mouseleave" 隐藏。
 
 ```js
 this.api.tooltip.onHover(element, content, options);
 ```
 
-### API Shorthands
+### API 速记
 
-Editor`s API provides some shorthands for API methods.
+编辑器的 API 为 API 方法提供了一些别名。
 
-| Alias    | Method          |
+| 别名    | 方法          |
 | ------   | --------------- |
 | `clear`  | `blocks.clear`  |
 | `render` | `blocks.render` |
 | `focus`  | `caret.focus`   |
 | `save`   | `saver.save`    |
 
-> Example
+> 用例
 
 ```javascript
 const editor = EditorJS();

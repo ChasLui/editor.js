@@ -1,27 +1,27 @@
-# Editor.js Tools
+# Editor.js 工具
 
-Editor.js is a block-oriented editor. It means that entry composed with the list of `Blocks` of different types: `Texts`, `Headers`, `Images`, `Quotes` etc.
+Editor.js 是面向块(`Block`)的编辑器。这意味着该条目由不同类型的块列表组成：文本(`Texts`)，标题(`Headers`)，图像(`Images`)，引号(`Quotes`)等。
 
-`Tool` — is a class that provide custom `Block` type. All Tools represented by `Plugins`.
+`Tool` — 是提供自定义 Block 类型的类。 插件(`Plugins`)代表的所有工具。
 
-Each Tool should have an installation guide.
+每个工具都应具有安装指南。
 
-## Tool class structure
+## 工具类结构
 
-### constructor()
+### 构造函数()
 
-Each Tool's instance called with an params object.
+使用 params 对象调用每个工具的实例。
 
-| Param  | Type                                                   | Description                                     |
-| ------ | ------------------------------------------------------ | ----------------------------------------------- |
-| api    | [`IAPI`](../types/index.d.ts)                          | Editor.js's API methods                         |
-| config | [`ToolConfig`](../types/tools/tool-config.d.ts)        | Special configuration params passed in «config» |
-| data   | [`BlockToolData`](../types/tools/block-tool-data.d.ts) | Data to be rendered in this Tool                |
-| block  | [`BlockAPI`](../types/api/block.d.ts)                  | Block's API methods                             |
+| 参数   | 类型                                                   | 描述                         |
+| ------ | ------------------------------------------------------ | ---------------------------- |
+| api    | [`IAPI`](../types/index.d.ts)                          | Editor.js 的 API 方法        |
+| config | [`ToolConfig`](../types/tools/tool-config.d.ts)        | «config»中传递的特殊配置参数 |
+| data   | [`BlockToolData`](../types/tools/block-tool-data.d.ts) | 要在此工具中渲染的数据       |
+| block  | [`BlockAPI`](../types/api/block.d.ts)                  | Block 的 API 方法            |
 
 [iapi-link]: ../src/types-internal/api.ts
 
-#### Example
+#### 用例
 
 ```javascript
 constructor({data, config, api}) {
@@ -34,66 +34,64 @@ constructor({data, config, api}) {
 
 ### render()
 
-Method that returns Tool's element {HTMLElement} that will be placed into Editor.
+返回 Tool 元素 {HTMLElement} 的方法，该元素将被放置到 Editor 中。
 
 ### save()
 
-Process Tool's element created by `render()` function in DOM and return Block's data.
+处理 DOM 中 `render()` 函数创建的工具元素，并返回块(Block)的数据。
 
 ### validate(data: BlockToolData): boolean|Promise\<boolean\> _optional_
 
-Allows to check correctness of Tool's data. If data didn't pass the validation it won't be saved. Receives Tool's `data` as input param and returns `boolean` result of validation.
+允许检查 Tool 数据的正确性。 如果数据未通过验证，将不会保存。接收 Tool 的 `data` 作为输入参数，并返回验证的布尔值。
 
 ### merge() _optional_
 
-Method that specifies how to merge two `Blocks` of the same type, for example on `Backspace` keypress.
-Method does accept data object in same format as the `Render` and it should provide logic how to combine new
-data with the currently stored value.
+指定如何合并两个相同类型的块(Block)的方法，例如在空格(`Backspace`)按键上。
+方法确实接受与`Render`格式相同的数据对象，并且应该提供如何将新数据与当前存储的值合并的逻辑。
 
-## Internal Tool Settings
+## 内部工具设置
 
-Options that Tool can specify. All settings should be passed as static properties of Tool's class.
+工具(Tool)可以指定的选项。所有设置都应作为 Tool 类的静态属性传递。
 
-| Name | Type | Default Value | Description |
-| -- | -- | -- | -- |
-| `toolbox` | _Object_ | `undefined` | Pass here `icon` and `title` to display this `Tool` in the Editor's `Toolbox` <br /> `icon` - HTML string with icon for Toolbox <br /> `title` - optional title to display in Toolbox |
-| `enableLineBreaks` | _Boolean_ | `false` | With this option, Editor.js won't handle Enter keydowns. Can be helpful for Tools like `<code>` where line breaks should be handled by default behaviour. |
-| `isInline` | _Boolean_ | `false` | Describes Tool as a [Tool for the Inline Toolbar](tools-inline.md) |
-| `sanitize` | _Object_ | `undefined` | Config for automatic sanitizing of saved data. See [Sanitize](#sanitize) section. |
-| `conversionConfig` | _Object_ | `undefined` | Config allows Tool to specify how it can be converted into/from another Tool. See [Conversion config](#conversion-config) section. |
+| 名称               | 类型      | 默认值      | 描述                                                                                                                                                        |
+| ------------------ | --------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `toolbox`          | _Object_  | `undefined` | 传递图标(`Icon`)和标题(`Title`)以在编辑器的工具箱中显示此工具(`Tool`)<br /> `icon` - 带有工具箱图标的 HTML 字符串 <br /> `title` - 在工具箱中显示的可选标题 |
+| `enableLineBreaks` | _Boolean_ | `false`     | 使用此选项，Editor.js 将无法处理 Enter 键。 对于像`<code>`这样的工具，在默认情况下应该以换行符处理换行很有帮助。                                            |
+| `isInline`         | _Boolean_ | `false`     | 将工具描述为[内联工具栏的工具](tools-inline.md)                                                                                                             |
+| `sanitize`         | _Object_  | `undefined` | 配置为自动清除保存的数据。请参阅[消毒器](#sanitize)部分。                                                                                                     |
+| `conversionConfig` | _Object_  | `undefined` | Config 允许工具指定如何将其转换为其他工具。 请参阅[转换配置](#conversion-config)部分。                                                                      |
 
-## User configuration
+## 用户配置
 
-All Tools can be configured by users. You can set up some of available settings along with Tool's class
-to the `tools` property of Editor Config.
+所有工具都可以由用户配置。 您可以在 Editor Config 的`tools`属性中设置一些可用的设置以及 Tool 的类。
 
 ```javascript
 var editor = new EditorJS({
-  holderId : 'editorjs',
+  holderId: "editorjs",
   tools: {
     text: {
       class: Text,
-      inlineToolbar : true,
-      // other settings..
+      inlineToolbar: true,
+      // 其他设置...
     },
-    header: Header
+    header: Header,
   },
-  defaultBlock : 'text',
+  defaultBlock: "text",
 });
 ```
 
-There are few options available by Editor.js.
+Editor.js 提供的选项很少。
 
-| Name | Type | Default Value | Description |
-| -- | -- | -- | -- |
-| `inlineToolbar` | _Boolean/Array_ | `false` | Pass `true` to enable the Inline Toolbar with all Tools, or pass an array with specified Tools list |
-| `config` | _Object_ | `null` | User's configuration for Plugin.
+| 名称            | 类型            | 默认值  | 描述                                                                 |
+| --------------- | --------------- | ------- | -------------------------------------------------------------------- |
+| `inlineToolbar` | _Boolean/Array_ | `false` | 传递 `true` 以启用所有工具的内联工具栏，或传递具有指定工具列表的数组 |
+| `config`        | _Object_        | `null`  | 插件的用户配置。                                                     |
 
-## Tool prepare and reset
+## 工具准备和重置
 
-If you need to prepare some data for Tool (eg. load external script, create HTML nodes in the document, etc) you can use static prepare method.
+如果您需要为工具准备一些数据（例如，加载外部脚本，在文档中创建 HTML 节点等），则可以使用静态准备方法。
 
-It accepts tools config passed on Editor's initialization as an argument:
+它接受在编辑器初始化时传递的工具 config 作为参数：
 
 ```javascript
 class Tool {
@@ -105,7 +103,7 @@ class Tool {
 }
 ```
 
-On Editor destroy you can use an opposite method `reset` to clean up all prepared data:
+在 Editor destroy 上，可以使用相反的方法 `reset` 来清除所有准备的数据：
 
 ```javascript
 class Tool {
@@ -117,42 +115,41 @@ class Tool {
 }
 ```
 
-Both methods might be async.
+两种方法都可能是异步的。
 
-## Paste handling
+## 粘贴处理
 
-Editor.js handles paste on Blocks and provides API for Tools to process the pasted data.
+Editor.js 处理块上的粘贴，并提供用于处理粘贴数据的工具 API。
 
-When user pastes content into Editor, pasted content will be splitted into blocks.
+当用户将内容粘贴到编辑器中时，粘贴的内容将被拆分为多个块。
 
-1. If plain text will be pasted, it will be splitted by new line characters
-2. If HTML string will be pasted, it will be splitted by block tags
+1. 如果纯文本将被粘贴，它将被新行字符分隔
+2. 如果将粘贴 HTML 字符串，则将按块标签进行拆分
 
-Also Editor API allows you to define your own pasting scenario. You can either:
+此外，Editor API 还允许您定义自己的粘贴方案。 您可以：
 
-1. Specify **HTML tags**, that can be represented by your Tool. For example, Image Tool can handle `<img>` tags.
-If tags you specified will be found on content pasting, your Tool will be rendered.
-2. Specify **RegExp** for pasted strings. If pattern has been matched, your Tool will be rendered.
-3. Specify **MIME type** or **extensions** of files that can be handled by your Tool on pasting by drag-n-drop or from clipboard.
+1. 指定可以由您的工具表示的 **HTML 标签**。 例如，图像工具可以处理`<img>`标签。 如果在内容粘贴中找到您指定的标签，则将呈现您的工具。
+2. 为粘贴的字符串指定**正则表达式(RegExp)**。 如果已匹配模式，则将渲染您的工具。
+3. 指定**MIME 类型**或**文件扩展名**，在拖放或从剪贴板粘贴时，您的工具可以处理这些文件。
 
-For each scenario, you should do 2 next things:
+对于每种情况，您应该做以下 2 件事：
 
-1. Define static getter `pasteConfig` in Tool class. Specify handled patterns there.
-2. Define public method `onPaste` that will handle PasteEvent to process pasted data.
+1. 在 Tool 类中定义静态 getter `pasteConfig`。 在此指定已处理的模式。
+2. 定义公开方法 `onPaste`，该方法将处理 PasteEvent 以处理已粘贴的数据。
 
-### HTML tags handling
+### HTML 标签处理
 
-To handle pasted HTML elements object returned from `pasteConfig` getter should contain following field:
+要处理从 `pasteConfig` getter 返回的粘贴的 HTML 元素对象，应包含以下字段：
 
-| Name | Type | Description |
-| -- | -- | -- |
-| `tags` | `String[]` | _Optional_. Should contain all tag names you want to be extracted from pasted data and processed by your `onPaste` method |
+| 名称   | 类型       | 描述                                                                       |
+| ------ | ---------- | -------------------------------------------------------------------------- |
+| `tags` | `String[]` | _可选_。 应包含您要从粘贴的数据中提取并由 `onPaste` 方法处理的所有标签名称 |
 
-For correct work you MUST provide `onPaste` handler at least for `defaultBlock` Tool.
+为了正确地工作，你必须至少为 `defaultBlock` 工具提供 `onPaste` 处理程序
 
-> Example
+> 用例
 
-Header Tool can handle `H1`-`H6` tags using paste handling API
+标题工具可以使用粘贴处理 API 处理 `H1`-`H6` 标签
 
 ```javascript
 static get pasteConfig() {
@@ -162,23 +159,23 @@ static get pasteConfig() {
 }
 ```
 
-> Same tag can be handled by one (first specified) Tool only.
+> 同样的标签只能由一个(第一个指定的)工具处理。
 
-### RegExp patterns handling
+### 正则表达式模式处理
 
-Your Tool can analyze text by RegExp patterns to substitute pasted string with data you want. Object returned from `pasteConfig` getter should contain following field to use patterns:
+您的工具可以通过 RegExp 模式分析文本，将粘贴的字符串替换为所需的数据。从 `pasteConfig` getter 返回的对象应该包含以下字段以使用模式：
 
-| Name | Type | Description |
-| -- | -- | -- |
-| `patterns` | `Object` | _Optional_. `patterns` object contains RegExp patterns with their names as object's keys |
+| 名称       | 类型     | 描述                                                              |
+| ---------- | -------- | ----------------------------------------------------------------- |
+| `patterns` | `Object` | _可选_。 模式对象(`patterns`)包含 RegExp 模式，其名称作为对象的键 |
 
-**Note** Editor will check pattern's full match, so don't forget to handle all available chars in there.
+**注意** 编辑器将检查模式的完全匹配，因此不要忘记在那里处理所有可用字符。
 
-Pattern will be processed only if paste was on `defaultBlock` Tool and pasted string length is less than 450 characters.
+仅当粘贴在`defaultBlock` Tool 上且粘贴的字符串长度小于 450 个字符时，才会处理图案。
 
-> Example
+> 用例
 
-You can handle YouTube links and insert embeded video instead:
+您可以处理 YouTube 链接并插入嵌入的视频：
 
 ```javascript
 static get pasteConfig() {
@@ -190,20 +187,20 @@ static get pasteConfig() {
 }
 ```
 
-### Files pasting
+### 文件粘贴
 
-Your Tool can handle files pasted or dropped into the Editor.
+您的工具可以处理粘贴或拖放到编辑器中的文件。
 
-To handle file you should provide `files`  property in your `pasteConfig` configuration object.
+要处理文件，应在 `pa​​steConfig` 配置对象中提供 `files` 属性。
 
-`files` property is an object with the following fields:
+`files` 属性是具有以下字段的对象：
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `extensions` | `string[]` | _Optional_ Array of extensions your Tool can handle |
-| `mimeTypes` | `sring[]` | _Optional_ Array of MIME types your Tool can handle |
+| 名称         | 类型       | 描述                                           |
+| ------------ | ---------- | ---------------------------------------------- |
+| `extensions` | `string[]` | _可选_。您的工具可以处理的可选扩展数组         |
+| `mimeTypes`  | `sring[]`  | _可选_。您的工具可以处理的 MIME 类型的可选数组 |
 
-Example
+用例
 
 ```javascript
 static get pasteConfig() {
@@ -216,21 +213,20 @@ static get pasteConfig() {
 }
 ```
 
-### Pasted data handling
+### 粘贴数据处理
 
-If you registered some paste substitutions in `pasteConfig` property, you **should** provide `onPaste` callback in your Tool class.
-`onPaste` should be public non-static method. It accepts custom _PasteEvent_ object as argument.
+如果您在 `pasteConfig` 属性中注册了一些粘贴替换，则**应在** Tool 类中提供 `onPaste` 回调。 onPaste 应该是公共的非静态方法。 它接受自定义 PasteEvent 对象作为参数。
 
-PasteEvent is an alias for three types of events - `tag`, `pattern` and `file`. You can get the type from _PasteEvent_ object's `type` property.
-Each of these events provide `detail` property with info about pasted content.
+PasteEvent 是标签(`tag`)、模式(`pattern`)和文件(`file`)三种类型事件的别名。可以从 PasteEvent 对象的 `type` 属性获取类型。
+这些事件中的每一个都提供了带有关于已粘贴内容信息的 `detail` 属性。
 
-| Type  | Detail |
-| ----- | ------ |
-| `tag` | `data` - pasted HTML element |
-| `pattern` | `key` - matched pattern key you specified in `pasteConfig` object <br /> `data` - pasted string |
-| `file` | `file` - pasted file |
+| 类型      | 详情(Detail)                                                                 |
+| --------- | ---------------------------------------------------------------------------- |
+| `tag`     | `data` - 粘贴的 HTML 元素                                                    |
+| `pattern` | `key` - 您在 `pasteConfig` 对象中指定的匹配模式键 <br /> `data` - 粘贴字符串 |
+| `file`    | `file` - 粘贴的文件                                                          |
 
-Example
+例子
 
 ```javascript
 onPaste (event) {
@@ -257,10 +253,9 @@ onPaste (event) {
 }
 ```
 
-### Disable paste handling
+### 禁用粘贴处理
 
-If you need to disable paste handling on your Tool for some reason, you can provide `false` as `pasteConfig` value.
-That way paste event won't be processed if fired on your Tool:
+如果出于某种原因需要在工具上禁用粘贴处理，则可以提供 `false` 作为 `pasteConfig` 值。 这样，如果在您的工具上触发，则粘贴事件将不会被处理：
 
 ```javascript
 static get pasteConfig {
@@ -268,41 +263,39 @@ static get pasteConfig {
 }
 ```
 
-## Sanitize <a name="sanitize"></a>
+## 消毒器 <a name="sanitize"></a>
 
-Editor.js provides [API](sanitizer.md) to clean taint strings.
-Use it manually at the `save()` method or or pass `sanitizer` config to do it automatically.
+Editor.js 提供了用于清理污点字符串的[API](sanitizer.md)。
+在 `save()` 方法中手动使用它，或通过 `sanitizer` 配置自动执行它。
 
-### Sanitizer Configuration
+### 消毒器的配置
 
-The example of sanitizer configuration
+消毒器配置示例
 
 ```javascript
 let sanitizerConfig = {
-  b: true, // leave <b>
-  p: true, // leave <p>
-}
+  b: true, // 离开 <b>
+  p: true, // 离开 <p>
+};
 ```
 
-Keys of config object is tags and the values is a rules.
+配置对象的键是标签，值是规则。
 
-#### Rule
+#### 规则
 
-Rule can be boolean, object or function. Object is a dictionary of rules for tag's attributes.
+规则可以是布尔值，对象或函数。 对象是标记属性规则的字典。
 
-You can set `true`, to allow tag with all attributes or `false|{}` to remove all attributes,
-but leave tag.
+您可以将 `true` 设置为允许带有所有属性的标签，或者将 `false|{}` 删除所有属性，但保留标签。
 
-Also you can pass special attributes that you want to leave.
+另外，您可以传递要离开的特殊属性。
 
 ```javascript
 a: {
-  href: true
+  href: true;
 }
 ```
 
-If you want to use a custom handler, use should specify a function
-that returns a rule.
+如果您想使用自定义处理程序，use应该指定返回规则的函数。
 
 ```javascript
 b: function(el) {
@@ -310,7 +303,7 @@ b: function(el) {
 }
 ```
 
-or
+或者
 
 ```javascript
 a: function(el) {
@@ -328,9 +321,9 @@ a: function(el) {
 }
 ```
 
-### Manual sanitize
+### 手动消毒器
 
-Call API method `sanitizer.clean()` at the save method for each field in returned data.
+在返回数据中的每个字段的 `save` 方法处调用 API 方法 `sanitizer.clean()`。
 
 ```javascript
 save() {
@@ -340,43 +333,40 @@ save() {
 }
 ```
 
-### Automatic sanitize
+### 自动消毒器
 
-If you pass the sanitizer config as static getter, Editor.js will automatically sanitize your saved data.
+如果您将清除程序配置作为静态 getter 传递，则Editor.js 将自动清除保存的数据。
 
-Note that if your Tool is allowed to use the Inline Toolbar, we will get sanitizing rules for each Inline Tool
-and merge with your passed config.
+请注意，如果允许您的工具使用内联工具栏，我们将为每个内联工具获取清理规则，并与您传递的配置合并。
 
-You can define rules for each field
+您可以为每个字段定义规则
 
 ```javascript
 static get sanitize() {
   return {
     text: {},
     items: {
-      b: true, // leave <b>
-      a: false, // remove <a>
+      b: true, // 离开 <b>
+      a: false, // 移除 <a>
     }
   }
 }
 ```
 
-Don't forget to set the rule for each embedded subitems otherwise they will
-not be sanitized.
+不要忘记为每个嵌入的子项设置规则，否则它们将不会被清除。
 
-if you want to sanitize everything and get data without any tags, use `{}` or just
-ignore field in case if you want to get pure HTML
+如果您想清理所有内容并获取没有任何标签的数据，请使用`{}`或忽略字段以防万一，如果要获取纯HTML
 
 ```javascript
 static get sanitize() {
   return {
     text: {},
-    items: {}, // this rules will be used for all properties of this object
-    // or
+    items: {}, // 此规则将用于此对象的所有属性
+    // 或者
     items: {
-      // other objects here won't be sanitized
+      // 这里的其他对象不会被清理
       subitems: {
-        // leave <a> and <b> in subitems
+        // 离开 <a> 和 <b> 在子项目中
         a: true,
         b: true,
       }
@@ -385,130 +375,123 @@ static get sanitize() {
 }
 ```
 
-## Conversion config <a name="conversion-config"></a>
+## 转换(Conversion)设置 <a name="conversion-config"></a>
 
-Editor.js has a Conversion Toolbar that allows user to convert one Block to another.
+Editor.js具有转换工具栏，允许用户将一个块转换为另一个块。
 
 ![](https://capella.pics/6c1f708b-a30c-4ffd-a427-5b59a1a472e0.jpg)
 
-1. You can add ability to your Tool to be converted. Specify «export» property of `conversionConfig`.
-2. You can add ability to convert other Tools to your Tool. Specify «import» property of `conversionConfig`.
+1. 您可以为要转换的工具添加功能。 指定 `conversionConfig` 的 «export» 属性。
+2. `conversionConfig`.您可以添加将其他工具转换为工具的功能。 指定 `conversionConfig` 的 «import» 属性。
 
-Conversion Toolbar will be shown only near Blocks that specified an «export» rule, when user selected almost all block's content.
-This Toolbar will contain only Tools that specified an «import» rule.
+当用户选择了几乎所有块的内容时，转换工具栏将只显示在指定 «export» 规则的块附近。此工具栏将只包含指定 «import» 规则的工具。
 
-Example:
+例子:
 
 ```js
 class Header {
-  constructor(){
+  constructor() {
     this.data = {
-       text: '',
-       level: 2
-    }
+      text: "",
+      level: 2,
+    };
   }
 
   /**
-   * Rules specified how our Tool can be converted to/from other Tool.
+   * 规则指定了我们的工具如何与其他工具转换。
    */
   static get conversionConfig() {
     return {
-      export: 'text', // this property of tool data will be used as string to pass to other tool
-      import: 'text' // to this property imported string will be passed
+      export: "text", // 工具数据的这个属性将作为字符串传递给其他工具
+      import: "text", // 导入的字符串将被传递到此属性
     };
   }
 }
 ```
 
-### Your Tool -> other Tool
+### 你的 Tool -> 其他 Tool
 
-The «export» field specifies how to represent your Tool's data as a string to pass it to other tool.
+«export»字段指定如何将您的工具数据表示为字符串以将其传递给其他工具。
 
-It can be a `String` or a `Function`.
+它可以是字符串(`String`)或函数(`Function`)。
 
-`String` means a key of your Tool data object that should be used as string to export.
+`String` 表示工具数据对象的键，应将其用作要导出的字符串。
 
-`Function` is a method that accepts your Tool data and compose a string to export from it. See example below:
+`Function` 是一种接受您的工具数据并组成一个字符串以从中导出的方法。 请参见下面的示例：
 
 ```js
 class ListTool {
-  constructor(){
+  constructor() {
     this.data = {
-      items: [
-        'Fisrt item',
-        'Second item',
-        'Third item'
-      ],
-      type: 'ordered'
-    }
+      items: ["Fisrt item", "Second item", "Third item"],
+      type: "ordered",
+    };
   }
 
   static get conversionConfig() {
     return {
       export: (data) => {
-        return data.items.join('.'); // in this example, all list items will be concatenated to an export string
+        return data.items.join("."); // 在此示例中，所有列表项都将连接到导出字符串
       },
-      // ... import rule
+      // ... 导入规则
     };
   }
 }
 ```
 
-### Other Tool -> your Tool
+### 其他 Tool -> 你的 Tool
 
-The «import» rule specifies how to create your Tool's data object from the string created by original block.
+«import» 规则指定如何从原始块创建的字符串创建工具的数据对象。
 
-It can be a `String` or a `Function`.
+它可以是字符串(`String`)或函数(`Function`)。
 
-`String` means the key in tool data that will be filled by an exported string.
-For example, `import: 'text'` means that `constructor` of your block will accept a `data` object with `text` property filled with string composed by original block.
+`String`表示工具数据中的键，将由导出的字符串填充。 例如，`import: 'text'` 意味着您的块的构造函数将接受 `text` 属性为 `data` 的数据对象，该数据对象将填充由原始块组成的字符串。
 
-`Function` allows you to specify own logic, how a string should be converted to your tool data. For example:
+`Function` 允许您指定自己的逻辑，即如何将字符串转换为工具数据。 例如：
 
 ```js
 class ListTool {
-  constructor(data){
+  constructor(data) {
     this.data = data || {
       items: [],
-      type: 'unordered'
-    }
+      type: "unordered",
+    };
   }
 
   static get conversionConfig() {
     return {
-      // ... export rule
+      // ... 导出规则
 
       /**
-       * In this example, List Tool creates items by splitting original text by a dot symbol.
+       * 在此示例中，列表工具通过将原始文本用点符号分隔来创建项目。
        */
       import: (string) => {
-        const items = string.split('.');
+        const items = string.split(".");
 
         return {
-          items: items.filter( (text) => text.trim() !== ''),
-          type: 'unordered'
+          items: items.filter((text) => text.trim() !== ""),
+          type: "unordered",
         };
-      }
+      },
     };
   }
 }
 ```
 
-## Block Lifecycle hooks
+## 块(Block)生命周期挂钩
 
 ### `rendered()`
 
-Called after Block contents is added to the page
+在将块内容添加到页面后调用
 
 ### `updated()`
 
-Called each time Block contents is updated
+每次更新块内容时调用
 
 ### `removed()`
 
-Called after Block contents is removed from the page but before Block instance deleted
+在从页面中删除块内容之后但在删除块实例之前调用
 
 ### `moved(MoveEvent)`
 
-Called after Block was moved. `MoveEvent` contains `fromIndex` and `toIndex`
-respectively.
+块移动后调用。 `MoveEvent` 分别包含 `fromIndex` 和`toIndex`。

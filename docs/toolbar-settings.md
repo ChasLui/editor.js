@@ -1,39 +1,37 @@
-# Editor.js Toolbar Block Settings Module
+# Editor.js 工具栏块设置模块
 
-Toolbar Module has space for Block settings. Settings divided into:
- - space for plugin's settings, that is described by «Plugin»'s Developer
- - space for default settings. This option is also can be implemented and expanded
+工具栏模块具有用于块设置的空间。 设置分为：
 
-They difference between zones is that the first option is specified by plugin
-and each Block can have different options, when second option is for every Block
-regardless to the plugin's option.
+- 插件设置的空间，由«Plugin»的开发者描述
+- 默认设置的空间。该选项也可以实现和扩展
 
-### Let's look the examples:
+第一个选项由插件指定，每个块可以具有不同的选项，而第二个选项针对每个块而与插件的选项无关。
 
-«Plugin»'s Developers need to expand «renderSettings» method that returns HTML.
-Every user action will be handled by itself. So, you can easily write
-callbacks that switches your content or makes better. For more information
-read [Tools](tools.md).
+### 让我们看一些例子:
+
+«Plugin»的开发人员需要扩展返回HTML的«renderSettings»方法。
+每个用户操作将由其自己处理。 因此，您可以轻松编写用于切换内容或使内容更好的回调。
+有关更多信息，请阅读 [Tools](tools.md)。
 
 ---
 
-«Tune»'s Developers need to implement core-provided interface to develop
-tunes that will be appeared in Toolbar default settings zone.
+«Tune»的开发人员需要实现内核提供的接口来开发将出现在工具栏默认设置区域的曲调。
 
-Tunes must expand two important methods:
- - `render()` - returns HTML and it is appended to the default settings zone
- - `save()` - extracts important information to be saved
+Tunes 必须扩展两个重要的方法:
 
-No restrictions. Handle user action by yourself
+- `render()` - 返回 HTML 并将其附加到默认设置区域
+- `save()` - 提取要保存的重要信息
 
-Create Class that implements block-tune.ts
+没有限制。自己处理用户操作
 
-Your Tune's constructor gets argument as object and it includes:
- - {Object} api - object contains public methods from modules. @see [API](api.md)
- - {Object} settings - settings contains block default state.
-This object could have information about cover, anchor and so on.
+创建实现 `block-tune.ts` 的类
 
-Example on TypeScript:
+您的 Tune 构造函数获取参数作为对象，它包括:
+
+- {Object} api - 对象包含模块中的 public 方法。 更多查看 [API](api.md)
+- {Object} settings - 包含块默认状态。这个对象可以有关于封面、锚等等的信息。
+
+TypeScript 例子:
 
 ```js
 
@@ -52,39 +50,38 @@ export default class YourCustomTune implements IBlockTune {
   }
 
   save() {
-    // Return the important data that needs to be saved
+    // 返回需要保存的重要数据
     return object
   }
 
   someMethod() {
-    // moves current block down
+    // 将当前块向下移动
     this.api.blocks.moveDown();
   }
 }
 ```
 
-Example on ES6
+ES6 例子:
 
 ```js
 export default class YourCustomTune {
-
-  constructor({api, settings}) {
+  constructor({ api, settings }) {
     this.api = api;
     this.settings = settings;
   }
 
   render() {
-    let someHTML = '...';
+    let someHTML = "...";
     return someHTML;
   }
 
   save() {
-    // Return the important data that needs to be saved
-    return object
+    // 返回需要保存的重要数据
+    return object;
   }
 
   someMethod() {
-    // moves current block down
+    // 将当前块向下移动
     this.api.blocks.moveDown();
   }
 }

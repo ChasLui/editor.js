@@ -1,102 +1,101 @@
-# Installation Guide
+# 安装指南
 
-There are few steps to run Editor.js on your site.
+只需几个步骤即可在您的网站上运行Editor.js。
 
-1. [Load Editor's core](#load-editors-core)
-2. [Load Tools](#load-tools)
-3. [Initialize Editor's instance](#create-editor-instance)
+1. [加载 Editor 的核心](#load-editors-core)
+2. [加载 Tools](#load-tools)
+3. [创建 Editor 的实例](#create-editor-instance)
 
-## Load Editor's core
+## 加载 Editor 的核心 <a name="load-editors-core"></>
 
-Firstly you need to get Editor.js itself. It is a [minified script](../dist/editor.js) with minimal available
+首先，您需要获得[Editor.js](../dist/editor.js)本身。它是一个可用的最小的微型脚本
 
-Choose the most usable method of getting an Editor for you.
+选择最适合您的编辑器方法。
 
-- Node package
-- Source from CDN
-- Local file from a project
+- NPM 包
+- 从 CDN 加载资源
+- 在项目本地加载文件
 
 ### Node.js
 
-Install the package via NPM or Yarn
+通过NPM或Yarn安装包
 
 ```shell
 npm i @editorjs/editorjs
 ```
 
-Include module at your application
+在您的应用程序中引入模块
 
 ```javascript
 import EditorJS from '@editorjs/editorjs';
 ```
 
-### Use from CDN
+### 从 CDN 加载资源
 
-You can load specific version of package from [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/editorjs).
+您可以从 [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/editorjs) 加载特定版本的软件包。
 
 `https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.10.0`
 
-Then require this script.
+然后需要这个脚本。
 
 ```html
 <script src="..."></script>
 ```
 
-### Save sources to project
+### 在项目本地加载文件
 
-Copy [editor.js](../dist/editor.js) file to your project and load it.
+复制 [editor.js](../dist/editor.js) 文件到你的项目里,并加载他
 
 ```html
 <script src="editor.js"></script>
 ```
 
-## Load Tools
+## 加载 Tools <a name="load-tools"></a>
 
-Each Block at the Editor.js represented by [Tools](tools.md). There are simple external scripts with their own logic. You'll probably want to use several Block Tools that should be connected.
+[Tools](tools.md)代表的Editor.js中的每个块。 有具有自己逻辑的简单外部脚本。 您可能要使用几个应该连接的块工具。
 
-For example, check out our [Header](https://github.com/editor-js/header) Tool that represents heading blocks.
+例如，签出代表标题栏的[标题](https://github.com/editor-js/header)工具。
 
-You can install the Header Tool via the same ways as an Editor (Node.js, CDN, local file).
+您可以通过与编辑器相同的方式安装标题工具 (Node.js, CDN, 本地 file).
 
-Check [Editor.js's community](https://github.com/editor-js/) to see Tools examples.
+检查 [Editor.js 社区](https://github.com/editor-js/) 查看工具示例。
 
-**Example:** use Header from CDN
+**例子:** 使用 CDN 加载标题块
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/codex.editor.header@2.1.0/dist/bundle.js"></script>
 ```
 
-## Create Editor instance
+## 创建 Editor 的实例 <a name="create-editor-instance"></a>
 
-Create an instance of Editor.js and pass [Configuration Object](../src/types-internal/editor-config.ts).
-At least the `holderId` option is required.
+创建Editor.js的实例并传递[配置对象](../src/types-internal/editor-config.ts)。 至少需要 `holderId` 选项。
 
 ```html
 <div id="editorjs"></div>
 ```
 
-You can create a simple Editor only with a default Paragraph Tool by passing a string with element's Id (wrapper for Editor) as a configuration param or use default `editorjs`.
+您可以仅通过使用默认的段落工具创建简单的编辑器，方法是传递带有元素 ID（编辑器的包装器）的字符串作为配置参数，或使用默认的 `editor.js`。
 
 ```javascript
-var editor = new EditorJS(); /** Zero-configuration */
+var editor = new EditorJS(); /** 0 配置 */
 
-// equals
+// 对比
 
 var editor = new EditorJS('editorjs');
-````
+```
 
-Or pass a whole settings object.
+或传递整个设置对象。
 
 ```javascript
 var editor = new EditorJS({
     /**
-     * Create a holder for the Editor and pass its ID
+     * 创建编辑器的持有者并传递其 ID
      */
     holderId : 'editorjs',
 
     /**
-     * Available Tools list.
-     * Pass Tool's class or Settings object for each Tool you want to use
+     * 可用工具列表。
+     * 为您要使用的每个工具传递工具类或配置对象
      */
     tools: {
         header: {
@@ -107,68 +106,67 @@ var editor = new EditorJS({
     },
 
     /**
-     * Previously saved data that should be rendered
+     * 预先保存的应呈现的数据
      */
     data: {}
 });
 ```
 
-## Ready callback
+## 准备就绪回调
 
-Editor.js needs a bit of time to initialize. It is an asynchronous action so it won't block execution of your main script.
+Editor.js 需要一些时间来初始化。 这是一个异步操作，因此它不会阻止主脚本的执行。
 
-If you need to know when the editor instance is ready you can use one of the following ways:
+如果您需要知道编辑器实例何时准备就绪，可以使用以下方式之一：
 
-##### Pass `onReady` property to the configuration object.
+##### 将 `onReady` 属性传递给配置对象。
 
-It must be a function:
+它必须是一个函数:
 
 ```javascript
 var editor = new EditorJS({
-   // Other configuration properties
+   // 其他配置属性
 
    /**
-    * onReady callback
+    * onReady 回调
     */
-   onReady: () => {console.log('Editor.js is ready to work!')}
+   onReady: () => {console.log('Editor.js 准备就绪!')}
 });
 ```
 
-#### Use `isReady` promise.
+#### 使用 `isReady` promise。
 
-After you create a new `EditorJS` object it will contain `isReady` property.
-It is a Promise object that resolves when the editor will be ready to work and rejected otherwise.
-If there is an error during initialization `isReady` promise will be rejected with an error message.
+创建新的 `EditorJS` 对象后，它将包含 `isReady` 属性。
+它是一个Promise对象，在编辑器准备工作时 resolve，否则将被拒绝.
+如果初始化 `isReady` 期间发生错误，则 Promise 将被拒绝并显示一条错误消息。
 
 ```javascript
 var editor = new EditorJS();
 
 editor.isReady
   .then(() => {
-    /** Do anything you need after editor initialization */
+    /** 编辑器初始化后做您需要做的一切 */
   })
   .catch((reason) => {
-    console.log(`Editor.js initialization failed because of ${reason}`)
+    console.log(`由于以下原因，Editor.js 初始化失败 ${reason}`)
   });
 ```
 
-You can use `async/await` to keep your code looking synchronous:
+您可以使用 `async/await` 来使代码保持同步：
 
 ```javascript
 var editor = new EditorJS();
 
 try {
   await editor.isReady;
-  /** Do anything you need after editor initialization */
+  /** 编辑器初始化后做您需要做的一切 */
 } catch (reason) {
-  console.log(`Editor.js initialization failed because of ${reason}`)
+  console.log(`由于以下原因，Editor.js 初始化失败 ${reason}`)
 }
 ```
 
+## 保存数据
 
-## Saving Data
-
-Call `editor.saver.save()` and handle returned Promise with saved data.
+调用 `editor.saver.save()` 并使用保存的数据处理返回的Promise。
 
 ```javascript
 editor.saver.save()
@@ -177,26 +175,26 @@ editor.saver.save()
   });
 ```
 
-## Features
+## 特性
 
-Also, Editor.js provides useful methods to work with Editor's state.
+另外，Editor.js 提供了有用的方法来处理 Editor 的状态。
 
 ```javascript
 var editor = new EditorJS({
-   // Other configuration properties
+   // 其他配置属性
 
    /**
-    * onReady callback
+    * onReady 回调
     */
-   onReady: () => {console.log('Editor.js is ready to work!')},
+   onReady: () => {console.log('Editor.js 准备就绪!')},
 
    /**
-    * onChange callback
+    * onChange 回调
     */
-   onChange: () => {console.log('Now I know that Editor\'s content changed!')}
+   onChange: () => {console.log('现在我知道编辑器的内容已更改！')}
 });
 ```
 
-## Example
+## 例子
 
-Take a look at the [example.html](../example/example.html) to view more detailed examples.
+查看[example.html](../example/example.html)以查看更详细的示例。

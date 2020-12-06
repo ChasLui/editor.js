@@ -1,23 +1,23 @@
 /**
-* Decorator above the type object
+* 类型对象上方的装饰器
 */
 type Indexed<T> = { [key: string]: T };
 
 /**
- * Type for I18n dictionary values that can be strings or dictionary sub-sections
+ * I18n字典值的类型，可以是字符串或字典子节点
  *
- * Can be used as:
+ * 可以用作:
  *   LeavesDictKeys<typeof myDictionary>
  *
- * where myDictionary is a JSON with messages
+ * 其中 myDictionary 是带有消息的 JSON
  */
 export type LeavesDictKeys<D> = D extends string
   /**
-   * If generic type is string, just return it
+   * 如果泛型类型为字符串，则只需返回它
    */
   ? D
   /**
-   * If generic type is object that has only one level and contains only strings, return it's keys union
+   * 如果泛型类型是仅具有一个级别并且仅包含字符串的对象，则返回其键并集
    *
    * { key: "string", anotherKey: "string" } => "key" | "anotherKey"
    *
@@ -25,8 +25,7 @@ export type LeavesDictKeys<D> = D extends string
   : D extends Indexed<string>
     ? keyof D
     /**
-     * If generic type is object, but not the one described above,
-     * use LeavesDictKey on it's values recursively and union the results
+     * 如果泛型类型是对象，但不是上述类型，则对它的值递归使用 LeavesDictKey 并合并结果
      *
      * { "rootKey": { "subKey": "string" }, "anotherRootKey": { "anotherSubKey": "string" } } => "subKey" | "anotherSubKey"
      *
@@ -35,33 +34,33 @@ export type LeavesDictKeys<D> = D extends string
       ? { [K in keyof D]: LeavesDictKeys<D[K]> }[keyof D]
 
       /**
-       * In other cases, return never type
+       * 在其他情况下，永不返回
        */
       : never;
 
 /**
- * Provide type-safe access to the available namespaces of the dictionary
+ * 提供对字典可用命名空间的类型安全访问
  *
- * Can be uses as:
+ * 可以用作:
  *    DictNamespaces<typeof myDictionary>
  *
- * where myDictionary is a JSON with messages
+ * 其中 myDictionary 是带有消息的 JSON
  */
 export type DictNamespaces<D extends object> = {
   /**
-   * Iterate through generic type keys
+   * 遍历泛型类型键
    *
-   * If value under current key is object that has only one level and contains only strings, return string type
+   * 如果当前键下的值是仅具有一个级别并且仅包含字符串的对象，则返回字符串类型
    */
   [K in keyof D]: D[K] extends Indexed<string>
     ? string
     /**
-     * If value under current key is object with depth more than one, apply DictNamespaces recursively
+     * 如果当前键下的值是深度大于一的对象，则递归应用 DictNamespaces
      */
     : D[K] extends Indexed<any>
       ? DictNamespaces<D[K]>
       /**
-       * In other cases, return never type
+       * 在其他情况下，永不返回
        */
       : never;
 }

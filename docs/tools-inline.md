@@ -1,150 +1,143 @@
-# Tools for the Inline Toolbar
+# 内联工具栏
 
-Similar with [Tools](tools.md) represented Blocks, you can create Tools for the Inline Toolbar. It will work with 
-selected fragment of text. The simplest example is `bold` or `italic` Tools.
+与以[Tools](tools.md)表示的块类似，您可以为内联工具栏创建工具。 它将与选定的文本片段一起使用。 最简单的示例是粗体(`bold`)或斜体(`italic`)工具。
 
-## Base structure
+## 基础结构
 
-First of all, Tool's class should have a `isInline` property (static getter) set as `true`. 
+首先，Tool 的类应将 `isInline` 属性（静态 getter）设置为 `true`。
 
-After that Inline Tool should implement next methods.
+之后，内联工具应实现以下方法。
 
-- `render()` — create a button
-- `surround()` — works with selected range
-- `checkState()` — get Tool's activated state by selected range
+- `render()` — 创建一个按钮
+- `surround()` — 在选定范围内工作
+- `checkState()` — 按选定范围获取工具的激活状态
 
-Also, you can provide optional methods
+另外，您可以提供可选方法
 
-- `renderActions()` — create additional element below the buttons
-- `clear()` — clear Tool's stuff on opening/closing of Inline Toolbar
-- `sanitize()` — sanitizer configuration
+- `renderActions()` — 在按钮下方创建其他元素
+- `clear()` — 在 打开/关闭 嵌入式工具栏时清除工具的内容
+- `sanitize()` — 消毒器配置
 
-At the constructor of Tool's class exemplar you will accept an object with the [API](api.md) as a parameter.
+在 Tool 的类示例的构造函数中，您将接受一个带有 [API](api.md) 的对象作为参数。
 
 ---
 
 ### render()
 
-Method that returns button to append at the Inline Toolbar
+返回按钮以附加到内联工具栏的方法
 
-#### Parameters
+#### 参数
 
-Method does not accept any parameters
+方法不接受任何参数
 
-#### Return value
+#### 返回值
 
-type | description | 
+类型 | 说明 |
 -- | -- |
-`HTMLElement` | element that will be added to the Inline Toolbar |
+`HTMLElement` | 元素将被添加到内联工具栏 |
 
 ---
 
 ### surround(range: Range)
 
-Method that accepts selected range and wrap it somehow
+该方法接受选定的范围并以某种方式将其封装
 
-#### Parameters
+#### 参数
 
-name | type | description | 
+名称 | 类型 | 描述 |
 -- |-- | -- |
-range | Range | first range of current Selection |
+range | Range | 当前选择的第一个范围 |
 
-#### Return value
+#### 返回值
 
-There is no return value
+没有返回值
 
 ---
 
 ### checkState(selection: Selection)
 
-Get Selection and detect if Tool was applied. For example, after that Tool can highlight button or show some details.
+获取选择并检测是否已应用工具。 例如，在该工具之后，可以突出显示按钮或显示一些详细信息。
 
-#### Parameters
+#### 参数
 
-name | type | description | 
+名称 | 类型 | 描述 |
 -- |-- | -- |
-selection | Selection | current Selection |
+selection | Selection | 当前选中 |
 
-#### Return value
+#### 返回值
 
-type | description | 
+类型 | 描述 |
 -- | -- |
-`Boolean` | `true` if Tool is active, otherwise `false` |
+`Boolean` | 如果工具处于活动状态，则为`true`；否则为`false` |
 
 ---
 
 ### renderActions()
 
-Optional method that returns additional Element with actions. 
-For example, input for the 'link' tool or textarea for the 'comment' tool. 
-It will be places below the buttons list at Inline Toolbar.
+返回带有操作的其他 Element 的可选方法。 例如，为“链接”工具输入或为“注释”工具输入文本区域。 它将位于内联工具栏的按钮列表下方。
 
-#### Parameters
+#### 参数
 
-Method does not accept any parameters
+方法不接受任何参数
 
-#### Return value
+#### 返回值
 
-type | description | 
+类型 | 描述 |
 -- | -- |
-`HTMLElement` | element that will be added to the Inline Toolbar |
+`HTMLElement` | 元素将被添加到内联工具栏 |
 
 ---
 
 ### clear()
 
-Optional method that will be called on opening/closing of Inline Toolbar. 
-Can contain logic for clearing Tool's stuff, such as inputs, states and other.
+在打开/关闭嵌入式工具栏时将调用的可选方法。 可以包含清除工具内容的逻辑，例如输入，状态等。
 
-#### Parameters
+#### 参数
 
-Method does not accept any parameters
+方法不接受任何参数
 
-#### Return value
+#### 返回值
 
-Method should not return a value. 
+没有返回值
 
 ### static get sanitize()
 
-We recommend to specify the Sanitizer config that corresponds with inline tags that is used by your Tool. 
-In that case, your config will be merged with sanitizer configuration of Block Tool 
-that is using the Inline Toolbar with your Tool.
+我们建议指定与工具使用的内联标签相对应的Sanitizer配置。 在这种情况下，您的配置将与“块工具”的消毒器配置合并，后者将“内联工具栏”与“工具”一起使用。
 
-Example:
+例子:
 
-If your Tool wrapps selected text with `<b>` tag, the sanitizer config should looks like this:
+如果您的工具使用`<b>`标签包裹了选定的文本，则消毒器程序配置应如下所示：
 
 ```js
 static get sanitize() {
   return {
-    b: {} // {} means clean all attributes. true — leave all attributes
+    b: {} // {} 表示清除所有属性。 true - 保留所有属性
   }
 }
-``` 
+```
 
-Read more about Sanitizer configuration at the [Tools#sanitize](tools.md#sanitize)
+在[Tools#sanitize](tools.md#sanitize)上了解有关 Sanitizer 配置的更多信息
 
-### Specifying a title
+### 指定标题
 
-You can pass your Tool's title via `title` static getter. It can be used, for example, in the Tooltip with 
-icon description that appears by hover. 
+您可以通过 `title` 静态 getter 传递工具的标题。 例如，它可以在工具提示中使用，并带有悬停出现的图标说明。
 
-![](https://capella.pics/00e7094a-fdb9-429b-8015-9c56f19b4ef5.jpg)
+![](https://editorjs.io/uploads/87407851a6a7b346dc4bf94ba993b4d6.jpeg)
 
 ```ts
 export default class BoldInlineTool implements InlineTool {
   /**
-   * Specifies Tool as Inline Toolbar Tool
+   * 将工具指定为嵌入式工具栏工具
    *
    * @return {boolean}
    */
   public static isInline = true;
 
   /**
-   * Title for hover-tooltip
+   * 悬停工具提示的标题
    */
   public static title: string = 'Bold';
 
-  // ... other methods
+  // ... 其他方法
 }
 ```

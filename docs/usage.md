@@ -1,43 +1,40 @@
-# So how to use Editor.js
+# 那么如何使用Editor.js
 
-## Basics
+## 基础
 
-Editor.js is a Block-Styled editor. Blocks is a structural units, of which the Entry is composed. 
-For example, `Paragraph`, `Heading`, `Image`, `Video`, `List` are Blocks. Each Block is represented by a Plugin. 
-We have [many](http://github.com/editor-js/) ready-to-use Plugins and the [simple API](tools.md) for creation new ones.
+Editor.js是一个块样式的编辑器。 块是组成入口的结构单元。
+例如, `段落(Paragraph)`, `标题(Heading)`, `图片(Image)`, `视频(Video)`, `列表(List)` 都是块. 每个块由一个插件表示。 我们有[许多](http://github.com/editor-js/)现成的插件和用于创建新插件的[简单 API](tools.md)。
 
-So how to use the Editor after [Installation](installation.md).
+那么[安装](installation.md)后如何使用编辑器。
 
-- Create new Blocks by Enter or with the Plus Button
-- Press `TAB` or click on the Plus Button to view the Toolbox
-- Press `TAB` again to leaf Toolbox and select a Block you need. Then press Enter.
-
+- 通过输入或使用加号按钮创建新块
+- 按 `TAB` 或单击加号按钮以查看工具箱
+- 再次按 `TAB` 键离开工具箱，然后选择所需的块。 然后按 `Enter`。
 
  ![](https://github.com/editor-js/list/raw/master/assets/example.gif)
- 
-- Select text fragment and apply a style or insert a link from the Inline Toolbar
+
+- 选择文本片段并应用样式或从“内联工具栏”插入链接
 
 ![](https://capella.pics/7ccbcfcd-1c49-4674-bea7-71021468a1bd.jpg)
 
-- Use «three-dots» button on the right to open Block Settings. From here, you can move and delete a Block 
-or apply Tool's settings, if it provided. For example, set a Heading level or List style.
+- 使用右边的`三点`按钮打开区块设置。如果它提供, 从这里，您可以移动和删除一个块或应用工具的设置。例如，设置标题级别或列表样式。
 
-![](https://capella.pics/01a55381-46cd-47c7-b92e-34765434f2ca.jpg)    
+![](https://capella.pics/01a55381-46cd-47c7-b92e-34765434f2ca.jpg)
 
-## Shortcuts
+## 快捷键
 
-We really appreciate shortcuts. So there are few presets. 
+我们非常欣赏捷径。所以预设很少。
 
-Action | Shortcut | Restrictions
--- | -- | --
-`TAB` | Show/leaf a Toolbox. | On empty block
-`SHIFT+TAB` | Leaf back a Toolbox. | While Toolbox is opened
-`ENTER` | Create a Block | While Toolbox is opened and some Tool is selected
-`CMD+B` | Bold style | On selection
-`CMD+I` | Italic style | On selection
-`CMD+K` | Insert a link | On selection
- 
-Also we support shortcuts on the all type of Tools. Specify a shortcut with the Tools configuration. For example:
+| 动作        | 快捷键            | 限制条件                   |
+| ----------- | ----------------- | -------------------------- |
+| `TAB`       | 显示/离开工具箱。 | 在空块                     |
+| `SHIFT+TAB` | 退回工具箱。      | 打开工具箱时               |
+| `ENTER`     | 创建一个块        | 打开工具箱并选择某些工具时 |
+| `CMD+B`     | 粗体              | 当选中                     |
+| `CMD+I`     | 斜体              | 当选中                     |
+| `CMD+K`     | 添加链接          | 当选中                     |
+
+此外，我们支持所有类型的工具上的快捷方式。 使用“工具”配置指定快捷方式。 例如：
 
 ```js
 var editor = new EditorJS({
@@ -57,10 +54,9 @@ var editor = new EditorJS({
 
 ```
 
-## Autofocus
+## 自动聚焦
 
-If you want to focus Editor after page has been loaded, you can enable autofocus by passing `autofocus` to the initial config
-
+如果要在页面加载后聚焦编辑器，可以通过将自动聚焦传递给初始配置来启用自动聚焦。
 
 ```js
 var editor = new EditorJS({
@@ -71,8 +67,9 @@ var editor = new EditorJS({
 
 ```
 
-## Holder
-The `holder` property supports an id or a reference to dom element.
+## 持有者
+
+`Holder` 属性支持id或对dom元素的引用。
 
 ```js
 var editor = new EditorJS({
@@ -80,33 +77,30 @@ var editor = new EditorJS({
 })
 
 var editor2 = new EditorJS({
-  holder: 'codex-editor' // like document.getElementById('codex-editor')
+  holder: 'codex-editor' // 类似 document.getElementById('codex-editor')
 })
 ```
 
+## 占位符号
 
+默认情况下，编辑器的占位符为空。
 
-## Placeholder
-
-By default Editor\`s placeholder is empty.
-
-You can pass your own placeholder via `placeholder` field:
-
+您可以通过`placeholder`段传递自己的占位符：
 
 ```js
 var editor = new EditorJS({
   //...
-  placeholder: 'My awesome placeholder'
+  placeholder: '我很棒的占位符'
   //...
  });
 
 ```
 
-If you are using your custom `Initial Block`, `placeholder` property is passed in `config` to your Tool constructor.
+如果使用自定义的初始块，则占位符属性将在 config 中传递给 Tool 构造函数。
 
-## Log level
+## 日志等级
 
-You can specify log level for Editor.js console messages via `logLevel` property of configuration:
+您可以通过配置的 `logLevel` 属性为 Editor.js 控制台消息指定日志级别：
 
 ```js
 var editor = new EditorJS({
@@ -116,12 +110,12 @@ var editor = new EditorJS({
 })
 ```
 
-Possible values:
+可选的值：
 
-| Value     | Description                  |
-| -----     | ---------------------------- |
-| `VERBOSE` | Show all messages            |
-| `INFO`    | Show info and debug messages |
-| `WARN`    | Show errors and warns only   |
-| `ERROR`   | Show errors only             |
-  
+| 值        | 描述                    |
+| --------- | ----------------------- |
+| `VERBOSE` | 显示所有                |
+| `INFO`    | 显示 info 和 debug 消息 |
+| `WARN`    | 只显示 error 和 warn    |
+| `ERROR`   | 只显示 error            |
+

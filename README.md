@@ -12,87 +12,83 @@
 | --------- | --------- | --------- | --------- | --------- | --------- |
 | Edge 12+ | Firefox 18+ | Chrome 49+ | Safari 10+ | Safari 10+ | Opera 36+
 
-## If you like a project 💗💗💗
+## 如果你喜欢这个项目 💗💗💗
 
-If you like Editor.js you can support project improvements and development of new features with a donation to our collective.
+如果您喜欢Editor.js，则可以通过向我们的集体捐款来支持项目改进和新功能的开发。
 
  👉  [https://opencollective.com/editorjs](https://opencollective.com/editorjs)
 
-### Sponsors
+### 担保
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/editorjs#sponsor)]
+通过成为赞助者来支持该项目。 您的徽标将显示在此处，并带有指向您网站的链接。[[成为赞助商及合作伙伴](https://opencollective.com/editorjs#sponsor)]
 
 <a href="https://opencollective.com/editorjs/sponsor/0/website" target="_blank"><img src="https://opencollective.com/editorjs/sponsor/0/avatar.svg"></a>
 
- ### Backers
+ ### 赞助商
 
- Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/editorjs#backer)]
+ 感谢所有支持我们的人! 🙏 [[成为赞助人](https://opencollective.com/editorjs#backer)]
 
  <a href="https://opencollective.com/editorjs#backers" target="_blank"><img src="https://opencollective.com/editorjs/backers.svg?width=890"></a>
 
-### Contributors
+### 贡献者
 
-This project exists thanks to all the people who contribute. <img src="https://opencollective.com/editorjs/contributors.svg?width=890&button=false" />
+这个项目的存在要感谢所有贡献者。 <img src="https://opencollective.com/editorjs/contributors.svg?width=890&button=false" />
 
-We really welcome new contributors. If you want to make some code with us, please take a look at the [Good First Tasks](https://github.com/codex-team/editor.js/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+task%22). You can write to us on `team@codex.so` or via special [Telegram chat](https://t.me/editorjsdev), or any other way.
+我们非常欢迎新的贡献者。如果你想和我们一起做一些代码，请看 [良好的首要任务](https://github.com/codex-team/editor.js/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+task%22). 您可以通过 `team@codex.so` 或通过特殊的 [Telegram chat](https://t.me/editorjsdev) 聊天或任何其他方式给我们写信。
 
-## Documentation
+## 文档
 
-Please visit [https://editorjs.io/](https://editorjs.io) to view all documentation articles.
+请访问 [https://editorjs.io/](https://editorjs.io) 以查看所有文档文章。
 
-- [Base concepts](https://editorjs.io/base-concepts)
-- [Getting started](https://editorjs.io/getting-started)
-- [Configuration](https://editorjs.io/configuration)
-- [How to create a Block Tool Plugin](https://editorjs.io/creating-a-block-tool)
-- [How to create an Inline Tool Plugin](https://editorjs.io/creating-an-inline-tool)
-- [API for Tools](https://editorjs.io/tools-api)
+- [基本概念](https://editorjs.io/base-concepts)
+- [入门指南](https://editorjs.io/getting-started)
+- [配置](https://editorjs.io/configuration)
+- [如何创建块工具插件](https://editorjs.io/creating-a-block-tool)
+- [如何创建内联工具插件](https://editorjs.io/creating-an-inline-tool)
+- [工具API](https://editorjs.io/tools-api)
 
-You can join a [Gitter-channel](https://gitter.im/codex-team/editor.js) or [Telegram-chat](//t.me/codex_editor) and ask a question.
+你可以加入一个 [Gitter-channel](https://gitter.im/codex-team/editor.js) 或 [Telegram-chat](//t.me/codex_editor) 并提问。
+## 变更日志
 
-## Changelog
+查看整个[变更日志](/docs/CHANGELOG.md)
+## 如何使用 Editor.js
 
-See the whole [Changelog](/docs/CHANGELOG.md)
+### 基础
 
-## How to use Editor.js
+Editor.js 是一个块样式的编辑器。 块是构成条目的结构单元。
+例如，`段落`，`标题`，`图像`，`视频`，`列表`是块。每个块由插件表示。
+我们有[许多](http://github.com/editor-js/)现成的插件和一个用于创建新插件的[简单API](https://editorjs.io/tools-api)。
 
-### Basics
+[安装后](https://editorjs.io/getting-started)如何使用编辑器。
 
-Editor.js is a Block-Styled editor. Blocks are structural units, of which the Entry is composed.
-For example, `Paragraph`, `Heading`, `Image`, `Video`, `List` are Blocks. Each Block is represented by Plugin.
-We have [many](http://github.com/editor-js/) ready-to-use Plugins and a [simple API](https://editorjs.io/tools-api) for creating new ones.
-
-How to use the Editor after [Installation](https://editorjs.io/getting-started).
-
-- Create new Blocks by pressing Enter or clicking the Plus Button
-- Press `TAB` or click on the Plus Button to view the Toolbox
-- Press `TAB` again to leaf Toolbox and select a Block you need. Then press Enter.
-
+- 通过按 `Enter` 或单击加号按钮来创建新块
+- 按 `TAB` 或单击加号按钮以查看工具箱
+- 再次按 `TAB` 键离开叶子工具箱，然后选择所需的块。 然后按 `Enter`。
 
  ![](https://github.com/editor-js/list/raw/master/assets/example.gif)
 
-- Select a text fragment and apply a style or insert a link from the Inline Toolbar
+- 选择文本片段并应用样式或从“内联工具栏”插入链接
 
 ![](https://capella.pics/7ccbcfcd-1c49-4674-bea7-71021468a1bd.jpg)
 
-- Use the «three-dots» button on the right to open Block Settings. From here, you can move and delete a Block
-or apply a Tool's settings, if it provided. For example, you can set a Heading level or List style.
+- 使用右侧的“三点”按钮打开块设置。 如果提供了块，您可以从此处移动和删除块或应用工具的设置。 例如，您可以设置标题级别或列表样式。
 
 ![](https://capella.pics/01a55381-46cd-47c7-b92e-34765434f2ca.jpg)
 
-### Shortcuts
+### 快捷键
 
-A few shortcuts are preset as available.
+预先设置了一些快捷方式。
 
-Shortcut | Action | Restrictions
+快捷键 | 动作 | 限制条件
 -- | -- | --
-`TAB` | Show/leaf a Toolbox. | On empty block
-`SHIFT+TAB` | Leaf back a Toolbox. | While Toolbox is opened
-`ENTER` | Create a Block | While Toolbox is opened and some Tool is selected
-`CMD+B` | Bold style | On selection
-`CMD+I` | Italic style | On selection
-`CMD+K` | Insert a link | On selection
+`TAB` | 显示/退出 工具箱 | 在空的块
+`SHIFT+TAB` | 退回工具箱。 | 当工具箱打开时
+`ENTER` | 创建一个块 | 打开工具箱并选择某些工具时
+`CMD+B` | 粗体 | 当选中
+`CMD+I` | 斜体 | 当选中
+`CMD+K` | 插入链接 | 当选中
 
-Each Tool can also have its own shortcuts. These are specified in the configuration of the Tool, for example:
+每个工具也可以有自己的快捷键。 这些在工具的配置中指定，例如：
 
 ```js
 var editor = new EditorJS({
@@ -112,85 +108,83 @@ var editor = new EditorJS({
 
 ```
 
+## 安装指南
 
-## Installation Guide
+只需几个步骤即可在您的网站上运行Editor.js。
 
-There are few steps to run Editor.js on your site.
+1. [加载编辑器的核心](#load-editors-core)
+2. [加载工具箱](#load-tools)
+3. [初始化编辑器实例](#create-editor-instance)
 
-1. [Load Editor's core](#load-editors-core)
-2. [Load Tools](#load-tools)
-3. [Initialize Editor's instance](#create-editor-instance)
+### 第 1 步, 加载编辑器核心
 
-### Step 1. Load Editor's core
+获取 [minified script](dist/editor.js) 本身。 这是一个精简的脚本，具有编辑器的核心和一些默认的必备工具。
 
-Get Editor.js itself. It is a [minified script](dist/editor.js) with Editor's core and some default must-have tools.
+选择最有用的获取编辑器的方法。
 
-Choose the most usable method of getting Editor for you.
+- npm 包
+- 从 CDN 加载资源
+- 从项目本地文件加载
 
-- Node package
-- Source from CDN
-- Local file from project
+##### 选项 A. NPM 安装
 
-##### Option A. NPM install
-
-Install the package via NPM or Yarn
+通过 NPM 或 Yarn 安装软件包
 
 ```shell
 npm i @editorjs/editorjs
 ```
 
-Include module in your application
+在您的应用程序中引入模块
 
 ```javascript
 import EditorJS from '@editorjs/editorjs';
 ```
 
-##### Option B. Use a CDN
+##### 选项 B. 使用 CDN
 
-You can load EditorJS directly from from [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/editorjs).
+您可以直接从 [jsDelivr CDN](https://www.jsdelivr.com/package/npm/@editorjs/editorjs) 加载EditorJS。
 
 `https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest`
 
-For example, place this in your HTML:
+例如，将其放在HTML中：
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 ```
 
-##### Option C. Save source within your project
+##### 选项 C. 保存源码到您的项目
 
-Copy the [editor.js](dist/editor.js) file to your project and load it.
+将 [editor.js](dist/editor.js) 文件复制到您的项目中
 
 ```html
 <script src="editor.js"></script>
 ```
 
-### Step 2. Load the Tools that you want to make available
+### 第 2 步. 加载您想要提供的工具
 
-Each Block is represented by a [Tool](docs/tools.md). Tools are simple external scripts with their own logic. For example, there is a [Header](https://github.com/editor-js/header) Tool into which you type your heading text. If you want to be able to use this, install the Header Tool the same way as the Editor (Node.js, CDN, local file).
+每个块由一个[工具](docs/tools.md)表示。 工具是具有自己逻辑的简单外部脚本。例如，有一个[标题](https://github.com/editor-js/header)工具，您可以在其中键入标题文本。如果要使用此功能，请以与编辑器相同的方式安装标题工具（Node.js，CDN，本地文件）。
 
-**Example:** use Header from CDN
+**用例:** 使用标题来自 CDN
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/codex.editor.header@2.0.4/dist/bundle.js"></script>
 ```
 
-Check [Editor.js's community](https://github.com/editor-js/) to see more ready-to-use Tools.
+查看 [Editor.js 的社区](https://github.com/editor-js/)，以查看更多现成的工具。
+### 步骤 3. 创建一个编辑器实例
 
-### Step 3. Create Editor instance
-
-Create an instance of Editor.js and pass [Configuration Object](types/configs/editor-config.d.ts) with `holderId` and tools list.
+创建一个edit .js的实例，并传递带有 `holderId` 和 tools 列表的[配置对象](types/configs/editor-config.d.ts)。
 
 ```html
 <div id="editorjs"></div>
 ```
 
-You can create a simple Editor with only default Paragraph Tool by passing a string with element's Id (wrapper for Editor) as a configuration param. Or use the default `editorjs` id for wrapper.
+您可以通过传递带有元素的Id（用于编辑器的包装器）作为配置参数的字符串来创建仅具有默认段落工具的简单编辑器。 或使用默认的 `editorjs` id 作为包装器。
 
 ```javascript
-var editor = new EditorJS(); /** Zero-configuration */
+var editor = new EditorJS(); /** 0 配置 */
 
-// equals
+// 对比
 
 var editor = new EditorJS('editorjs');
 ````
@@ -200,13 +194,13 @@ Or pass a whole settings object.
 ```javascript
 var editor = new EditorJS({
     /**
-     * Create a holder for the Editor and pass its ID
+     * 创建编辑器的持有者并传递其ID
      */
     holder : 'editorjs',
 
     /**
-     * Available Tools list.
-     * Pass Tool's class or Settings object for each Tool you want to use
+     * 可用工具列表。
+     * 为您要使用的每个工具传递工具类或配置对象
      */
     tools: {
         header: {
@@ -217,15 +211,15 @@ var editor = new EditorJS({
     },
 
     /**
-     * Previously saved data that should be rendered
+     * 预先保存的应呈现的数据
      */
     data: {}
 });
 ```
 
-### Saving Data
+### 保存数据
 
-Call `editor.save()` and handle returned Promise with saved data.
+调用 `editor.save()` 并使用保存的数据处理返回的 Promise。
 
 ```javascript
 editor.save()
@@ -234,20 +228,20 @@ editor.save()
   });
 ```
 
-### Example
+### 用例
 
-Take a look at the [example.html](example/example.html) to view more detailed examples.
+查看 [example.html](example/example.html) 以查看更详细的示例。
 
-## Credits and references
+## 引用
 
-- We use [HTMLJanitor](https://github.com/guardian/html-janitor) module in our Sanitizer module.
+- 我们在 Sanitizer 模块中使用[HTMLJanitor](https://github.com/guardian/html-janitor)模块。
 
-## About team
+## 关于团队
 
-We are CodeX and we build products for developers and makers.
+我们是CodeX，我们为开发人员和制造商开发产品。
 
-Follow us on Twitter: [twitter.com/codex_team](https://twitter.com/codex_team)
+在 Twitter 关注我们: [twitter.com/codex_team](https://twitter.com/codex_team)
 
-Feel free to contact: <a href="mailto:team@codex.so?subject=Editor.js feedback">team@codex.so</a>
+随时联系: <a href="mailto:team@codex.so?subject=Editor.js feedback">team@codex.so</a>
 
 [codex.so](https://codex.so)
