@@ -7,7 +7,7 @@
     background: var(--selectionColor);
 
     /**
-     * Workaround Safari case when user can select inline-fragment with cross-block-selection
+     * 用户可以通过“cross-block-selection”选择内联片段时的Safari解决方案
      */
     & [contenteditable] {
       -webkit-user-select: none;

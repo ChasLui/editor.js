@@ -33,7 +33,7 @@
 }
 
 /**
- * Styles for Narrow mode
+ * 窄模式的样式
  */
 .codex-editor--narrow .ce-toolbox {
   @media (--not-mobile) {

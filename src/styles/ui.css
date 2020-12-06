@@ -16,7 +16,7 @@
     }
 
     /**
-     * Workaround firefox bug: empty content editable elements has collapsed height
+     * 解决方法Firefox错误：空内容可编辑元素的高度已折叠
      * https://bugzilla.mozilla.org/show_bug.cgi?id=1098151#c18
      */
     [contenteditable]:empty::after {
@@ -25,7 +25,7 @@
   }
 
   /**
-   * Styles for narrow holder
+   * 窄支架样式
    */
   &--narrow &__redactor {
     @media (--not-mobile) {
@@ -108,7 +108,7 @@
 }
 
 /**
- * Set color for native selection
+ * 为本机选中器设置颜色
  */
 ::selection{
   background-color: var(--inlineSelectionColor);

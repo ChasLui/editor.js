@@ -18,7 +18,7 @@
   box-sizing: border-box;
 
   /**
-   * Workaround Firefox bug with cursor position on empty content editable elements with ::before pseudo
+   * Firefox错误的解决方法：使用::before伪指针将光标置于空白内容可编辑元素上
    * https://bugzilla.mozilla.org/show_bug.cgi?id=904846
    */
   &[data-placeholder]::before {

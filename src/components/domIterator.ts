@@ -3,12 +3,12 @@ import * as _ from './utils';
 import SelectionUtils from './selection';
 
 /**
- * Iterator above passed Elements list.
- * Each next or previous action adds provides CSS-class and sets cursor to this item
+ * 传递的Elements列表上方的迭代器。
+ * 每个 下一个 或 上一个 动作添加提供CSS类，并将光标设置到该项目
  */
 export default class DomIterator {
   /**
-   * This is a static property that defines iteration directions
+   * 这是定义迭代方向的静态属性
    *
    * @type {{RIGHT: string, LEFT: string}}
    */
@@ -18,26 +18,26 @@ export default class DomIterator {
   };
 
   /**
-   * User-provided CSS-class name for focused button
+   * 用户提供的焦点按钮CSS类名称
    */
   private focusedCssClass: string;
 
   /**
-   * Focused button index.
-   * Default is -1 which means nothing is active
+   * 聚焦按钮索引
+   * 默认值为-1，表示没有任何活动
    *
    * @type {number}
    */
   private cursor = -1;
 
   /**
-   * Items to flip
+   * 翻转项目
    */
   private items: HTMLElement[] = [];
 
   /**
-   * @param {HTMLElement[]} nodeList — the list of iterable HTML-items
-   * @param {string} focusedCssClass - user-provided CSS-class that will be set in flipping process
+   * @param {HTMLElement[]} nodeList — 可迭代的HTML项列表
+   * @param {string} focusedCssClass - 用户提供的CSS类，将在翻转过程中设置
    */
   constructor(
     nodeList: HTMLElement[],
@@ -48,7 +48,7 @@ export default class DomIterator {
   }
 
   /**
-   * Returns Focused button Node
+   * 返回焦点按钮节点
    *
    * @returns {HTMLElement}
    */
@@ -61,30 +61,30 @@ export default class DomIterator {
   }
 
   /**
-   * Sets items. Can be used when iterable items changed dynamically
+   * 设置项目。 当可迭代项目动态更改时可以使用
    *
-   * @param {HTMLElement[]} nodeList - nodes to iterate
+   * @param {HTMLElement[]} nodeList - 要迭代的节点
    */
   public setItems(nodeList: HTMLElement[]): void {
     this.items = nodeList;
   }
 
   /**
-   * Sets cursor next to the current
+   * 将光标设置在当前位置旁边
    */
   public next(): void {
     this.cursor = this.leafNodesAndReturnIndex(DomIterator.directions.RIGHT);
   }
 
   /**
-   * Sets cursor before current
+   * 将光标设置在当前位置之前
    */
   public previous(): void {
     this.cursor = this.leafNodesAndReturnIndex(DomIterator.directions.LEFT);
   }
 
   /**
-   * Sets cursor to the default position and removes CSS-class from previously focused item
+   * 将光标设置为默认位置，并从以前关注的项目中删除CSS类
    */
   public dropCursor(): void {
     if (this.cursor === -1) {
@@ -96,14 +96,14 @@ export default class DomIterator {
   }
 
   /**
-   * Leafs nodes inside the target list from active element
+   * 从活动元素中将叶子移到目标列表中
    *
-   * @param {string} direction - leaf direction. Can be 'left' or 'right'
-   * @returns {number} index of focused node
+   * @param {string} direction - 叶方向。 可以是“左”或“右”
+   * @returns {number} 焦点节点索引
    */
   private leafNodesAndReturnIndex(direction: string): number {
     /**
-     * if items are empty then there is nothing to leaf
+     * 如果项目为空，则没有其他内容
      */
     if (this.items.length === 0) {
       return this.cursor;
@@ -112,20 +112,20 @@ export default class DomIterator {
     let focusedButtonIndex = this.cursor;
 
     /**
-     * If activeButtonIndex === -1 then we have no chosen Tool in Toolbox
+     * 如果activeButtonIndex === -1，那么我们在工具箱中没有选择工具
      */
     if (focusedButtonIndex === -1) {
       /**
-       * Normalize "previous" Tool index depending on direction.
-       * We need to do this to highlight "first" Tool correctly
+       * 根据方向归一化“上一个”工具索引。
+       * 我们需要这样做以正确高亮“第一个”工具
        *
-       * Order of Tools: [0] [1] ... [n - 1]
-       *   [0 = n] because of: n % n = 0 % n
+       * 工具排序: [0] [1] ... [n - 1]
+       *   [0 = n] 因为: n % n = 0 % n
        *
-       * Direction 'right': for [0] the [n - 1] is a previous index
+       * 方向 'right': 对于[0], [n - 1] 是上一个索引
        *   [n - 1] -> [0]
        *
-       * Direction 'left': for [n - 1] the [0] is a previous index
+       * 方向 'left': 对于[n - 1],[0] 是上一个索引
        *   [n - 1] <- [0]
        *
        * @type {number}
@@ -133,25 +133,25 @@ export default class DomIterator {
       focusedButtonIndex = direction === DomIterator.directions.RIGHT ? -1 : 0;
     } else {
       /**
-       * If we have chosen Tool then remove highlighting
+       * 如果我们选择了工具，则删除高亮
        */
       this.items[focusedButtonIndex].classList.remove(this.focusedCssClass);
     }
 
     /**
-     * Count index for next Tool
+     * 下一个工具的计数索引
      */
     if (direction === DomIterator.directions.RIGHT) {
       /**
-       * If we go right then choose next (+1) Tool
+       * 如果我们进行正确，请选择下一个（+1）工具
        *
        * @type {number}
        */
       focusedButtonIndex = (focusedButtonIndex + 1) % this.items.length;
     } else {
       /**
-       * If we go left then choose previous (-1) Tool
-       * Before counting module we need to add length before because of "The JavaScript Modulo Bug"
+       * 如果我们向左走，则选择上一个（-1）工具
+       * 在计数模块之前，由于“ JavaScript Modulo Bug ”，我们需要增加长度
        *
        * @type {number}
        */
@@ -160,18 +160,18 @@ export default class DomIterator {
 
     if (Dom.canSetCaret(this.items[focusedButtonIndex])) {
       /**
-       * Focus input with micro-delay to ensure DOM is updated
+       * 通过微延迟集中输入以确保DOM被更新
        */
       _.delay(() => SelectionUtils.setCursor(this.items[focusedButtonIndex]), 50)();
     }
 
     /**
-     * Highlight new chosen Tool
+     * 高亮新选择的工具
      */
     this.items[focusedButtonIndex].classList.add(this.focusedCssClass);
 
     /**
-     * Return focused button's index
+     * 返回焦点按钮的索引
      */
     return focusedButtonIndex;
   }

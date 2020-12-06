@@ -3,52 +3,52 @@ import { EditorConfig } from '../../types';
 import { ModuleConfig } from '../types-internal/module-config';
 
 /**
- * The type <T> of the Module generic.
- * It describes the structure of nodes used in modules.
+ * Module泛型的类型<T>。
+ * 它描述了模块中使用的节点的结构。
  */
 export type ModuleNodes = object;
 
 /**
  * @abstract
  * @class      Module
- * @classdesc  All modules inherits from this class.
+ * @classdesc  所有模块都从此类继承。
  *
  * @typedef {Module} Module
- * @property {object} config - Editor user settings
- * @property {EditorModules} Editor - List of Editor modules
+ * @property {object} config - 编辑器用户设置
+ * @property {EditorModules} Editor - 编辑器模块列表
  */
 export default class Module<T extends ModuleNodes = {}> {
   /**
-   * Each module can provide some UI elements that will be stored in this property
+   * 每个模块都可以提供一些将存储在此属性中的UI元素
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public nodes: T = {} as any;
 
   /**
-   * Editor modules list
+   * 编辑器模块列表
    *
    * @type {EditorModules}
    */
   protected Editor: EditorModules;
 
   /**
-   * Editor configuration object
+   * 编辑器配置对象
    *
    * @type {EditorConfig}
    */
   protected config: EditorConfig;
 
   /**
-   * This object provides methods to push into set of listeners that being dropped when read-only mode is enabled
+   * 该对象提供了一些方法，可用于启用启用只读模式时放入的侦听器集
    */
   protected readOnlyMutableListeners = {
     /**
-     * Assigns event listener on DOM element and pushes into special array that might be removed
+     * 在DOM元素上分配事件侦听器，并推送到可能会删除的特殊数组中
      *
-     * @param {EventTarget} element - DOM Element
-     * @param {string} eventType - Event name
-     * @param {Function} handler - Event handler
-     * @param {boolean|AddEventListenerOptions} options - Listening options
+     * @param {EventTarget} element - DOM 元素
+     * @param {string} eventType - 事件名称
+     * @param {Function} handler - 事件处理
+     * @param {boolean|AddEventListenerOptions} options - 监听选项
      */
     on: (
       element: EventTarget,
@@ -64,7 +64,7 @@ export default class Module<T extends ModuleNodes = {}> {
     },
 
     /**
-     * Clears all mutable listeners
+     * 清除所有可变监听器
      */
     clearAll: (): void => {
       const { Listeners } = this.Editor;
@@ -78,13 +78,13 @@ export default class Module<T extends ModuleNodes = {}> {
   };
 
   /**
-   * The set of listener identifiers which will be dropped in read-only mode
+   * 侦听器标识符集，将以只读模式删除
    */
   private mutableListenerIds: string[] = [];
 
   /**
    * @class
-   * @param {EditorConfig} config - Editor's config
+   * @param {EditorConfig} config - 编辑器的配置
    */
   constructor({ config }: ModuleConfig) {
     if (new.target === Module) {
@@ -95,7 +95,7 @@ export default class Module<T extends ModuleNodes = {}> {
   }
 
   /**
-   * Editor modules setter
+   * 编辑器模块的 setter
    *
    * @param {EditorModules} Editor - Editor's Modules
    */
@@ -104,7 +104,7 @@ export default class Module<T extends ModuleNodes = {}> {
   }
 
   /**
-   * Remove memorized nodes
+   * 删除记忆的节点
    */
   public removeAllNodes(): void {
     for (const key in this.nodes) {
@@ -117,7 +117,7 @@ export default class Module<T extends ModuleNodes = {}> {
   }
 
   /**
-   * Returns true if current direction is RTL (Right-To-Left)
+   * 如果当前方向为RTL（从右至左），则返回true
    */
   protected get isRtl(): boolean {
     return this.config.i18n.direction === 'rtl';

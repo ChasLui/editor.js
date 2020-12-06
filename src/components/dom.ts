@@ -1,13 +1,13 @@
 import * as _ from './utils';
 
 /**
- * DOM manipulations helper
+ * DOM 操作助手
  */
 export default class Dom {
   /**
-   * Check if passed tag has no closed tag
+   * 检查传递的标签是否没有关闭的标签
    *
-   * @param {HTMLElement} tag - element to check
+   * @param {HTMLElement} tag - 要检查的元素
    * @returns {boolean}
    */
   public static isSingleTag(tag: HTMLElement): boolean {
@@ -32,9 +32,9 @@ export default class Dom {
   }
 
   /**
-   * Check if element is BR or WBR
+   * 检查元素是 BR 还是 WBR
    *
-   * @param {HTMLElement} element - element to check
+   * @param {HTMLElement} element - 要检查的元素
    * @returns {boolean}
    */
   public static isLineBreakTag(element: HTMLElement): element is HTMLBRElement {
@@ -45,11 +45,11 @@ export default class Dom {
   }
 
   /**
-   * Helper for making Elements with classname and attributes
+   * 使用类名和属性制作 Elements 的助手
    *
-   * @param  {string} tagName - new Element tag name
-   * @param  {string[]|string} [classNames] - list or name of CSS classname(s)
-   * @param  {object} [attributes] - any attributes
+   * @param  {string} tagName - 显得 Element 标签名
+   * @param  {string[]|string} [classNames] - CSS类名的列表或名称
+   * @param  {object} [attributes] - 任意属性
    *
    * @returns {HTMLElement}
    */
@@ -72,9 +72,9 @@ export default class Dom {
   }
 
   /**
-   * Creates Text Node with the passed content
+   * 使用传递的内容创建文本节点
    *
-   * @param {string} content - text content
+   * @param {string} content - 文本内容
    *
    * @returns {Text}
    */
@@ -83,11 +83,11 @@ export default class Dom {
   }
 
   /**
-   * Creates SVG icon linked to the sprite
+   * 创建链接到精灵图的SVG图标
    *
-   * @param {string} name - name (id) of icon from sprite
-   * @param {number} [width] - icon width
-   * @param {number} [height] - icon height
+   * @param {string} name - 精灵图标的名称（id）
+   * @param {number} [width] - icon 宽度
+   * @param {number} [height] - icon 高度
    *
    * @returns {SVGElement}
    */
@@ -103,10 +103,10 @@ export default class Dom {
   }
 
   /**
-   * Append one or several elements to the parent
+   * 将一个或多个元素附加到父级
    *
-   * @param  {Element|DocumentFragment} parent - where to append
-   * @param  {Element|Element[]|DocumentFragment|Text|Text[]} elements - element or elements list
+   * @param  {Element|DocumentFragment} parent - 在哪里追加
+   * @param  {Element|Element[]|DocumentFragment|Text|Text[]} elements - 元素列表
    */
   public static append(
     parent: Element|DocumentFragment,
@@ -120,10 +120,10 @@ export default class Dom {
   }
 
   /**
-   * Append element or a couple to the beginning of the parent elements
+   * 将元素或一对添加到父元素的开头
    *
-   * @param {Element} parent - where to append
-   * @param {Element|Element[]} elements - element or elements list
+   * @param {Element} parent - 在哪里追加
+   * @param {Element|Element[]} elements - 元素列表
    */
   public static prepend(parent: Element, elements: Element|Element[]): void {
     if (Array.isArray(elements)) {
@@ -135,36 +135,36 @@ export default class Dom {
   }
 
   /**
-   * Swap two elements in parent
+   * 交换父元素中的两个元素
    *
    * @param {HTMLElement} el1 - from
    * @param {HTMLElement} el2 - to
    * @deprecated
    */
   public static swap(el1: HTMLElement, el2: HTMLElement): void {
-    // create marker element and insert it where el1 is
+    // 创建标记元素并将其插入到 el1 所在的位置
     const temp = document.createElement('div'),
         parent = el1.parentNode;
 
     parent.insertBefore(temp, el1);
 
-    // move el1 to right before el2
+    // 将 el1 向右移动到 el2 之前
     parent.insertBefore(el1, el2);
 
-    // move el2 to right before where el1 used to be
+    // 将 el2 向右移到 el1 曾经所在的位置之前
     parent.insertBefore(el2, temp);
 
-    // remove temporary marker node
+    // 删除临时标记节点
     parent.removeChild(temp);
   }
 
   /**
-   * Selector Decorator
+   * 选择器装饰器
    *
-   * Returns first match
+   * 返回第一个匹配
    *
-   * @param {Element} el - element we searching inside. Default - DOM Document
-   * @param {string} selector - searching string
+   * @param {Element} el - 我们在里面搜索的元素。 默认-DOM Document
+   * @param {string} selector - 搜索字符串
    *
    * @returns {Element}
    */
@@ -173,9 +173,9 @@ export default class Dom {
   }
 
   /**
-   * Get Element by Id
+   * 根据 Id 获取元素
    *
-   * @param {string} id - id to find
+   * @param {string} id - 要查找的 Id
    * @returns {HTMLElement | null}
    */
   public static get(id: string): HTMLElement | null {
@@ -183,12 +183,12 @@ export default class Dom {
   }
 
   /**
-   * Selector Decorator.
+   * 选择器装饰器
    *
-   * Returns all matches
+   * 返回所有匹配的
    *
-   * @param {Element|Document} el - element we searching inside. Default - DOM Document
-   * @param {string} selector - searching string
+   * @param {Element|Document} el - 我们在里面搜索的元素。 默认-DOM Document
+   * @param {string} selector - 搜索字符串
    *
    * @returns {NodeList}
    */
@@ -197,7 +197,7 @@ export default class Dom {
   }
 
   /**
-   * Returns CSS selector for all text inputs
+   * 返回所有文本输入的CSS选择器
    */
   public static get allInputsSelector(): string {
     const allowedInputTypes = ['text', 'password', 'email', 'number', 'search', 'tel', 'url'];
@@ -207,14 +207,14 @@ export default class Dom {
   }
 
   /**
-   * Find all contendeditable, textarea and editable input elements passed holder contains
+   * 查找通过 holder 包含的所有可 contendeditable、textarea 和可编辑的 input 元素
    *
-   * @param holder - element where to find inputs
+   * @param holder - 元素在哪里找到 input
    */
   public static findAllInputs(holder: Element): HTMLElement[] {
     return _.array(holder.querySelectorAll(Dom.allInputsSelector))
       /**
-       * If contenteditable element contains block elements, treat them as inputs.
+       * 如果 contenteditable 元素包含block元素，则将其视为 input。
        */
       .reduce((result, input) => {
         if (Dom.isNativeInput(input) || Dom.containsOnlyInlineElements(input)) {
@@ -226,22 +226,22 @@ export default class Dom {
   }
 
   /**
-   * Search for deepest node which is Leaf.
-   * Leaf is the vertex that doesn't have any child nodes
+   * 搜索最深的节点，即Leaf。
+   * Leaf 是没有任何子节点的顶点
    *
-   * @description Method recursively goes throw the all Node until it finds the Leaf
+   * @description 方法递归地抛出所有节点，直到找到叶子
    *
-   * @param {Node} node - root Node. From this vertex we start Deep-first search
+   * @param {Node} node - 根节点。 从这个顶点开始深度优先搜索
    *                      {@link https://en.wikipedia.org/wiki/Depth-first_search}
-   * @param {boolean} [atLast] - find last text node
+   * @param {boolean} [atLast] - 查找最后一个文本节点
    *
-   * @returns {Node} - it can be text Node or Element Node, so that caret will able to work with it
+   * @returns {Node} - 它可以是文本节点或元素节点，因此插入符号将能够使用它
    */
   public static getDeepestNode(node: Node, atLast = false): Node {
     /**
-     * Current function have two directions:
-     *  - starts from first child and every time gets first or nextSibling in special cases
-     *  - starts from last child and gets last or previousSibling
+     * 当前函数有两个方向：
+     *  - 从第一个孩子开始，每次都获得第一个或下一个
+     *  - 从最后一个孩子开始并获得最后一个或前一个
      *
      * @type {string}
      */
@@ -252,7 +252,7 @@ export default class Dom {
       let nodeChild = node[child] as Node;
 
       /**
-       * special case when child is single tag that can't contain any content
+       * 当child是不能包含任何内容的单个标签时的特殊情况
        */
       if (
         Dom.isSingleTag(nodeChild as HTMLElement) &&
@@ -260,13 +260,11 @@ export default class Dom {
         !Dom.isLineBreakTag(nodeChild as HTMLElement)
       ) {
         /**
-         * 1) We need to check the next sibling. If it is Node Element then continue searching for deepest
-         * from sibling
+         * 1) 我们需要检查下一个兄弟。如果是 Node Element，则继续从同级节点中搜索最深的节点
          *
-         * 2) If single tag's next sibling is null, then go back to parent and check his sibling
-         * In case of Node Element continue searching
+         * 2) 如果单个标签的下一个兄弟为空，则返回父对象并检查其兄弟。如果节点元素继续搜索
          *
-         * 3) If none of conditions above happened return parent Node Element
+         * 3) 如果以上条件均未发生，则返回父节点元素
          */
         if (nodeChild[sibling]) {
           nodeChild = nodeChild[sibling];
@@ -284,9 +282,9 @@ export default class Dom {
   }
 
   /**
-   * Check if object is DOM node
+   * 检查对象是否为DOM节点
    *
-   * @param {*} node - object to check
+   * @param {*} node - 要检查的对象
    *
    * @returns {boolean}
    */
@@ -300,9 +298,9 @@ export default class Dom {
   }
 
   /**
-   * Check if object is DocumentFragment node
+   * 检查对象是否为 DocumentFragment 节点
    *
-   * @param {object} node - object to check
+   * @param {object} node - 要检查的对象
    * @returns {boolean}
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -315,9 +313,9 @@ export default class Dom {
   }
 
   /**
-   * Check if passed element is contenteditable
+   * 检查传递的元素是否可编辑
    *
-   * @param {HTMLElement} element - html element to check
+   * @param {HTMLElement} element - 要检查的html元素
    *
    * @returns {boolean}
    */
@@ -326,9 +324,9 @@ export default class Dom {
   }
 
   /**
-   * Checks target if it is native input
+   * 检查传递的元素是否为原生 input
    *
-   * @param {*} target - HTML element or string
+   * @param {*} target - HTML 元素或字符串
    *
    * @returns {boolean}
    */
@@ -343,9 +341,9 @@ export default class Dom {
   }
 
   /**
-   * Checks if we can set caret
+   * 检查是否可以设置插入符号
    *
-   * @param {HTMLElement} target - target to check
+   * @param {HTMLElement} target - 要检查的 target
    *
    * @returns {boolean}
    */
@@ -373,14 +371,14 @@ export default class Dom {
   }
 
   /**
-   * Checks node if it is empty
+   * 检查节点是否为空
    *
-   * @description Method checks simple Node without any childs for emptiness
-   * If you have Node with 2 or more children id depth, you better use {@link Dom#isEmpty} method
+   * @description 方法检查没有空子的简单Node
+   * 如果您的节点具有2个或更多子级ID深度，则最好使用 {@link Dom#isEmpty} 方法
    *
-   * @param {Node} node - node to check
+   * @param {Node} node - 要检查的节点
    *
-   * @returns {boolean} true if it is empty
+   * @returns {boolean} 如果为空，则返回 true
    */
   public static isNodeEmpty(node: Node): boolean {
     let nodeText;
@@ -399,9 +397,9 @@ export default class Dom {
   }
 
   /**
-   * checks node if it is doesn't have any child nodes
+   * 检查节点是否没有任何子节点
    *
-   * @param {Node} node - node to check
+   * @param {Node} node - 要检查的节点
    *
    * @returns {boolean}
    */
@@ -414,17 +412,17 @@ export default class Dom {
   }
 
   /**
-   * breadth-first search (BFS)
+   * 广度优先搜索 (BFS)
    * {@link https://en.wikipedia.org/wiki/Breadth-first_search}
    *
-   * @description Pushes to stack all DOM leafs and checks for emptiness
+   * @description 推送以堆栈所有DOM叶子并检查是否为空
    *
-   * @param {Node} node - node to check
+   * @param {Node} node - 要检查的节点
    * @returns {boolean}
    */
   public static isEmpty(node: Node): boolean {
     /**
-     * Normalize node to merge several text nodes to one to reduce tree walker iterations
+     * 标准化节点以将多个文本节点合并为一个，以减少Tree Walker迭代
      */
     node.normalize();
 
@@ -450,9 +448,9 @@ export default class Dom {
   }
 
   /**
-   * Check if string contains html elements
+   * 检查字符串是否包含 html 元素
    *
-   * @param {string} str - string to check
+   * @param {string} str - 要检查的字符串
    *
    * @returns {boolean}
    */
@@ -465,9 +463,9 @@ export default class Dom {
   }
 
   /**
-   * Return length of node`s text content
+   * 返回节点文本内容的长度
    *
-   * @param {Node} node - node with content
+   * @param {Node} node - 有内容的节点
    *
    * @returns {number}
    */
@@ -484,7 +482,7 @@ export default class Dom {
   }
 
   /**
-   * Return array of names of block html elements
+   * 返回块 html 元素名称的数组
    *
    * @returns {string[]}
    */
@@ -531,9 +529,9 @@ export default class Dom {
   }
 
   /**
-   * Check if passed content includes only inline elements
+   * 检查传递的内容是否仅包含内联元素
    *
-   * @param {string|HTMLElement} data - element or html string
+   * @param {string|HTMLElement} data - 元素或 html 字符串
    *
    * @returns {boolean}
    */
@@ -556,9 +554,9 @@ export default class Dom {
   }
 
   /**
-   * Find and return all block elements in the passed parent (including subtree)
+   * 查找并返回传递的父级中的所有块元素（包括子树）
    *
-   * @param {HTMLElement} parent - root element
+   * @param {HTMLElement} parent - 根元素
    *
    * @returns {HTMLElement[]}
    */
@@ -573,9 +571,9 @@ export default class Dom {
   }
 
   /**
-   * Helper for get holder from {string} or return HTMLElement
+   * 从{string}获取持有者或返回HTMLElement的助手
    *
-   * @param {string | HTMLElement} element - holder's id or holder's HTML Element
+   * @param {string | HTMLElement} element - 持有者的 ID 或持有者的 HTML 元素
    *
    * @returns {HTMLElement}
    */
@@ -588,7 +586,7 @@ export default class Dom {
   }
 
   /**
-   * Method checks passed Node if it is some extension Node
+   * 方法检查传递的节点是否是某个扩展节点
    *
    * @param {Node} node - any node
    *
@@ -603,9 +601,9 @@ export default class Dom {
   }
 
   /**
-   * Returns true if element is anchor (is A tag)
+   * 如果element是锚点（是A标签），则返回true
    *
-   * @param {Element} element - element to check
+   * @param {Element} element - 要检查的元素
    *
    * @returns {boolean}
    */

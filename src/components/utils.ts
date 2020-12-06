@@ -1,11 +1,11 @@
 /**
- * Class Util
+ * Util 类
  */
 
 import Dom from './dom';
 
 /**
- * Possible log levels
+ * 可能的日志级别
  */
 export enum LogLevels {
   VERBOSE = 'VERBOSE',
@@ -15,14 +15,14 @@ export enum LogLevels {
 }
 
 /**
- * Allow to use global VERSION, that will be overwritten by Webpack
+ * 允许使用全局版本，该版本将被 Webpack 覆盖
  */
 declare const VERSION: string;
 
 /**
  * @typedef {object} ChainData
- * @property {object} data - data that will be passed to the success or fallback
- * @property {Function} function - function's that must be called asynchronously
+ * @property {object} data - 将传递给成功或回退的数据
+ * @property {Function} function - 必须异步调用的函数
  *
  * @interface ChainData
  */
@@ -37,7 +37,7 @@ export interface ChainData {
  */
 
 /**
- * Returns basic keycodes as constants
+ * 返回基本键盘码作为常量
  *
  * @returns {{}}
  */
@@ -59,7 +59,7 @@ export const keyCodes = {
 };
 
 /**
- * Return mouse buttons codes
+ * 返回鼠标按钮代码
  */
 export const mouseButtons = {
   LEFT: 0,
@@ -70,13 +70,13 @@ export const mouseButtons = {
 };
 
 /**
- * Custom logger
+ * 自定义日志
  *
- * @param {boolean} labeled — if true, Editor.js label is shown
- * @param {string} msg  - message
- * @param {string} type - logging type 'log'|'warn'|'error'|'info'
- * @param {*} [args]      - argument to log with a message
- * @param {string} style  - additional styling to message
+ * @param {boolean} labeled — 如果为true，则显示 Editor.js 标签
+ * @param {string} msg  - 消息
+ * @param {string} type - 日志类型 'log'|'warn'|'error'|'info'
+ * @param {*} [args]      - argument 日志消息
+ * @param {string} style  - 对消息的附加样式化
  */
 function _log(
   labeled: boolean,
@@ -150,33 +150,33 @@ function _log(
 }
 
 /**
- * Current log level
+ * 当前日志等级
  */
 _log.logLevel = LogLevels.VERBOSE;
 
 /**
- * Set current log level
+ * 设置当前日志等级
  *
- * @param {LogLevels} logLevel - log level to set
+ * @param {LogLevels} logLevel - 要设置的日志等级
  */
 export function setLogLevel(logLevel: LogLevels): void {
   _log.logLevel = logLevel;
 }
 
 /**
- * _log method proxy without Editor.js label
+ * 没有 Editor.js 标签的 _log 方法代理
  */
 export const log = _log.bind(window, false);
 
 /**
- * _log method proxy with Editor.js label
+ * 具有 Editor.js 标签的 _log 方法代理
  */
 export const logLabeled = _log.bind(window, true);
 
 /**
- * Return string representation of the object type
+ * 返回字符串表示形式获取对象类型的
  *
- * @param {*} object - object to get type
+ * @param {*} object - 要获取类型的对象
  *
  * @returns {string}
  */
@@ -186,9 +186,9 @@ export function typeOf(object: any): string {
 }
 
 /**
- * Check if passed variable is a function
+ * 检查传递的变量是否为函数
  *
- * @param {*} fn - function to check
+ * @param {*} fn - 要检验的函数
  *
  * @returns {boolean}
  */
@@ -198,9 +198,9 @@ export function isFunction(fn: any): fn is Function {
 }
 
 /**
- * Checks if passed argument is an object
+ * 检查传递的参数是否为对象
  *
- * @param {*} v - object to check
+ * @param {*} v - 要检验的对象
  *
  * @returns {boolean}
  */
@@ -210,9 +210,9 @@ export function isObject(v: any): v is object {
 }
 
 /**
- * Checks if passed argument is a string
+ * 检查传递的参数是否为字符串
  *
- * @param {*} v - variable to check
+ * @param {*} v - 要校验的变量
  *
  * @returns {boolean}
  */
@@ -222,9 +222,9 @@ export function isString(v: any): v is string {
 }
 
 /**
- * Checks if passed argument is boolean
+ * 检查传递的参数是否为布尔类型
  *
- * @param {*} v - variable to check
+ * @param {*} v - 要校验的变量
  *
  * @returns {boolean}
  */
@@ -234,9 +234,9 @@ export function isBoolean(v: any): v is boolean {
 }
 
 /**
- * Checks if passed argument is number
+ * 检查传递的参数是否为数字型
  *
- * @param {*} v - variable to check
+ * @param {*} v - 要校验的变量
  *
  * @returns {boolean}
  */
@@ -246,9 +246,9 @@ export function isNumber(v: any): v is number {
 }
 
 /**
- * Checks if passed argument is undefined
+ * 检查传递的参数是否为 undefined
  *
- * @param {*} v - variable to check
+ * @param {*} v - 要检验的变量
  *
  * @returns {boolean}
  */
@@ -258,9 +258,9 @@ export function isUndefined(v: any): v is undefined {
 }
 
 /**
- * Check if passed function is a class
+ * 检查传递的参数是否为 class
  *
- * @param {Function} fn - function to check
+ * @param {Function} fn - 要校验的函数
  *
  * @returns {boolean}
  */
@@ -270,9 +270,9 @@ export function isClass(fn: any): boolean {
 }
 
 /**
- * Checks if object is empty
+ * 校验是否为空对象
  *
- * @param {object} object - object to check
+ * @param {object} object - 要校验的对象
  *
  * @returns {boolean}
  */
@@ -285,9 +285,9 @@ export function isEmpty(object: object): boolean {
 }
 
 /**
- * Check if passed object is a Promise
+ * 校验对象是否为 Promise
  *
- * @param  {*}  object - object to check
+ * @param  {*}  object - 要校验的对象
  * @returns {boolean}
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -296,28 +296,28 @@ export function isPromise(object: any): object is Promise<any> {
 }
 
 /**
- * Returns true if passed key code is printable (a-Z, 0-9, etc) character.
+ * 如果传递的键盘码是可打印的（a-Z，0-9等）字符，则返回 `true`。
  *
- * @param {number} keyCode - key code
+ * @param {number} keyCode - 假盘码
  *
  * @returns {boolean}
  */
 export function isPrintableKey(keyCode: number): boolean {
-  return (keyCode > 47 && keyCode < 58) || // number keys
-    keyCode === 32 || keyCode === 13 || // Spacebar & return key(s)
-    keyCode === 229 || // processing key input for certain languages — Chinese, Japanese, etc.
-    (keyCode > 64 && keyCode < 91) || // letter keys
-    (keyCode > 95 && keyCode < 112) || // Numpad keys
-    (keyCode > 185 && keyCode < 193) || // ;=,-./` (in order)
-    (keyCode > 218 && keyCode < 223); // [\]' (in order)
+  return (keyCode > 47 && keyCode < 58) || // 数字键
+    keyCode === 32 || keyCode === 13 || // 空格 & 返回键
+    keyCode === 229 || // 处理某些语言（例如中文，日语等）的按键输入
+    (keyCode > 64 && keyCode < 91) || // 字母键
+    (keyCode > 95 && keyCode < 112) || // 数字键
+    (keyCode > 185 && keyCode < 193) || // ;=,-./` (按次序)
+    (keyCode > 218 && keyCode < 223); // [\]' (按次序)
 }
 
 /**
- * Fires a promise sequence asynchronously
+ * 异步触发 Promise 序列
  *
- * @param {ChainData[]} chains - list or ChainData's
- * @param {Function} success - success callback
- * @param {Function} fallback - callback that fires in case of errors
+ * @param {ChainData[]} chains - 列表或链数据
+ * @param {Function} success - 成功回调
+ * @param {Function} fallback - 发生错误时触发的回调
  *
  * @returns {Promise}
  */
@@ -329,12 +329,12 @@ export async function sequence(
   fallback: (data: object) => void = (): void => {}
 ): Promise<void> {
   /**
-   * Decorator
+   * 装饰器
    *
-   * @param {ChainData} chainData - Chain data
+   * @param {ChainData} chainData - 连数据
    *
-   * @param {Function} successCallback - success callback
-   * @param {Function} fallbackCallback - fail callback
+   * @param {Function} successCallback - 成功回调
+   * @param {Function} fallbackCallback - 失败回调
    *
    * @returns {Promise}
    */
@@ -352,11 +352,10 @@ export async function sequence(
   }
 
   /**
-   * pluck each element from queue
-   * First, send resolved Promise as previous value
-   * Each plugins "prepare" method returns a Promise, that's why
-   * reduce current element will not be able to continue while can't get
-   * a resolved Promise
+   * 从队列中提取每个元素
+   * 首先，将已解决的Promise发送为先前的值
+   * 每个插件的“ prepare”方法都会返回一个Promise，
+   * 这就是为什么 reduce current 元素将无法继续而无法获得已解决的 Promise 的原因
    */
   return chains.reduce(async (previousValue, currentValue) => {
     await previousValue;
@@ -366,9 +365,9 @@ export async function sequence(
 }
 
 /**
- * Make array from array-like collection
+ * 从类数组的集合中创建数组
  *
- * @param {ArrayLike} collection - collection to convert to array
+ * @param {ArrayLike} collection - 集合转换为数组
  *
  * @returns {Array}
  */
@@ -378,10 +377,10 @@ export function array(collection: ArrayLike<any>): any[] {
 }
 
 /**
- * Delays method execution
+ * 延迟方法执行
  *
- * @param {Function} method - method to execute
- * @param {number} timeout - timeout in ms
+ * @param {Function} method - 执行方法
+ * @param {number} timeout - 延时(毫秒)
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function delay(method: (...args: any[]) => any, timeout: number) {
@@ -396,7 +395,7 @@ export function delay(method: (...args: any[]) => any, timeout: number) {
 }
 
 /**
- * Get file extension
+ * 获取文件扩展名
  *
  * @param {File} file - file
  *
@@ -407,7 +406,7 @@ export function getFileExtension(file: File): string {
 }
 
 /**
- * Check if string is MIME type
+ * 检查字符串是否为 MIME 类型
  *
  * @param {string} type - string to check
  *
@@ -418,14 +417,14 @@ export function isValidMimeType(type: string): boolean {
 }
 
 /**
- * Debouncing method
- * Call method after passed time
+ * 防抖方法
+ * 经过时间后的调用方法
  *
- * Note that this method returns Function and declared variable need to be called
+ * 请注意，此方法返回 Function，并且需要调用已声明的变量
  *
- * @param {Function} func - function that we're throttling
- * @param {number} wait - time in milliseconds
- * @param {boolean} immediate - call now
+ * @param {Function} func - 我们正在节流的功能
+ * @param {number} wait - 以毫秒为单位的时间
+ * @param {boolean} immediate - 立即调用
  * @returns {Function}
  */
 export function debounce(func: () => void, wait?: number, immediate?: boolean): () => void {
@@ -456,7 +455,7 @@ export function debounce(func: () => void, wait?: number, immediate?: boolean): 
 }
 
 /**
- * Copies passed text to the clipboard
+ * 将传递的文本复制到剪贴板
  *
  * @param text - text to copy
  */
@@ -480,7 +479,7 @@ export function copyTextToClipboard(text): void {
 }
 
 /**
- * Returns object with os name as key and boolean as value. Shows current user OS
+ * 返回以 OS 名称为键和布尔值为值的对象。 显示当前的用户操作系统
  */
 export function getUserOS(): {[key: string]: boolean} {
   const OS = {
@@ -502,9 +501,9 @@ export function getUserOS(): {[key: string]: boolean} {
 }
 
 /**
- * Capitalizes first letter of the string
+ * 将字符串的第一个字母大写
  *
- * @param {string} text - text to capitalize
+ * @param {string} text - 文本
  *
  * @returns {string}
  */
@@ -513,10 +512,10 @@ export function capitalize(text: string): string {
 }
 
 /**
- * Merge to objects recursively
+ * 递归合并对象
  *
- * @param {object} target - merge target
- * @param {object[]} sources - merge sources
+ * @param {object} target - 合并目标
+ * @param {object[]} sources - 合并源头
  * @returns {object}
  */
 export function deepMerge<T extends object>(target, ...sources): T {
@@ -543,10 +542,10 @@ export function deepMerge<T extends object>(target, ...sources): T {
 }
 
 /**
- * Return true if current device supports touch events
+ * 如果当前设备支持触摸事件，则返回`true`
  *
- * Note! This is a simple solution, it can give false-positive results.
- * To detect touch devices more carefully, use 'touchstart' event listener
+ * 注意！ 这是一个简单的解决方案，它可以给出假阳性结果。
+ * 要想更仔细地检测触摸设备，请使用`touchstart`事件监听器
  *
  * @see http://www.stucox.com/blog/you-cant-detect-a-touchscreen/
  *
@@ -555,9 +554,9 @@ export function deepMerge<T extends object>(target, ...sources): T {
 export const isTouchSupported: boolean = 'ontouchstart' in document.documentElement;
 
 /**
- * Make shortcut command more human-readable
+ * 使快捷方式命令更易于阅读
  *
- * @param {string} shortcut — string like 'CMD+B'
+ * @param {string} shortcut — 类似 'CMD+B' 的字符串
  */
 export function beautifyShortcut(shortcut: string): string {
   const OS = getUserOS();
@@ -585,11 +584,10 @@ export function beautifyShortcut(shortcut: string): string {
 }
 
 /**
- * Returns valid URL. If it is going outside and valid, it returns itself
- * If url has `one slash`, then it concatenates with window location origin
- * or when url has `two lack` it appends only protocol
+ * 返回有效的URL。如果它跳出去并且是有效的，它就返回自己
+ * 如果url有一个“斜杠”，那么它与窗口位置的原点连接，或者当url有“两个缺少”时，它仅附加协议
  *
- * @param {string} url - url to prettify
+ * @param {string} url - 要美化的 url
  */
 export function getValidUrl(url: string): string {
   try {
@@ -597,7 +595,7 @@ export function getValidUrl(url: string): string {
 
     return urlObject.href;
   } catch (e) {
-    // do nothing but handle below
+    // 除了在下面处理外什么都不做
   }
 
   if (url.substring(0, 2) === '//') {
@@ -608,18 +606,18 @@ export function getValidUrl(url: string): string {
 }
 
 /**
- * Opens new Tab with passed URL
+ * 用传递的URL打开新标签页
  *
- * @param {string} url - URL address to redirect
+ * @param {string} url - 重定向的URL地址
  */
 export function openTab(url: string): void {
   window.open(url, '_blank');
 }
 
 /**
- * Returns random generated identifier
+ * 返回随机生成的标识符
  *
- * @param {string} prefix - identifier prefix
+ * @param {string} prefix - 标志符前缀
  *
  * @returns {string}
  */
@@ -629,11 +627,11 @@ export function generateId(prefix = ''): string {
 }
 
 /**
- * Common method for printing a warning about the usage of deprecated property or method.
+ * 用于打印有关使用已弃用的属性或方法的警告的通用方法。
  *
- * @param condition - condition for deprecation.
- * @param oldProperty - deprecated property.
- * @param newProperty - the property that should be used instead.
+ * @param condition - 弃用条件。
+ * @param oldProperty - 弃用的属性
+ * @param newProperty - 应该使用的属性
  */
 export function deprecationAssert(condition: boolean, oldProperty: string, newProperty: string): void {
   const message = `«${oldProperty}» is deprecated and will be removed in the next major release. Please use the «${newProperty}» instead.`;

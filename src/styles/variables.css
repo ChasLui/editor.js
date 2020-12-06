@@ -3,59 +3,59 @@
 
 :root {
   /**
-   * Selection color
+   * 选中器颜色
    */
   --selectionColor: #e1f2ff;
   --inlineSelectionColor: #d4ecff;
 
   /**
-   * Toolbar buttons
+   * 工具栏按钮
    */
   --bg-light: #eff2f5;
 
   /**
-   * All gray texts: placeholders, settings
+   * 所有灰色文本：占位符设置
    */
   --grayText: #707684;
 
   /**
-   * Gray icons hover
+   * 灰色图标悬停
    */
   --color-dark: #1D202B;
 
   /**
-   * Blue icons
+   * 失焦图片
    */
   --color-active-icon: #388AE5;
 
   /**
-   * Gray border, loaders
+   * 灰色边框, 加载
    */
   --color-gray-border: rgba(201, 201, 204, 0.48);
 
   /**
-   * Block content width
-   * Should be set in a constant at the modules/ui.js
+   * 块内容宽度
+   * 应该在 modules/ui.js 中设置一个常量
    */
   --content-width: 650px;
 
   /**
-   * In narrow mode, we increase right zone contained Block Actions button
+   * 在窄模式下，我们增加包含“阻止动作”按钮的右侧区域
    */
   --narrow-mode-right-padding: 50px;
 
   /**
-   * Toolbar buttons height and width
+   * 工具栏按钮的高度和宽度
    */
   --toolbar-buttons-size: 34px;
 
   /**
-   * Toolbar Plus Button and Toolbox buttons height and width
+   * 工具栏加按钮和工具箱按钮的高度和宽度
    */
   --toolbox-buttons-size: 34px;
 
   /**
-   * Confirm deletion bg
+   * 确认删除背景
    */
   --color-confirm: #E24A4A;
 
@@ -89,7 +89,7 @@
   };
 
   /**
-   * Styles for Toolbox Buttons and Plus Button
+   * 工具箱按钮和加号按钮的样式
    */
   --toolbox-button: {
     color: var(--grayText);
@@ -113,7 +113,7 @@
   };
 
   /**
-   * Styles for Settings Button in Toolbar
+   * 工具栏中的设置按钮样式
    */
   --toolbar-button: {
     display: inline-flex;

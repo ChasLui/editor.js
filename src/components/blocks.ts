@@ -5,28 +5,28 @@ import { MoveEvent } from '../../types/tools';
 
 /**
  * @class Blocks
- * @classdesc Class to work with Block instances array
+ * @classdesc 与Block实例数组一起使用的类
  *
  * @private
  *
- * @property {HTMLElement} workingArea — editor`s working node
+ * @property {HTMLElement} workingArea — 编辑器的工作节点
  *
  */
 export default class Blocks {
   /**
-   * Array of Block instances in order of addition
+   * 按添加顺序排列的Block实例数组
    */
   public blocks: Block[];
 
   /**
-   * Editor`s area where to add Block`s HTML
+   * 编辑器的区域，在其中添加 Block 的 HTML
    */
   public workingArea: HTMLElement;
 
   /**
    * @class
    *
-   * @param {HTMLElement} workingArea — editor`s working node
+   * @param {HTMLElement} workingArea — 编辑器的工作节点
    */
   constructor(workingArea: HTMLElement) {
     this.blocks = [];
@@ -34,7 +34,7 @@ export default class Blocks {
   }
 
   /**
-   * Get length of Block instances array
+   * 获取块实例数组的长度
    *
    * @returns {number}
    */
@@ -43,7 +43,7 @@ export default class Blocks {
   }
 
   /**
-   * Get Block instances array
+   * 获取块实例数组
    *
    * @returns {Block[]}
    */
@@ -52,7 +52,7 @@ export default class Blocks {
   }
 
   /**
-   * Get blocks html elements array
+   * 获取块 html 元素数组
    *
    * @returns {HTMLElement[]}
    */
@@ -61,19 +61,19 @@ export default class Blocks {
   }
 
   /**
-   * Proxy trap to implement array-like setter
+   * 代理陷阱以实现类似数组的 setter
    *
    * @example
    * blocks[0] = new Block(...)
    *
-   * @param {Blocks} instance — Blocks instance
-   * @param {PropertyKey} property — block index or any Blocks class property key to set
-   * @param {Block} value — value to set
+   * @param {Blocks} instance — Blocks 实例
+   * @param {PropertyKey} property — 块索引或要设置的任何Blocks类属性键
+   * @param {Block} value — 要设置的值
    * @returns {boolean}
    */
   public static set(instance: Blocks, property: PropertyKey, value: Block | unknown): boolean {
     /**
-     * If property name is not a number (method or other property, access it via reflect
+     * 如果属性名称不是数字（方法或其他属性），请通过反射访问它
      */
     if (isNaN(Number(property))) {
       Reflect.set(instance, property, value);
@@ -82,7 +82,7 @@ export default class Blocks {
     }
 
     /**
-     * If property is number, call insert method to emulate array behaviour
+     * 如果属性为数字，则调用insert方法以模拟数组行为
      *
      * @example
      * blocks[0] = new Block();
@@ -93,28 +93,28 @@ export default class Blocks {
   }
 
   /**
-   * Proxy trap to implement array-like getter
+   * 代理陷阱以实现类似数组的 getter
    *
-   * @param {Blocks} instance — Blocks instance
-   * @param {PropertyKey} property — Blocks class property key
+   * @param {Blocks} instance — Blocks 实例
+   * @param {PropertyKey} property — Blocks 类属性建
    * @returns {Block|*}
    */
   public static get(instance: Blocks, property: PropertyKey): Block | unknown {
     /**
-     * If property is not a number, get it via Reflect object
+     * 如果属性不是数字，则通过Reflect对象获取它
      */
     if (isNaN(Number(property))) {
       return Reflect.get(instance, property);
     }
 
     /**
-     * If property is a number (Block index) return Block by passed index
+     * 如果属性是数字（块索引），则按传递的索引返回块
      */
     return instance.get(+(property as number));
   }
 
   /**
-   * Push new Block to the blocks array and append it to working area
+   * 将新的Block推送到blocks数组并将其附加到工作区
    *
    * @param {Block} block - Block to add
    */
@@ -124,43 +124,42 @@ export default class Blocks {
   }
 
   /**
-   * Swaps blocks with indexes first and second
+   * 交换第一个和第二个索引的块
    *
-   * @param {number} first - first block index
-   * @param {number} second - second block index
-   * @deprecated — use 'move' instead
+   * @param {number} first - 第一个块索引
+   * @param {number} second - 下一个快索引
+   * @deprecated — 使用'move'代替
    */
   public swap(first: number, second: number): void {
     const secondBlock = this.blocks[second];
 
     /**
-     * Change in DOM
+     * DOM 变更
      */
     $.swap(this.blocks[first].holder, secondBlock.holder);
 
     /**
-     * Change in array
+     * 数组变更
      */
     this.blocks[second] = this.blocks[first];
     this.blocks[first] = secondBlock;
   }
 
   /**
-   * Move a block from one to another index
+   * 将一个块从一个索引移到另一个索引
    *
-   * @param {number} toIndex - new index of the block
-   * @param {number} fromIndex - block to move
+   * @param {number} toIndex - 块的新索引
+   * @param {number} fromIndex - 要移动的 block
    */
   public move(toIndex: number, fromIndex: number): void {
     /**
-     * cut out the block, move the DOM element and insert at the desired index
-     * again (the shifting within the blocks array will happen automatically).
+     * 切出该块，移动DOM元素，然后再次插入所需的索引处（blocks数组内的移位将自动发生）。
      *
      * @see https://stackoverflow.com/a/44932690/1238150
      */
     const block = this.blocks.splice(fromIndex, 1)[0];
 
-    // manipulate DOM
+    // 操作 DOM
     const prevIndex = toIndex - 1;
     const previousBlockIndex = Math.max(0, prevIndex);
     const previousBlock = this.blocks[previousBlockIndex];
@@ -171,10 +170,10 @@ export default class Blocks {
       this.insertToDOM(block, 'beforebegin', previousBlock);
     }
 
-    // move in array
+    // 移动数组
     this.blocks.splice(toIndex, 0, block);
 
-    // invoke hook
+    // 调用hook
     const event: MoveEvent = this.composeBlockEvent('move', {
       fromIndex,
       toIndex,
@@ -184,11 +183,11 @@ export default class Blocks {
   }
 
   /**
-   * Insert new Block at passed index
+   * 在传递的索引处插入新的块
    *
-   * @param {number} index — index to insert Block
-   * @param {Block} block — Block to insert
-   * @param {boolean} replace — it true, replace block on given index
+   * @param {number} index — 插入块的索引
+   * @param {Block} block — 插入的块
+   * @param {boolean} replace — 如果为 true,在给定索引上替换块
    */
   public insert(index: number, block: Block, replace = false): void {
     if (!this.length) {
@@ -226,9 +225,9 @@ export default class Blocks {
   }
 
   /**
-   * Remove block
+   * 移除块
    *
-   * @param {number} index - index of Block to remove
+   * @param {number} index - 要移除块的索引
    */
   public remove(index: number): void {
     if (isNaN(index)) {
@@ -243,7 +242,7 @@ export default class Blocks {
   }
 
   /**
-   * Remove all blocks
+   * 移除所有块
    */
   public removeAll(): void {
     this.workingArea.innerHTML = '';
@@ -254,12 +253,12 @@ export default class Blocks {
   }
 
   /**
-   * Insert Block after passed target
+   * 在传递的目标后，插入块
    *
-   * @todo decide if this method is necessary
+   * @todo 确定这个方法是否必要
    *
-   * @param {Block} targetBlock — target after which Block should be inserted
-   * @param {Block} newBlock — Block to insert
+   * @param {Block} targetBlock — 目标应该插入哪个块之后
+   * @param {Block} newBlock — 要插入的块
    */
   public insertAfter(targetBlock: Block, newBlock: Block): void {
     const index = this.blocks.indexOf(targetBlock);
@@ -268,9 +267,9 @@ export default class Blocks {
   }
 
   /**
-   * Get Block by index
+   * 获索引处的取块
    *
-   * @param {number} index — Block index
+   * @param {number} index — 块索引
    * @returns {Block}
    */
   public get(index: number): Block {
@@ -278,9 +277,9 @@ export default class Blocks {
   }
 
   /**
-   * Return index of passed Block
+   * 返回传入块的索引
    *
-   * @param {Block} block - Block to find
+   * @param {Block} block - 要查找的块
    * @returns {number}
    */
   public indexOf(block: Block): number {
@@ -288,11 +287,11 @@ export default class Blocks {
   }
 
   /**
-   * Insert new Block into DOM
+   * 将新块插入DOM
    *
-   * @param {Block} block - Block to insert
-   * @param {InsertPosition} position — insert position (if set, will use insertAdjacentElement)
-   * @param {Block} target — Block related to position
+   * @param {Block} block - 插入块
+   * @param {InsertPosition} position — 插入位置（如果设置，将使用 insertAdjacentElement）
+   * @param {Block} target — 与位置有关的块
    */
   private insertToDOM(block: Block, position?: InsertPosition, target?: Block): void {
     if (position) {
@@ -305,10 +304,10 @@ export default class Blocks {
   }
 
   /**
-   * Composes Block event with passed type and details
+   * 用传递的类型和详细信息组成Block事件
    *
-   * @param {string} type - event type
-   * @param {object} detail - event detail
+   * @param {string} type - 事件类型
+   * @param {object} detail - 事件详情
    */
   private composeBlockEvent(type: string, detail: object): MoveEvent {
     return new CustomEvent(type, {

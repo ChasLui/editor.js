@@ -1,5 +1,5 @@
 /**
- * TextRange interface fot IE9-
+ * IE9 以下的 TextRange 接口
  */
 import * as _ from './utils';
 import $ from './dom';
@@ -14,7 +14,7 @@ interface TextRange {
 }
 
 /**
- * Interface for object returned by document.selection in IE9-
+ *  IE9以下中由 document.selection 返回的对象的接口
  */
 interface MSSelection {
   createRange: () => TextRange;
@@ -22,20 +22,20 @@ interface MSSelection {
 }
 
 /**
- * Extends Document interface for IE9-
+ * 扩展 IE9 以下的 Document 接口
  */
 interface Document {
   selection?: MSSelection;
 }
 
 /**
- * Working with selection
+ * 使用选择
  *
  * @typedef {SelectionUtils} SelectionUtils
  */
 export default class SelectionUtils {
   /**
-   * Editor styles
+   * 编辑器样式
    *
    * @returns {{editorWrapper: string, editorZone: string}}
    */
@@ -47,7 +47,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Returns selected anchor
+   * 返回选择的锚点
    * {@link https://developer.mozilla.org/ru/docs/Web/API/Selection/anchorNode}
    *
    * @returns {Node|null}
@@ -59,7 +59,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Returns selected anchor element
+   * 返回选定的锚元素
    *
    * @returns {Element|null}
    */
@@ -84,7 +84,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Returns selection offset according to the anchor node
+   * 根据锚点节点返回选择偏移量
    * {@link https://developer.mozilla.org/ru/docs/Web/API/Selection/anchorOffset}
    *
    * @returns {number|null}
@@ -96,7 +96,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Is current selection range collapsed
+   * 当前选择范围是否已缩小
    *
    * @returns {boolean|null}
    */
@@ -107,7 +107,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Check current selection if it is at Editor's zone
+   * 检查当前选择是否在编辑器区域
    *
    * @returns {boolean}
    */
@@ -115,7 +115,7 @@ export default class SelectionUtils {
     const selection = SelectionUtils.get();
 
     /**
-     * Something selected on document
+     * 在文档上选择的内容
      */
     let selectedNode = (selection.anchorNode || selection.focusNode) as HTMLElement;
 
@@ -130,13 +130,13 @@ export default class SelectionUtils {
     }
 
     /**
-     * SelectionUtils is not out of Editor because Editor's wrapper was found
+     * SelectionUtils 并未超出编辑器，因为找到了编辑器的包装器
      */
     return editorZone && editorZone.nodeType === Node.ELEMENT_NODE;
   }
 
   /**
-   * Methods return boolean that true if selection exists on the page
+   * 如果页面上存在选择，则方法返回布尔值 `true`。
    */
   public static get isSelectionExists(): boolean {
     const selection = SelectionUtils.get();
@@ -145,7 +145,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Return first range
+   * 返回第一个范围
    *
    * @returns {Range|null}
    */
@@ -156,7 +156,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Calculates position and size of selected text
+   * 计算所选文字的位置和大小
    *
    * @returns {DOMRect | ClientRect}
    */
@@ -205,13 +205,12 @@ export default class SelectionUtils {
     if (range.getBoundingClientRect) {
       rect = range.getBoundingClientRect() as DOMRect;
     }
-    // Fall back to inserting a temporary element
+    // 退回到插入临时元素
     if (rect.x === 0 && rect.y === 0) {
       const span = document.createElement('span');
 
       if (span.getBoundingClientRect) {
-        // Ensure span has dimensions and position by
-        // adding a zero-width space character
+        // 通过添加零宽度的空格字符来确保跨度具有尺寸和位置
         span.appendChild(document.createTextNode('\u200b'));
         range.insertNode(span);
         rect = span.getBoundingClientRect() as DOMRect;
@@ -220,7 +219,7 @@ export default class SelectionUtils {
 
         spanParent.removeChild(span);
 
-        // Glue any broken text nodes back together
+        // 将所有损坏的文本节点重新粘合在一起
         spanParent.normalize();
       }
     }
@@ -229,7 +228,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Returns selected text as String
+   * 以字符串形式返回所选文本
    *
    * @returns {string}
    */
@@ -238,35 +237,35 @@ export default class SelectionUtils {
   }
 
   /**
-   * Selection instances
+   * 选择器实例
    *
-   * @todo Check if this is still relevant
+   * @todo 检查 this 是否仍然相关
    */
   public instance: Selection = null;
   public selection: Selection = null;
 
   /**
-   * This property can store SelectionUtils's range for restoring later
+   * 此属性可以存储SelectionUtils的范围以供以后还原
    *
    * @type {Range|null}
    */
   public savedSelectionRange: Range = null;
 
   /**
-   * Fake background is active
+   * 假背景处于活动状态
    *
    * @returns {boolean}
    */
   public isFakeBackgroundEnabled = false;
 
   /**
-   * Native Document's commands for fake background
+   * 原生 Document 命令用于虚拟背景
    */
   private readonly commandBackground: string = 'backColor';
   private readonly commandRemoveFormat: string = 'removeFormat';
 
   /**
-   * Returns window SelectionUtils
+   * 返回 window 的 SelectionUtils
    * {@link https://developer.mozilla.org/ru/docs/Web/API/Window/getSelection}
    *
    * @returns {Selection}
@@ -276,18 +275,18 @@ export default class SelectionUtils {
   }
 
   /**
-   * Set focus to contenteditable or native input element
+   * 将焦点设置为contenteditable或原生输入元素
    *
-   * @param element - element where to set focus
-   * @param offset - offset of cursor
+   * @param element - 元素在哪里设置焦点
+   * @param offset - 光标偏移
    *
-   * @returns {DOMRect} of range
+   * @returns {DOMRect} 范围
    */
   public static setCursor(element: HTMLElement, offset = 0): DOMRect {
     const range = document.createRange();
     const selection = window.getSelection();
 
-    /** if found deepest node is native input */
+    /** 如果找到最深的节点是原生 input */
     if ($.isNativeInput(element)) {
       if (!$.canSetCaret(element)) {
         return;
@@ -309,7 +308,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Removes fake background
+   * 移除虚拟背景
    */
   public removeFakeBackground(): void {
     if (!this.isFakeBackgroundEnabled) {
@@ -321,7 +320,7 @@ export default class SelectionUtils {
   }
 
   /**
-   * Sets fake background
+   * 设置虚拟背景
    */
   public setFakeBackground(): void {
     document.execCommand(this.commandBackground, false, '#a8d6ff');
@@ -330,14 +329,14 @@ export default class SelectionUtils {
   }
 
   /**
-   * Save SelectionUtils's range
+   * 保存 SelectionUtils 的范围
    */
   public save(): void {
     this.savedSelectionRange = SelectionUtils.range;
   }
 
   /**
-   * Restore saved SelectionUtils's range
+   * 恢复已保存的 SelectionUtils 的范围
    */
   public restore(): void {
     if (!this.savedSelectionRange) {
@@ -351,14 +350,14 @@ export default class SelectionUtils {
   }
 
   /**
-   * Clears saved selection
+   * 清除保存的选择器
    */
   public clearSaved(): void {
     this.savedSelectionRange = null;
   }
 
   /**
-   * Collapse current selection
+   * 折叠当前选择器
    */
   public collapseToEnd(): void {
     const sel = window.getSelection();
@@ -371,11 +370,11 @@ export default class SelectionUtils {
   }
 
   /**
-   * Looks ahead to find passed tag from current selection
+   * 期待从当前选择中找到通过的标签
    *
-   * @param  {string} tagName       - tag to found
-   * @param  {string} [className]   - tag's class name
-   * @param  {number} [searchDepth] - count of tags that can be included. For better performance.
+   * @param  {string} tagName       - 查找的标签
+   * @param  {string} [className]   - 标签的类名
+   * @param  {number} [searchDepth] - 可以包含的标签数量。 为了更好的性能。
    *
    * @returns {HTMLElement|null}
    */
@@ -384,49 +383,49 @@ export default class SelectionUtils {
     let parentTag = null;
 
     /**
-     * If selection is missing or no anchorNode or focusNode were found then return null
+     * 如果选择丢失或找不到开始节点或结束节点，则返回 null
      */
     if (!selection || !selection.anchorNode || !selection.focusNode) {
       return null;
     }
 
     /**
-     * Define Nodes for start and end of selection
+     * 为选择的开始和结束定义节点
      */
     const boundNodes = [
-      /** the Node in which the selection begins */
+      /** 选择开始的节点 */
       selection.anchorNode as HTMLElement,
-      /** the Node in which the selection ends */
+      /** 选择结束的节点 */
       selection.focusNode as HTMLElement,
     ];
 
     /**
-     * For each selection parent Nodes we try to find target tag [with target class name]
-     * It would be saved in parentTag variable
+     * 对于每个选择父节点，我们尝试找到目标标签[具有目标类名称]
+     * 它将保存在parentTag变量中
      */
     boundNodes.forEach((parent) => {
-      /** Reset tags limit */
+      /** 重置标签数限制 */
       let searchDepthIterable = searchDepth;
 
       while (searchDepthIterable > 0 && parent.parentNode) {
         /**
-         * Check tag's name
+         * 校验标签名称
          */
         if (parent.tagName === tagName) {
           /**
-           * Save the result
+           * 保存结果
            */
           parentTag = parent;
 
           /**
-           * Optional additional check for class-name mismatching
+           * 可选的附加检查，用于类名不匹配
            */
           if (className && parent.classList && !parent.classList.contains(className)) {
             parentTag = null;
           }
 
           /**
-           * If we have found required tag with class then go out from the cycle
+           * 如果我们在类中找到了所需的标签，则退出循环
            */
           if (parentTag) {
             break;
@@ -434,7 +433,7 @@ export default class SelectionUtils {
         }
 
         /**
-         * Target tag was not found. Go up to the parent and check it
+         * 找不到目标标签。 上去找父节点
          */
         parent = parent.parentNode as HTMLElement;
         searchDepthIterable--;
@@ -442,15 +441,15 @@ export default class SelectionUtils {
     });
 
     /**
-     * Return found tag or null
+     * 返回找到的标签或 null
      */
     return parentTag;
   }
 
   /**
-   * Expands selection range to the passed parent node
+   * 将选择范围扩展到传递的父节点
    *
-   * @param {HTMLElement} element - element which contents should be selcted
+   * @param {HTMLElement} element - 应选择内容的元素
    */
   public expandToTag(element: HTMLElement): void {
     const selection = window.getSelection();

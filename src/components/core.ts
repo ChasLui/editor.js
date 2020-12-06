@@ -6,11 +6,11 @@ import I18n from './i18n';
 import { CriticalError } from './errors/critical';
 
 /**
- * @typedef {Core} Core - editor core class
+ * @typedef {Core} Core - 编辑器核心类
  */
 
 /**
- * Require Editor modules places in components/modules dir
+ * 要求编辑器模块放置在 components/modules 目录中
  */
 const contextRequire = require.context('./modules', true);
 
@@ -18,9 +18,9 @@ const modules = [];
 
 contextRequire.keys().forEach((filename) => {
   /**
-   * Include files if:
-   * - extension is .js or .ts
-   * - does not starts with _
+   * 如果包含文件:
+   * - 扩展名为 .js 或者 .ts
+   * - 不是以下划线(_)开头的
    */
   if (filename.match(/^\.\/[^_][\w/]*\.([tj])s$/)) {
     modules.push(contextRequire(filename));
@@ -30,36 +30,36 @@ contextRequire.keys().forEach((filename) => {
 /**
  * @class Core
  *
- * @classdesc Editor.js core class
+ * @classdesc Editor.js 核心类
  *
- * @property {EditorConfig} config - all settings
- * @property {EditorModules} moduleInstances - constructed editor components
+ * @property {EditorConfig} config - 所有设置
+ * @property {EditorModules} moduleInstances - 构造的编辑器组件
  *
  * @type {Core}
  */
 export default class Core {
   /**
-   * Editor configuration passed by user to the constructor
+   * 用户将编辑器配置传递给构造函数
    */
   public config: EditorConfig;
 
   /**
-   * Object with core modules instances
+   * 核心模块实例的对象
    */
   public moduleInstances: EditorModules = {} as EditorModules;
 
   /**
-   * Promise that resolves when all core modules are prepared and UI is rendered on the page
+   * 当所有核心模块都准备好并在页面上渲染 UI 时 resolve 的 Promise
    */
   public isReady: Promise<void>;
 
   /**
-   * @param {EditorConfig} config - user configuration
+   * @param {EditorConfig} config - 用户配置对象
    *
    */
   constructor(config?: EditorConfig|string) {
     /**
-     * Ready promise. Resolved if Editor.js is ready to work, rejected otherwise
+     * 准备就绪的 Promise。resolve 是否 editor.js 准备工作，否则 reject
      */
     let onReady, onFail;
 
@@ -89,7 +89,7 @@ export default class Core {
           }
 
           /**
-           * Remove loader, show content
+           * 删除加载程序，显示内容
            */
           this.moduleInstances.UI.removeLoader();
 
@@ -110,14 +110,14 @@ export default class Core {
   }
 
   /**
-   * Setting for configuration
+   * 设置配置
    *
-   * @param {EditorConfig|string} config - Editor's config to set
+   * @param {EditorConfig|string} config - 编辑器的配置设置
    */
   public set configuration(config: EditorConfig|string) {
     /**
-     * Process zero-configuration or with only holderId
-     * Make config object
+     * 处理零配置或仅使用holderId
+     * 制作配置对象
      */
     if (!_.isObject(config)) {
       config = {
@@ -126,7 +126,7 @@ export default class Core {
     }
 
     /**
-     * If holderId is preset, assign him to holder property and work next only with holder
+     * 如果预先设置了 holderId，则将其分配给 holder 属性，然后仅与 holder 一起工作
      */
     _.deprecationAssert(!!config.holderId, 'config.holderId', 'config.holder');
     if (config.holderId && !config.holder) {
@@ -135,14 +135,14 @@ export default class Core {
     }
 
     /**
-     * Place config into the class property
+     * 将配置放入类属性
      *
      * @type {EditorConfig}
      */
     this.config = config;
 
     /**
-     * If holder is empty then set a default value
+     * 如果holder为空，则设置默认值
      */
     if (this.config.holder == null) {
       this.config.holder = 'editorjs';
@@ -155,21 +155,21 @@ export default class Core {
     _.setLogLevel(this.config.logLevel);
 
     /**
-     * If default Block's Tool was not passed, use the Paragraph Tool
+     * 如果未传递默认的块工具，则使用段落工具
      */
     _.deprecationAssert(Boolean(this.config.initialBlock), 'config.initialBlock', 'config.defaultBlock');
     this.config.defaultBlock = this.config.defaultBlock || this.config.initialBlock || 'paragraph';
 
     /**
-     * Height of Editor's bottom area that allows to set focus on the last Block
+     * 编辑器底部区域的高度，可用于将焦点放在最后一块
      *
      * @type {number}
      */
     this.config.minHeight = this.config.minHeight !== undefined ? this.config.minHeight : 300;
 
     /**
-     * Default block type
-     * Uses in case when there is no blocks passed
+     * 默认块类型
+     * 在没有通过 Block 的情况下使用
      *
      * @type {{type: (*), data: {text: null}}}
      */
@@ -196,7 +196,7 @@ export default class Core {
     this.config.inlineToolbar = this.config.inlineToolbar !== undefined ? this.config.inlineToolbar : true;
 
     /**
-     * Initialize default Block to pass data to the Renderer
+     * 初始化默认块以将数据传递到渲染器
      */
     if (_.isEmpty(this.config.data)) {
       this.config.data = {} as OutputData;
@@ -210,20 +210,20 @@ export default class Core {
     this.config.readOnly = this.config.readOnly as boolean || false;
 
     /**
-     * Adjust i18n
+     * 适配 i18n
      */
     if (config.i18n?.messages) {
       I18n.setDictionary(config.i18n.messages);
     }
 
     /**
-     * Text direction. If not set, uses ltr
+     * 文字方向。 如果未设置，则使用 ltr
      */
     this.config.i18n.direction = config.i18n?.direction || 'ltr';
   }
 
   /**
-   * Returns private property
+   * 返回私有属性
    *
    * @returns {EditorConfig}
    */
@@ -232,7 +232,7 @@ export default class Core {
   }
 
   /**
-   * Checks for required fields in Editor's config
+   * 检查编辑器配置中的必填字段
    *
    * @returns {Promise<void>}
    */
@@ -244,7 +244,7 @@ export default class Core {
     }
 
     /**
-     * Check for a holder element's existence
+     * 检查holder元素的存在
      */
     if (_.isString(holder) && !$.get(holder)) {
       throw Error(`element with ID «${holder}» is missing. Pass correct holder's ID.`);
@@ -256,26 +256,26 @@ export default class Core {
   }
 
   /**
-   * Initializes modules:
-   *  - make and save instances
-   *  - configure
+   * 初始化模块:
+   *  - 制作并保存实例
+   *  - 配置
    */
   public init(): void {
     /**
-     * Make modules instances and save it to the @property this.moduleInstances
+     * 制作模块实例并将其保存到 @property this.moduleInstances
      */
     this.constructModules();
 
     /**
-     * Modules configuration
+     * 模块配置
      */
     this.configureModules();
   }
 
   /**
-   * Start Editor!
+   * 启动编辑器!
    *
-   * Get list of modules that needs to be prepared and return a sequence (Promise)
+   * 获取需要准备的模块列表并返回一个序列 (Promise)
    *
    * @returns {Promise<void>}
    */
@@ -299,8 +299,8 @@ export default class Core {
           await this.moduleInstances[module].prepare();
         } catch (e) {
           /**
-           * CriticalError's will not be caught
-           * It is used when Editor is rendering in read-only mode with unsupported plugin
+           * 不会捕获CriticalError
+           * 当Editor使用不支持的插件以只读模式渲染时使用它
            */
           if (e instanceof CriticalError) {
             throw new Error(e.message);
@@ -314,28 +314,28 @@ export default class Core {
   }
 
   /**
-   * Render initial data
+   * 渲染初始数据
    */
   private render(): Promise<void> {
     return this.moduleInstances.Renderer.render(this.config.data.blocks);
   }
 
   /**
-   * Make modules instances and save it to the @property this.moduleInstances
+   * 制作模块实例并将其保存到 @property this.moduleInstances
    */
   private constructModules(): void {
     modules.forEach((module) => {
       /**
-       * If module has non-default exports, passed object contains them all and default export as 'default' property
+       * 如果模块具有非默认导出，则传递的对象将包含所有默认导出，并且默认导出为'default'属性
        */
       const Module = _.isFunction(module) ? module : module.default;
 
       try {
         /**
-         * We use class name provided by displayName property
+         * 我们使用 displayName 属性提供的类名
          *
-         * On build, Babel will transform all Classes to the Functions so, name will always be 'Function'
-         * To prevent this, we use 'babel-plugin-class-display-name' plugin
+         * 在构建时，Babel会将所有类转换为函数，因此名称始终为'Function'
+         * 为了防止这种情况，我们使用'babel-plugin-class-display-name'插件
          *
          * @see  https://www.npmjs.com/package/babel-plugin-class-display-name
          */
@@ -349,15 +349,15 @@ export default class Core {
   }
 
   /**
-   * Modules instances configuration:
-   *  - pass other modules to the 'state' property
+   * 模块实例配置:
+   *  - 将其他模块传递给'state'属性
    *  - ...
    */
   private configureModules(): void {
     for (const name in this.moduleInstances) {
       if (Object.prototype.hasOwnProperty.call(this.moduleInstances, name)) {
         /**
-         * Module does not need self-instance
+         * 模块不需要自我实例
          */
         this.moduleInstances[name].state = this.getModulesDiff(name);
       }
@@ -365,16 +365,16 @@ export default class Core {
   }
 
   /**
-   * Return modules without passed name
+   * 返回没有传递名称的模块
    *
-   * @param {string} name - module for witch modules difference should be calculated
+   * @param {string} name - 对于模块，需要计算模块间的差异 
    */
   private getModulesDiff(name: string): EditorModules {
     const diff = {} as EditorModules;
 
     for (const moduleName in this.moduleInstances) {
       /**
-       * Skip module with passed name
+       * 跳过带有传递名称的模块
        */
       if (moduleName === name) {
         continue;

@@ -2,70 +2,68 @@ import DomIterator from './domIterator';
 import * as _ from './utils';
 
 /**
- * Flipper construction options
+ * Flipper 构造函数选项
  *
  * @interface FlipperOptions
  */
 export interface FlipperOptions {
   /**
-   * CSS-modifier for focused item
+   * 聚焦项目的CSS修饰符
    */
   focusedItemClass?: string;
 
   /**
-   * If flipping items are the same for all Block (for ex. Toolbox), ypu can pass it on constructing
+   * 如果所有块（例如工具箱）的转换项都相同，则 ypu 可以在构造时将其传递
    */
   items?: HTMLElement[];
 
   /**
-   * Defines arrows usage. By default Flipper leafs items also via RIGHT/LEFT.
+   * 定义箭头用法。 默认情况下，Flipper也会通过 RIGHT/LEFT 来放置项目。
    *
-   * true by default
+   * 默认 true
    *
-   * Pass 'false' if you don't need this behaviour
-   * (for example, Inline Toolbar should be closed by arrows,
-   * because it means caret moving with selection clearing)
+   * 如果您不需要此行为，则传递`false`（例如，“内联工具栏”应使用箭头关闭，因为这意味着插入符号会随着选择清除而移动）
    */
   allowArrows?: boolean;
 
   /**
-   * Optional callback for button click
+   * 单击按钮的可选回调
    */
   activateCallback?: (item: HTMLElement) => void;
 }
 
 /**
- * Flipper is a component that iterates passed items array by TAB or Arrows and clicks it by ENTER
+ * Flipper 是一个组件，可通过 TAB 或 Arrows 迭代传递的项目数组，然后按 ENTER 单击它
  */
 export default class Flipper {
   /**
-   * Instance of flipper iterator
+   * 迭代器的实例
    *
    * @type {DomIterator|null}
    */
   private readonly iterator: DomIterator = null;
 
   /**
-   * Flag that defines activation status
+   * 定义激活状态的标志
    *
    * @type {boolean}
    */
   private activated = false;
 
   /**
-   * Flag that allows arrows usage to flip items
+   * 允许使用箭头翻转项的标志
    *
    * @type {boolean}
    */
   private readonly allowArrows: boolean = true;
 
   /**
-   * Call back for button click/enter
+   * 回调按钮 单击/输入
    */
   private readonly activateCallback: (item: HTMLElement) => void;
 
   /**
-   * @param {FlipperOptions} options - different constructing settings
+   * @param {FlipperOptions} options - 不同的构造设置
    */
   constructor(options: FlipperOptions) {
     this.allowArrows = _.isBoolean(options.allowArrows) ? options.allowArrows : true;
@@ -74,10 +72,10 @@ export default class Flipper {
   }
 
   /**
-   * Array of keys (codes) that is handled by Flipper
-   * Used to:
-   *  - preventDefault only for this keys, not all keydowns (@see constructor)
-   *  - to skip external behaviours only for these keys, when filler is activated (@see BlockEvents@arrowRightAndDown)
+   * Flipper处理的键（代码）数组
+   * 常用于:
+   *  - preventDefault 仅用于此键，而不是所有键按下 (@see constructor)
+   *  - 当填充器被激活时，仅跳过这些键的外部行为 (@see BlockEvents@arrowRightAndDown)
    */
   public static get usedKeys(): number[] {
     return [
@@ -91,9 +89,9 @@ export default class Flipper {
   }
 
   /**
-   * Active tab/arrows handling by flipper
+   * flipper 活动选项卡/处理的箭头
    *
-   * @param {HTMLElement[]} items - Some modules (like, InlineToolbar, BlockSettings) might refresh buttons dynamically
+   * @param {HTMLElement[]} items - 某些模块（例如InlineToolbar，BlockSettings）可能会动态刷新按钮
    */
   public activate(items?: HTMLElement[]): void {
     this.activated = true;
@@ -103,15 +101,15 @@ export default class Flipper {
     }
 
     /**
-     * Listening all keydowns on document and react on TAB/Enter press
-     * TAB will leaf iterator items
-     * ENTER will click the focused item
+     * 监听文档上的所有按键，并按 TAB / Enter 键进行响应
+     * TAB 将跳过迭代器项目
+     * ENTER 将点击聚焦项目
      */
     document.addEventListener('keydown', this.onKeyDown);
   }
 
   /**
-   * Disable tab/arrows handling by flipper
+   * 禁用flipper的选项卡/箭头处理
    */
   public deactivate(): void {
     this.activated = false;
@@ -121,7 +119,7 @@ export default class Flipper {
   }
 
   /**
-   * Return current focused button
+   * 返回当前聚焦按钮
    *
    * @returns {HTMLElement|null}
    */
@@ -130,7 +128,7 @@ export default class Flipper {
   }
 
   /**
-   * Focus first item
+   * 聚焦第一项
    */
   public focusFirst(): void {
     this.dropCursor();
@@ -138,21 +136,21 @@ export default class Flipper {
   }
 
   /**
-   * Focuses previous flipper iterator item
+   * 聚焦上一个翻转器迭代器项
    */
   public flipLeft(): void {
     this.iterator.previous();
   }
 
   /**
-   * Focuses next flipper iterator item
+   * 聚焦下一个flipper迭代器项
    */
   public flipRight(): void {
     this.iterator.next();
   }
 
   /**
-   * Drops flipper's iterator cursor
+   * 放下 flipper 的迭代器光标
    *
    * @see DomIterator#dropCursor
    */
@@ -161,9 +159,9 @@ export default class Flipper {
   }
 
   /**
-   * KeyDown event handler
+   * KeyDown 事件处理
    *
-   * @param event - keydown event
+   * @param event - keydown 事件对象
    */
   private onKeyDown = (event): void => {
     const isReady = this.isEventReadyForHandling(event);
@@ -173,8 +171,7 @@ export default class Flipper {
     }
 
     /**
-     * Prevent only used keys default behaviour
-     * (allows to navigate by ARROW DOWN, for example)
+     * 阻止事件仅使用的键默认行为（例如，允许通过“向下箭头”进行导航）
      */
     if (Flipper.usedKeys.includes(event.keyCode)) {
       event.preventDefault();
@@ -199,8 +196,8 @@ export default class Flipper {
   };
 
   /**
-   * This function is fired before handling flipper keycodes
-   * The result of this function defines if it is need to be handled or not
+   * 处理翻转键代码之前会触发此函数
+   * 该函数的结果定义是否需要处理
    *
    * @param {KeyboardEvent} event - keydown keyboard event
    * @returns {boolean}
@@ -226,12 +223,12 @@ export default class Flipper {
   }
 
   /**
-   * When flipper is activated tab press will leaf the items
+   * 激活 flipper 时，按Tab键将使项目掉落
    *
    * @param {KeyboardEvent} event - tab keydown event
    */
   private handleTabPress(event: KeyboardEvent): void {
-    /** this property defines leaf direction */
+    /** 此属性定义叶子方向 */
     const shiftKey = event.shiftKey,
         direction = shiftKey ? DomIterator.directions.LEFT : DomIterator.directions.RIGHT;
 
@@ -246,7 +243,7 @@ export default class Flipper {
   }
 
   /**
-   * Enter press will click current item if flipper is activated
+   * 如果激活 flipper，请按Enter键将单击当前项目
    *
    * @param {KeyboardEvent} event - enter keydown event
    */

@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Extend Element interface to include prefixed and experimental properties
+ * 扩展Element接口以包括前缀和实验属性
  */
 interface Element {
   matchesSelector: (selector: string) => boolean;
@@ -14,13 +14,13 @@ interface Element {
 }
 
 /**
- * The Element.matches() method returns true if the element
- * would be selected by the specified selector string;
- * otherwise, returns false.
+ * 如果指定的选择器字符串选择了元素，
+ * 则`Element.matches()`方法将返回`true`
+ * 其他情况返回`false`
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/matches#Polyfill}
  *
- * @param {string} s - selector
+ * @param {string} s - 选择器
  */
 if (!Element.prototype.matches) {
   Element.prototype.matches = Element.prototype.matchesSelector ||
@@ -40,14 +40,12 @@ if (!Element.prototype.matches) {
 }
 
 /**
- * The Element.closest() method returns the closest ancestor
- * of the current element (or the current element itself) which
- * matches the selectors given in parameter.
- * If there isn't such an ancestor, it returns null.
+ * Element.closest()方法返回与参数中给定的选择器匹配的当前元素（或当前元素本身）的最接近祖先。
+ * 如果没有这样的祖先，则返回null。
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill}
  *
- * @param {string} s - selector
+ * @param {string} s - 选择器
  */
 if (!Element.prototype.closest) {
   Element.prototype.closest = function (s): Element | null {
@@ -71,13 +69,12 @@ if (!Element.prototype.closest) {
 }
 
 /**
- * The ParentNode.prepend method inserts a set of Node objects
- * or DOMString objects before the first child of the ParentNode.
- * DOMString objects are inserted as equivalent Text nodes.
+ * `ParentNode.prepend`方法在`ParentNode`的第一个孩子之前插入一组`Node`对象或`DOMString`对象。
+ * `DOMString`对象作为等效的`Text`节点插入。
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend#Polyfill}
  *
- * @param {Node | Node[] | string | string[]} nodes - nodes to prepend
+ * @param {Node | Node[] | string | string[]} nodes - 要添加的节点
  */
 if (!Element.prototype.prepend) {
   Element.prototype.prepend = function prepend(nodes: Array<Node | string> | Node | string): void {
