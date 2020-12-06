@@ -1,333 +1,362 @@
 <!--
- Use this page for debugging purposes.
+ 使用此页面进行调试。
 
- Editor Tools are loaded as git-submodules.
- You can pull modules by running `yarn pull_tools` and start experimenting.
+ 编辑器工具作为git子模块加载。
+ 您可以通过运行`yarn pull_tools`来拉模块并开始试验。
  -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Editor.js 🤩🧦🤨 example</title>
-  <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
-  <link href="assets/demo.css" rel="stylesheet">
-  <script src="assets/json-preview.js"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-</head>
-<body>
-  <div class="ce-example">
-    <div class="ce-example__header">
-      <a class="ce-example__header-logo" href="https://codex.so/editor">Editor.js 🤩🧦🤨</a>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Editor.js 🤩🧦🤨 例子</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=PT+Mono"
+      rel="stylesheet"
+    />
+    <link href="assets/demo.css" rel="stylesheet" />
+    <script src="assets/json-preview.js"></script>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+  </head>
+  <body>
+    <div class="ce-example">
+      <div class="ce-example__header">
+        <a class="ce-example__header-logo" href="https://codex.so/editor"
+          >Editor.js 🤩🧦🤨</a
+        >
 
-      <div class="ce-example__header-menu">
-        <a href="https://github.com/editor-js" target="_blank">Plugins</a>
-        <a href="https://editorjs.io/usage" target="_blank">Usage</a>
-        <a href="https://editorjs.io/configuration" target="_blank">Configuration</a>
-        <a href="https://editorjs.io/creating-a-block-tool" target="_blank">API</a>
+        <div class="ce-example__header-menu">
+          <a href="https://github.com/editor-js" target="_blank">插件</a>
+          <a href="https://editorjs.io/usage" target="_blank">用法</a>
+          <a href="https://editorjs.io/configuration" target="_blank">配置</a>
+          <a href="https://editorjs.io/creating-a-block-tool" target="_blank"
+            >API</a
+          >
+        </div>
       </div>
-    </div>
-    <div class="ce-example__content _ce-example__content--small">
-      <div id="editorjs"></div>
-      <div id="hint" style="text-align: center;">
-        No submodules found. Run <code class="inline-code">yarn pull_tools</code>
+      <div class="ce-example__content _ce-example__content--small">
+        <div id="editorjs"></div>
+        <div id="hint" style="text-align: center">
+          找不到子模块. 执行 <code class="inline-code">yarn pull_tools</code>
+        </div>
+        <div class="ce-example__button" id="saveButton">editor.save()</div>
+        <div class="ce-example__statusbar">
+          只读:
+          <b id="readonly-state"> Off </b>
+          <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
+            切换
+          </div>
+        </div>
       </div>
-      <div class="ce-example__button" id="saveButton">
-        editor.save()
-      </div>
-      <div class="ce-example__statusbar">
-        Readonly:
-        <b id="readonly-state">
-          Off
-        </b>
-        <div class="ce-example__statusbar-button" id="toggleReadOnlyButton">
-          toggle
+      <div class="ce-example__output">
+        <pre class="ce-example__output-content" id="output"></pre>
+
+        <div class="ce-example__output-footer">
+          <a href="https://codex.so" style="font-weight: bold">由 CodeX 编写</a>
         </div>
       </div>
     </div>
-    <div class="ce-example__output">
-      <pre class="ce-example__output-content" id="output"></pre>
 
-      <div class="ce-example__output-footer">
-        <a href="https://codex.so" style="font-weight: bold;">Made by CodeX</a>
-      </div>
-    </div>
-  </div>
+    <!-- 加载 Tools -->
+    <!--
+   您可以将工具上载到您的项目目录中，并按以下示例使用。
 
-  <!-- Load Tools -->
-  <!--
-   You can upload Tools to your project's directory and use as in example below.
+   您也可以从 CDN 加载每个工具，也可以使用 NPM / Yarn 包。
 
-   Also you can load each Tool from CDN or use NPM/Yarn packages.
-
-   Read more in Tool's README file. For example:
+   在工具的自述文件中了解更多信息。 例如：
    https://github.com/editor-js/header#installation
    -->
-  <script src="./tools/header/dist/bundle.js" onload="document.getElementById('hint').hidden = true"></script><!-- Header -->
-  <script src="./tools/simple-image/dist/bundle.js"></script><!-- Image -->
-  <script src="./tools/delimiter/dist/bundle.js"></script><!-- Delimiter -->
-  <script src="./tools/list/dist/bundle.js"></script><!-- List -->
-  <script src="./tools/checklist/dist/bundle.js"></script><!-- Checklist -->
-  <script src="./tools/quote/dist/bundle.js"></script><!-- Quote -->
-  <script src="./tools/code/dist/bundle.js"></script><!-- Code -->
-  <script src="./tools/embed/dist/bundle.js"></script><!-- Embed -->
-  <script src="./tools/table/dist/bundle.js"></script><!-- Table -->
-  <script src="./tools/link/dist/bundle.js"></script><!-- Link -->
-  <script src="./tools/raw/dist/bundle.js"></script><!-- Raw -->
-  <script src="./tools/warning/dist/bundle.js"></script><!-- Warning -->
+    <script
+      src="./tools/header/dist/bundle.js"
+      onload="document.getElementById('hint').hidden = true"
+    ></script>
+    <!-- 标题 -->
+    <script src="./tools/simple-image/dist/bundle.js"></script>
+    <!-- 图片 -->
+    <script src="./tools/delimiter/dist/bundle.js"></script>
+    <!-- 分隔线 -->
+    <script src="./tools/list/dist/bundle.js"></script>
+    <!-- 列表 -->
+    <script src="./tools/checklist/dist/bundle.js"></script>
+    <!-- 检查清单 -->
+    <script src="./tools/quote/dist/bundle.js"></script>
+    <!-- 引用 -->
+    <script src="./tools/code/dist/bundle.js"></script>
+    <!-- 代码 -->
+    <script src="./tools/embed/dist/bundle.js"></script>
+    <!-- 嵌入 -->
+    <script src="./tools/table/dist/bundle.js"></script>
+    <!-- 表格 -->
+    <script src="./tools/link/dist/bundle.js"></script>
+    <!-- 链接 -->
+    <script src="./tools/raw/dist/bundle.js"></script>
+    <!-- 原始 HTML -->
+    <script src="./tools/warning/dist/bundle.js"></script>
+    <!-- 警告 -->
 
-  <script src="./tools/marker/dist/bundle.js"></script><!-- Marker -->
-  <script src="./tools/inline-code/dist/bundle.js"></script><!-- Inline Code -->
+    <script src="./tools/marker/dist/bundle.js"></script>
+    <!-- 标记 -->
+    <script src="./tools/inline-code/dist/bundle.js"></script>
+    <!-- 行内代码 -->
 
-  <!-- Load Editor.js's Core -->
-  <script src="../dist/editor.js"></script>
+    <!-- 加载 Editor.js's 核心 -->
+    <script src="../dist/editor.js"></script>
 
-  <!-- Initialization -->
-  <script>
-    /**
-     * To initialize the Editor, create a new instance with configuration object
-     * @see docs/installation.md for mode details
-     */
-    var editor = new EditorJS({
+    <!-- 初始化 -->
+    <script>
       /**
-       * Enable/Disable the read only mode
+       * 要初始化编辑器，请使用 configuration 对象创建一个新实例
+       * 详细请看 docs/installation.md
        */
-      readOnly: false,
-
-      /**
-       * Wrapper of Editor
-       */
-      holder: 'editorjs',
-
-      /**
-       * Common Inline Toolbar settings
-       * - if true (or not specified), the order from 'tool' property will be used
-       * - if an array of tool names, this order will be used
-       */
-      // inlineToolbar: ['link', 'marker', 'bold', 'italic'],
-      // inlineToolbar: true,
-
-      /**
-       * Tools list
-       */
-      tools: {
+      var editor = new EditorJS({
         /**
-         * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
+         * 激活/关闭 只读模式
          */
-        header: {
-          class: Header,
-          inlineToolbar: ['marker', 'link'],
-          config: {
-            placeholder: 'Header'
-          },
-          shortcut: 'CMD+SHIFT+H'
-        },
+        readOnly: false,
 
         /**
-         * Or pass class directly without any configuration
+         * Editor 包裹器
          */
-        image: SimpleImage,
+        holder: "editorjs",
 
-        list: {
-          class: List,
-          inlineToolbar: true,
-          shortcut: 'CMD+SHIFT+L'
-        },
+        /**
+         * 常见的内置工具栏设置
+         * - 如果为真(或未指定)，将使用来自 'tool' 的顺序属性
+         * - 如果 Tool 名称数组，则使用此顺序
+         */
+        // inlineToolbar: ['link', 'marker', 'bold', 'italic'],
+        // inlineToolbar: true,
 
-        checklist: {
-          class: Checklist,
-          inlineToolbar: true,
-        },
-
-        quote: {
-          class: Quote,
-          inlineToolbar: true,
-          config: {
-            quotePlaceholder: 'Enter a quote',
-            captionPlaceholder: 'Quote\'s author',
+        /**
+         * Tools 列表
+         */
+        tools: {
+          /**
+           * 每个工具都是一个插件。通过 `class` 选项和必要的设置传递它们 {@link docs/tools.md}
+           */
+          header: {
+            class: Header,
+            inlineToolbar: ["marker", "link"],
+            config: {
+              placeholder: "Header",
+            },
+            shortcut: "CMD+SHIFT+H",
           },
-          shortcut: 'CMD+SHIFT+O'
+
+          /**
+           * 或直接传递类而不进行任何配置
+           */
+          image: SimpleImage,
+
+          list: {
+            class: List,
+            inlineToolbar: true,
+            shortcut: "CMD+SHIFT+L",
+          },
+
+          checklist: {
+            class: Checklist,
+            inlineToolbar: true,
+          },
+
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+            config: {
+              quotePlaceholder: "Enter a quote",
+              captionPlaceholder: "Quote's author",
+            },
+            shortcut: "CMD+SHIFT+O",
+          },
+
+          warning: Warning,
+
+          marker: {
+            class: Marker,
+            shortcut: "CMD+SHIFT+M",
+          },
+
+          code: {
+            class: CodeTool,
+            shortcut: "CMD+SHIFT+C",
+          },
+
+          delimiter: Delimiter,
+
+          inlineCode: {
+            class: InlineCode,
+            shortcut: "CMD+SHIFT+C",
+          },
+
+          linkTool: LinkTool,
+
+          raw: RawTool,
+
+          embed: Embed,
+
+          table: {
+            class: Table,
+            inlineToolbar: true,
+            shortcut: "CMD+ALT+T",
+          },
         },
 
-        warning: Warning,
+        /**
+         * 此工具将作为默认值使用
+         */
+        // defaultBlock: 'paragraph',
 
-        marker: {
-          class:  Marker,
-          shortcut: 'CMD+SHIFT+M'
+        /**
+         * 初始编辑器数据
+         */
+        data: {
+          blocks: [
+            {
+              type: "header",
+              data: {
+                text: "Editor.js",
+                level: 2,
+              },
+            },
+            {
+              type: "paragraph",
+              data: {
+                text:
+                  "嘿。 认识新的编辑器。 在此页面上，您可以看到它的运行-尝试编辑此文本。 该页面的源代码包含连接和配置的示例。",
+              },
+            },
+            {
+              type: "header",
+              data: {
+                text: "Key features",
+                level: 3,
+              },
+            },
+            {
+              type: "list",
+              data: {
+                items: [
+                  "它是一个块样式的编辑器",
+                  "它以 JSON 返回干净的数据输出",
+                  "设计为可扩展和可插拔的一个简单的 API",
+                ],
+                style: "unordered",
+              },
+            },
+            {
+              type: "header",
+              data: {
+                text: "什么是 «块样式编辑器»",
+                level: 3,
+              },
+            },
+            {
+              type: "paragraph",
+              data: {
+                text:
+                  '经典编辑器中的工作区由单个 contenteditable 元素组成，用于创建不同的 HTML 标签。 Editor.js <mark class="cdx-marker">工作空间由单独的块组成：段落，标题，图像，列表，引号等</mark>。它们每个都是由Plugin提供并由Editor\'s Core统一的独立的contenteditable元素（或更复杂的结构）。',
+              },
+            },
+            {
+              type: "paragraph",
+              data: {
+                text: `有数十种<a href="https://github.com/editor-js">现成的块</a>以及用于创建所需任何块的<a href="https://editorjs.io/creating-a-block-tool">简单 API</a>。例如，你可以为tweet、Instagram帖子、调查和投票、cta按钮甚至游戏设置块。`,
+              },
+            },
+            {
+              type: "header",
+              data: {
+                text: "什么是干净的数据输出",
+                level: 3,
+              },
+            },
+            {
+              type: "paragraph",
+              data: {
+                text:
+                  "经典的WYSIWYG编辑器会同时生成带有内容数据和内容外观的原始HTML标签。相反，Editor.js输出带有每个Block数据的JSON对象。您可以在下面看到一个示例",
+              },
+            },
+            {
+              type: "paragraph",
+              data: {
+                text: `可以根据需要使用给定的数据：使用<code class="inline-code">Web客户端</code>的HTML渲染，为<code class="inline-code">移动应用</code>程序本机渲染，为<code class="inline-code">Facebook Instant Articles或Google AMP</code>创建标记，生成<code class="inline-code">音频版本</code>等等。`,
+              },
+            },
+            {
+              type: "paragraph",
+              data: {
+                text: "干净的数据对于在后端清理，验证和处理很有用。",
+              },
+            },
+            {
+              type: "delimiter",
+              data: {},
+            },
+            {
+              type: "paragraph",
+              data: {
+                text:
+                  "我们已经为这个项目进行了三年多的工作。 几个大型媒体项目可帮助我们测试和调试编辑器，以使其核心更加稳定。同时，我们显着改进了API。现在，它可以用于为任何任务创建任何插件。 希望你喜欢。😏",
+              },
+            },
+            {
+              type: "image",
+              data: {
+                url: "assets/codex2x.png",
+                caption: "",
+                stretched: false,
+                withBorder: true,
+                withBackground: false,
+              },
+            },
+          ],
         },
-
-        code: {
-          class:  CodeTool,
-          shortcut: 'CMD+SHIFT+C'
+        onReady: function () {
+          saveButton.click();
         },
-
-        delimiter: Delimiter,
-
-        inlineCode: {
-          class: InlineCode,
-          shortcut: 'CMD+SHIFT+C'
+        onChange: function () {
+          console.log("something changed");
         },
-
-        linkTool: LinkTool,
-
-        raw: RawTool,
-
-        embed: Embed,
-
-        table: {
-          class: Table,
-          inlineToolbar: true,
-          shortcut: 'CMD+ALT+T'
-        },
-
-      },
+      });
 
       /**
-       * This Tool will be used as default
+       * 保存按钮
        */
-      // defaultBlock: 'paragraph',
+      const saveButton = document.getElementById("saveButton");
 
       /**
-       * Initial Editor data
+       * 切换只读按钮
        */
-      data: {
-        blocks: [
-          {
-            type: "header",
-            data: {
-              text: "Editor.js",
-              level: 2
-            }
-          },
-          {
-            type : 'paragraph',
-            data : {
-              text : 'Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration.'
-            }
-          },
-          {
-            type: "header",
-            data: {
-              text: "Key features",
-              level: 3
-            }
-          },
-          {
-            type : 'list',
-            data : {
-              items : [
-                'It is a block-styled editor',
-                'It returns clean data output in JSON',
-                'Designed to be extendable and pluggable with a simple API',
-              ],
-              style: 'unordered'
-            }
-          },
-          {
-            type: "header",
-            data: {
-              text: "What does it mean «block-styled editor»",
-              level: 3
-            }
-          },
-          {
-            type : 'paragraph',
-            data : {
-              text : 'Workspace in classic editors is made of a single contenteditable element, used to create different HTML markups. Editor.js <mark class=\"cdx-marker\">workspace consists of separate Blocks: paragraphs, headings, images, lists, quotes, etc</mark>. Each of them is an independent contenteditable element (or more complex structure) provided by Plugin and united by Editor\'s Core.'
-            }
-          },
-          {
-            type : 'paragraph',
-            data : {
-              text : `There are dozens of <a href="https://github.com/editor-js">ready-to-use Blocks</a> and the <a href="https://editorjs.io/creating-a-block-tool">simple API</a> for creation any Block you need. For example, you can implement Blocks for Tweets, Instagram posts, surveys and polls, CTA-buttons and even games.`
-            }
-          },
-          {
-            type: "header",
-            data: {
-              text: "What does it mean clean data output",
-              level: 3
-            }
-          },
-          {
-            type : 'paragraph',
-            data : {
-              text : 'Classic WYSIWYG-editors produce raw HTML-markup with both content data and content appearance. On the contrary, Editor.js outputs JSON object with data of each Block. You can see an example below'
-            }
-          },
-          {
-            type : 'paragraph',
-            data : {
-              text : `Given data can be used as you want: render with HTML for <code class="inline-code">Web clients</code>, render natively for <code class="inline-code">mobile apps</code>, create markup for <code class="inline-code">Facebook Instant Articles</code> or <code class="inline-code">Google AMP</code>, generate an <code class="inline-code">audio version</code> and so on.`
-            }
-          },
-          {
-            type : 'paragraph',
-            data : {
-              text : 'Clean data is useful to sanitize, validate and process on the backend.'
-            }
-          },
-          {
-            type : 'delimiter',
-            data : {}
-          },
-          {
-            type : 'paragraph',
-            data : {
-              text : 'We have been working on this project more than three years. Several large media projects help us to test and debug the Editor, to make its core more stable. At the same time we significantly improved the API. Now, it can be used to create any plugin for any task. Hope you enjoy. 😏'
-            }
-          },
-          {
-            type: 'image',
-            data: {
-              url: 'assets/codex2x.png',
-              caption: '',
-              stretched: false,
-              withBorder: true,
-              withBackground: false,
-            }
-          },
-        ]
-      },
-      onReady: function(){
-        saveButton.click();
-      },
-      onChange: function() {
-        console.log('something changed');
-      },
-    });
+      const toggleReadOnlyButton = document.getElementById(
+        "toggleReadOnlyButton"
+      );
+      const readOnlyIndicator = document.getElementById("readonly-state");
 
-    /**
-     * Saving button
-     */
-    const saveButton = document.getElementById('saveButton');
+      /**
+       * 保存例子
+       */
+      saveButton.addEventListener("click", function () {
+        editor
+          .save()
+          .then((savedData) => {
+            cPreview.show(savedData, document.getElementById("output"));
+          })
+          .catch((error) => {
+            console.error("Saving error", error);
+          });
+      });
 
-    /**
-     * Toggle read-only button
-     */
-    const toggleReadOnlyButton = document.getElementById('toggleReadOnlyButton');
-    const readOnlyIndicator = document.getElementById('readonly-state');
+      /**
+       * 切换只读例子
+       */
+      toggleReadOnlyButton.addEventListener("click", async () => {
+        const readOnlyState = await editor.readOnly.toggle();
 
-    /**
-     * Saving example
-     */
-    saveButton.addEventListener('click', function () {
-      editor.save()
-        .then((savedData) => {
-          cPreview.show(savedData, document.getElementById("output"));
-        })
-        .catch((error) => {
-          console.error('Saving error', error);
-        });
-    });
-
-    /**
-     * Toggle read-only example
-     */
-    toggleReadOnlyButton.addEventListener('click', async () => {
-      const readOnlyState = await editor.readOnly.toggle();
-
-      readOnlyIndicator.textContent = readOnlyState ? 'On' : 'Off';
-    });
-  </script>
-</body>
+        readOnlyIndicator.textContent = readOnlyState ? "On" : "Off";
+      });
+    </script>
+  </body>
 </html>
