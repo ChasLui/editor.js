@@ -14,15 +14,15 @@ import * as _ from '../utils';
 declare const VERSION: string;
 
 /**
- * @classdesc This method reduces all Blocks asyncronically and calls Block's save method to extract data
+ * @classdesc 该方法以异步方式减少所有块，并调用块的save方法来提取数据
  *
  * @typedef {Saver} Saver
- * @property {Element} html - Editor HTML content
- * @property {string} json - Editor JSON output
+ * @property {Element} html - 编辑器 HTML 内容
+ * @property {string} json - 编辑器 JSON 输出
  */
 export default class Saver extends Module {
   /**
-   * Composes new chain of Promises to fire them alternatelly
+   * 组成新的 Promises 链以交替触发他们
    *
    * @returns {OutputData}
    */
@@ -32,7 +32,7 @@ export default class Saver extends Module {
         chainData = [];
 
     /**
-     * Disable modifications observe while saving
+     * 保存时禁用修改 modifications observe
      */
     ModificationsObserver.disable();
 
@@ -51,10 +51,10 @@ export default class Saver extends Module {
   }
 
   /**
-   * Saves and validates
+   * 校验并保存
    *
    * @param {Block} block - Editor's Tool
-   * @returns {ValidatedData} - Tool's validated data
+   * @returns {ValidatedData} - Tool's 校验后数据
    */
   private async getSavedData(block: Block): Promise<ValidatedData> {
     const blockData = await block.save();
@@ -67,9 +67,9 @@ export default class Saver extends Module {
   }
 
   /**
-   * Creates output object with saved data, time and version of editor
+   * 使用保存的数据，时间戳和编辑器版本创建输出对象
    *
-   * @param {ValidatedData} allExtractedData - data extracted from Blocks
+   * @param {ValidatedData} allExtractedData - 从块中提取的数据
    * @returns {OutputData}
    */
   private makeOutput(allExtractedData): OutputData {
@@ -82,7 +82,7 @@ export default class Saver extends Module {
       totalTime += time;
 
       /**
-       * Capitalize Tool name
+       * 大写工具名称
        */
       _.log(`${tool.charAt(0).toUpperCase() + tool.slice(1)}`, 'group');
 
@@ -97,7 +97,7 @@ export default class Saver extends Module {
         return;
       }
 
-      /** If it was stub Block, get original data */
+      /** 如果它是存根块，获取原始数据 */
       if (tool === this.Editor.Tools.stubTool) {
         blocks.push(data);
 

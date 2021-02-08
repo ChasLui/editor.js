@@ -3,7 +3,7 @@ import * as _ from '../utils';
 import { BlockToolConstructable, OutputBlockData } from '../../../types';
 
 /**
- * Editor.js Renderer Module
+ * Editor.js 渲染器模块
  *
  * @module Renderer
  * @author CodeX Team
@@ -38,9 +38,9 @@ export default class Renderer extends Module {
    */
 
   /**
-   * Make plugin blocks from array of plugin`s data
+   * 根据插件数据数组制作插件块
    *
-   * @param {OutputBlockData[]} blocks - blocks to render
+   * @param {OutputBlockData[]} blocks - 渲染块
    */
   public async render(blocks: OutputBlockData[]): Promise<void> {
     const chainData = blocks.map((block) => ({ function: (): Promise<void> => this.insertBlock(block) }));
@@ -53,11 +53,11 @@ export default class Renderer extends Module {
   }
 
   /**
-   * Get plugin instance
-   * Add plugin instance to BlockManager
-   * Insert block to working zone
+   * 获取插件实例
+   * 添加插件实例到 BlockManager
+   * 将块插入工作区
    *
-   * @param {object} item - Block data to insert
+   * @param {object} item - 要插入的块数据
    *
    * @returns {Promise<void>}
    */
@@ -77,7 +77,7 @@ export default class Renderer extends Module {
         throw Error(error);
       }
     } else {
-      /** If Tool is unavailable, create stub Block for it */
+      /** 如果工具不可用，请为其创建存根块 */
       const stubData = {
         savedData: {
           type: tool,

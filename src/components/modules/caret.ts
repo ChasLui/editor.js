@@ -1,8 +1,8 @@
 /**
- * @class Caret
- * @classdesc Contains methods for working Caret
+ * @class 插入符号
+ * @classdesc 包含工作插入符号的方法
  *
- * Uses Range methods to manipulate with caret
+ * 使用Range方法与插入符一起操作
  *
  * @module Caret
  *
@@ -20,7 +20,7 @@ import * as _ from '../utils';
  */
 export default class Caret extends Module {
   /**
-   * Allowed caret positions in input
+   * 允许插入符号在 input 中的位置
    *
    * @static
    * @returns {{START: string, END: string, DEFAULT: string}}
@@ -34,7 +34,7 @@ export default class Caret extends Module {
   }
 
   /**
-   * Elements styles that can be useful for Caret Module
+   * 对插入符号模块生效的元素样式
    */
   private static get CSS(): {shadowCaret: string} {
     return {
@@ -43,7 +43,7 @@ export default class Caret extends Module {
   }
 
   /**
-   * Get's deepest first node and checks if offset is zero
+   * 获取最深的第一个节点并检查offset是否为零
    *
    * @returns {boolean}
    */
@@ -52,19 +52,19 @@ export default class Caret extends Module {
     const firstNode = $.getDeepestNode(this.Editor.BlockManager.currentBlock.currentInput);
     let focusNode = selection.focusNode;
 
-    /** In case lastNode is native input */
+    /** 如果lastNode是原生输入框 */
     if ($.isNativeInput(firstNode)) {
       return (firstNode as HTMLInputElement).selectionEnd === 0;
     }
 
-    /** Case when selection have been cleared programmatically, for example after CBS */
+    /** 以编程方式清除选择的情况，例如在CBS之后 */
     if (!selection.anchorNode) {
       return false;
     }
 
     /**
-     * Workaround case when caret in the text like " |Hello!"
-     * selection.anchorOffset is 1, but real caret visible position is 0
+     * 在" |Hello!"之类的文本中插入符号时的解决方法
+     * selection.anchorOffset 为 1, 但是真正的插入符号可见位置是 0
      *
      * @type {number}
      */
@@ -76,13 +76,13 @@ export default class Caret extends Module {
     }
 
     /**
-     * If caret was set by external code, it might be set to text node wrapper.
-     * <div>|hello</div> <---- Selection references to <div> instead of text node
+     * 如果插入号是由外部代码设置的，则可以将其设置为文本节点包装器。
+     * <div>|hello</div> <---- 选择引用 <div> 而不是文本节点
      *
-     * In this case, anchor node has ELEMENT_NODE node type.
-     * Anchor offset shows amount of children between start of the element and caret position.
+     * 在这种情况下，锚点节点具有ELEMENT_NODE节点类型。
+     * 锚点偏移量显示元素开始与插入符号位置之间的子元素数量。
      *
-     * So we use child with focusOffset index as new anchorNode.
+     * 因此，我们使用具有focusOffset索引的child作为新的anchorNode。
      */
     let focusOffset = selection.focusOffset;
 
@@ -97,7 +97,7 @@ export default class Caret extends Module {
     }
 
     /**
-     * In case of
+     * 在这种情况下
      * <div contenteditable>
      *     <p><b></b></p>   <-- first (and deepest) node is <b></b>
      *     |adaddad         <-- focus node
@@ -107,14 +107,14 @@ export default class Caret extends Module {
       const leftSiblings = this.getHigherLevelSiblings(focusNode as HTMLElement, 'left');
       const nothingAtLeft = leftSiblings.every((node) => {
         /**
-         * Workaround case when block starts with several <br>'s (created by SHIFT+ENTER)
+         * 块以多个 <br> 开头（由 SHIFT + ENTER 创建）的解决方法
          *
          * @see https://github.com/codex-team/editor.js/issues/726
-         * We need to allow to delete such linebreaks, so in this case caret IS NOT AT START
+         * 我们需要允许删除这样的换行符，所以在这种情况下插入符号不是 START
          */
         const regularLineBreak = $.isLineBreakTag(node);
         /**
-         * Workaround SHIFT+ENTER in Safari, that creates <div><br></div> instead of <br>
+         * Safari 中的 SHIFT + ENTER 变通方法，它创建 <div> <br> </ div> 而不是 <br>
          */
         const lineBreakInSafari = node.children.length === 1 && $.isLineBreakTag(node.children[0] as HTMLElement);
         const isLineBreak = regularLineBreak || lineBreakInSafari;
@@ -128,14 +128,14 @@ export default class Caret extends Module {
     }
 
     /**
-     * We use <= comparison for case:
-     * "| Hello"  <--- selection.anchorOffset is 0, but firstLetterPosition is 1
+     * 我们使用 <= 比较为例:
+     * "| Hello"  <--- selection.anchorOffset 为 0, 但是 firstLetterPosition 为 1
      */
     return firstNode === null || (focusNode === firstNode && focusOffset <= firstLetterPosition);
   }
 
   /**
-   * Get's deepest last node and checks if offset is last node text length
+   * 获取最深的最后一个节点，并检查 offset是 否为最后一个节点的文本长度
    *
    * @returns {boolean}
    */
@@ -145,12 +145,12 @@ export default class Caret extends Module {
 
     const lastNode = $.getDeepestNode(this.Editor.BlockManager.currentBlock.currentInput, true);
 
-    /** In case lastNode is native input */
+    /** 如果 lastNode 为原生输入框 */
     if ($.isNativeInput(lastNode)) {
       return (lastNode as HTMLInputElement).selectionEnd === (lastNode as HTMLInputElement).value.length;
     }
 
-    /** Case when selection have been cleared programmatically, for example after CBS */
+    /** 以编程方式清除选择的情况，例如在CBS之后 */
     if (!selection.focusNode) {
       return false;
     }
@@ -299,15 +299,15 @@ export default class Caret extends Module {
   }
 
   /**
-   * Creates Document Range and sets caret to the element with offset
+   * 创建文档范围并将插入符设置为具有偏移量的元素
    *
-   * @param {HTMLElement} element - target node.
-   * @param {number} offset - offset
+   * @param {HTMLElement} element - 目标节点
+   * @param {number} offset - 偏移量
    */
   public set(element: HTMLElement, offset = 0): void {
     const { top, bottom } = Selection.setCursor(element, offset);
 
-    /** If new cursor position is not visible, scroll to it */
+    /** 如果新光标位置不可见，滚动到该位置 */
     const { innerHeight } = window;
 
     if (top < 0) {
@@ -319,8 +319,8 @@ export default class Caret extends Module {
   }
 
   /**
-   * Set Caret to the last Block
-   * If last block is not empty, append another empty block
+   * 将插入符号设置到最后一个块
+   * 如果最后一个块不为空，则追加另一个空块
    */
   public setToTheLastBlock(): void {
     const lastBlock = this.Editor.BlockManager.lastBlock;
@@ -330,8 +330,8 @@ export default class Caret extends Module {
     }
 
     /**
-     * If last block is empty and it is an defaultBlock, set to that.
-     * Otherwise, append new empty block and set to that
+     * 如果最后一个块为空，并且它是defaultBlock，则设置为该块。
+     * 否则，添加新的空块并设置为它
      */
     if (this.Editor.Tools.isDefault(lastBlock.tool) && lastBlock.isEmpty) {
       this.setToBlock(lastBlock);

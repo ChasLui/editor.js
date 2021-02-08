@@ -3,26 +3,26 @@ import Module from '../__module';
 /**
  * @module eventDispatcher
  *
- * Has two important methods:
- *    - {Function} on - appends subscriber to the event. If event doesn't exist - creates new one
- *    - {Function} emit - fires all subscribers with data
- *    - {Function off - unsubsribes callback
+ * 有两个重要的方法:
+ *    - {Function} on - 将订阅者添加到事件中。 如果事件不存在-创建一个新事件
+ *    - {Function} emit - 用数据触发所有订户
+ *    - {Function off - 取消订阅回调
  *
  * @version 1.0.0
  *
  * @typedef {Events} Events
- * @property {object} subscribers - all subscribers grouped by event name
+ * @property {object} subscribers - 按事件名称分组的所有订阅者
  */
 export default class Events extends Module {
   /**
-   * Object with events` names as key and array of callback functions as value
+   * 以事件名称作为键并以回调函数数组作为值的对象
    *
    * @type {{}}
    */
   private subscribers: {[name: string]: Array<(data?: object) => object>} = {};
 
   /**
-   * Subscribe any event on callback
+   * 在回调上订阅任何事件
    *
    * @param {string} eventName - event name
    * @param {Function} callback - subscriber
@@ -32,12 +32,12 @@ export default class Events extends Module {
       this.subscribers[eventName] = [];
     }
 
-    // group by events
+    // 事件分组
     this.subscribers[eventName].push(callback);
   }
 
   /**
-   * Subscribe any event on callback. Callback will be called once and be removed from subscribers array after call.
+   * 在回调上订阅任何事件。回调将被调用一次，并在调用后从订户数组中删除。
    *
    * @param {string} eventName - event name
    * @param {Function} callback - subscriber
@@ -59,15 +59,15 @@ export default class Events extends Module {
       return result;
     };
 
-    // group by events
+    // 事件分组
     this.subscribers[eventName].push(wrappedCallback);
   }
 
   /**
-   * Emit callbacks with passed data
+   * 使用传递的数据发出回调
    *
-   * @param {string} eventName - event name
-   * @param {object} data - subscribers get this data when they were fired
+   * @param {string} eventName - 事件名
+   * @param {object} data - 订阅者被解除订阅时会获得此数据
    */
   public emit(eventName: string, data?: object): void {
     if (!this.subscribers[eventName]) {
@@ -82,10 +82,10 @@ export default class Events extends Module {
   }
 
   /**
-   * Unsubscribe callback from event
+   * 取消订阅事件的回调
    *
-   * @param {string} eventName - event name
-   * @param {Function} callback - event handler
+   * @param {string} eventName - 事件名
+   * @param {Function} callback - 时间处理
    */
   public off(eventName: string, callback: (data: object) => object): void {
     for (let i = 0; i < this.subscribers[eventName].length; i++) {
@@ -97,8 +97,8 @@ export default class Events extends Module {
   }
 
   /**
-   * Destroyer
-   * clears subsribers list
+   * 卸载
+   * 清除订阅者列表
    */
   public destroy(): void {
     this.subscribers = null;

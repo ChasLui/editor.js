@@ -6,45 +6,45 @@ import Shortcut from '@codexteam/shortcuts';
 import Module from '../__module';
 
 /**
- * ShortcutData interface
- * Each shortcut must have name and handler
- * `name` is a shortcut, like 'CMD+K', 'CMD+B' etc
- * `handler` is a callback
+ * 快捷键接口
+ * 每个快捷键必须具有名称和处理程序
+ * `name` 一个快捷键, 像 'CMD+K', 'CMD+B' 这样
+ * `handler` 是一个回调函数
  *
  * @interface ShortcutData
  */
 export interface ShortcutData {
 
   /**
-   * Shortcut name
+   * 快捷键名称
    * Ex. CMD+I, CMD+B ....
    */
   name: string;
 
   /**
-   * Shortcut handler
+   * 快捷键处理
    */
   handler(event): void;
 }
 
 /**
  * @class Shortcut
- * @classdesc Allows to register new shortcut
+ * @classdesc 允许注册新的快捷键
  *
- * Internal Shortcuts Module
+ * 内部快捷键模块
  */
 export default class Shortcuts extends Module {
   /**
-   * All registered shortcuts
+   * 所有注册的跨借鉴
    *
    * @type {Shortcut[]}
    */
   private registeredShortcuts: Shortcut[] = [];
 
   /**
-   * Register shortcut
+   * 注册快捷键
    *
-   * @param {ShortcutData} shortcut - shortcut options
+   * @param {ShortcutData} shortcut - 快捷键选项
    */
   public add(shortcut: ShortcutData): void {
     const newShortcut = new Shortcut({
@@ -57,9 +57,9 @@ export default class Shortcuts extends Module {
   }
 
   /**
-   * Remove shortcut
+   * 删除快捷键
    *
-   * @param {string} shortcut - shortcut name
+   * @param {string} shortcut - 快捷键名
    */
   public remove(shortcut: string): void {
     const index = this.registeredShortcuts.findIndex((shc) => shc.name === shortcut);

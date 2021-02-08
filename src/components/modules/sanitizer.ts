@@ -1,16 +1,16 @@
 /**
- * CodeX Sanitizer
+ * CodeX 消毒剂
  *
  * @module Sanitizer
- * Clears HTML from taint tags
+ * 清除HTML污染标签
  *
  * @version 2.0.0
  *
  * @example
- *  Module can be used within two ways:
- *     1) When you have an instance
+ *  模块可以通过两种方式使用：
+ *     1) 当你有一个实例
  *         - this.Editor.Sanitizer.clean(yourTaintString);
- *     2) As static method
+ *     2) 像一个静态方法
  *         - EditorJS.Sanitizer.clean(yourTaintString, yourCustomConfiguration);
  *
  * {@link SanitizerConfig}
@@ -21,7 +21,7 @@ import * as _ from '../utils';
 
 /**
  * @typedef {object} SanitizerConfig
- * @property {object} tags - define tags restrictions
+ * @property {object} tags - 定义标签限制
  *
  * @example
  *
@@ -44,19 +44,19 @@ import { SavedData } from '../../../types/data-formats';
  */
 export default class Sanitizer extends Module {
   /**
-   * Memoize tools config
+   * 记忆工具配置
    */
   private configCache: {[toolName: string]: SanitizerConfig} = {};
 
   /**
-   * Cached inline tools config
+   * 缓存行内工具配置
    */
   private inlineToolsConfigCache: SanitizerConfig | null = null;
 
   /**
-   * Sanitize Blocks
+   * 杀毒剂块
    *
-   * Enumerate blocks and clean data
+   * 枚举块并清除数据
    *
    * @param {Array<{tool, data: BlockToolData}>} blocksData - blocks' data to sanitize
    */

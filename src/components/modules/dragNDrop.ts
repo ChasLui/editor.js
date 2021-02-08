@@ -6,7 +6,7 @@ import Module from '../__module';
  */
 export default class DragNDrop extends Module {
   /**
-   * If drag has been started at editor, we save it
+   * 如果已在编辑器中开始拖动，则将其保存
    *
    * @type {boolean}
    * @private
@@ -14,15 +14,15 @@ export default class DragNDrop extends Module {
   private isStartedAtEditor = false;
 
   /**
-   * Toggle read-only state
+   * 切换只读状态
    *
-   * if state is true:
-   *  - disable all drag-n-drop event handlers
+   * 如果状态为 true:
+   *  - 禁用所有拖放事件处理程序
    *
-   * if state is false:
-   *  - restore drag-n-drop event handlers
+   * 如果状态为 false:
+   *  - 恢复拖放事件处理程序
    *
-   * @param {boolean} readOnlyEnabled - "read only" state
+   * @param {boolean} readOnlyEnabled - "read only" 状态
    */
   public toggleReadOnly(readOnlyEnabled: boolean): void {
     if (readOnlyEnabled) {
@@ -33,7 +33,7 @@ export default class DragNDrop extends Module {
   }
 
   /**
-   * Add drag events listeners to editor zone
+   * 将拖动事件侦听器添加到编辑器区域
    */
   private enableModuleBindings(): void {
     const { UI } = this.Editor;
@@ -47,7 +47,7 @@ export default class DragNDrop extends Module {
     });
 
     /**
-     * Prevent default browser behavior to allow drop on non-contenteditable elements
+     * 防止默认的浏览器行为允许放置不可编辑的元素
      */
     this.readOnlyMutableListeners.on(UI.nodes.holder, 'dragover', (dragEvent: DragEvent) => {
       this.processDragOver(dragEvent);
@@ -55,14 +55,14 @@ export default class DragNDrop extends Module {
   }
 
   /**
-   * Unbind drag-n-drop event handlers
+   * 解绑拖拽事件处理程序
    */
   private disableModuleBindings(): void {
     this.readOnlyMutableListeners.clearAll();
   }
 
   /**
-   * Handle drop event
+   * 处理放下事件
    *
    * @param {DragEvent} dropEvent - drop event
    */
@@ -86,8 +86,8 @@ export default class DragNDrop extends Module {
     this.isStartedAtEditor = false;
 
     /**
-     * Try to set current block by drop target.
-     * If drop target (error will be thrown) is not part of the Block, set last Block as current.
+     * 尝试按放置目标设置当前块。
+     * 如果放置目标（将抛出错误）不属于该块，请将最后一个块设置为当前。
      */
     try {
       const targetBlock = BlockManager.setCurrentBlockByChildNode(dropEvent.target as Node);
@@ -103,7 +103,7 @@ export default class DragNDrop extends Module {
   }
 
   /**
-   * Handle drag start event
+   * 处理拖动开始事件
    */
   private processDragStart(): void {
     if (SelectionUtils.isAtEditor && !SelectionUtils.isCollapsed) {
@@ -114,7 +114,7 @@ export default class DragNDrop extends Module {
   }
 
   /**
-   * @param {DragEvent} dragEvent - drag event
+   * @param {DragEvent} dragEvent - 拖动事件
    */
   private processDragOver(dragEvent: DragEvent): void {
     dragEvent.preventDefault();
