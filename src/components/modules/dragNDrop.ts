@@ -89,14 +89,14 @@ export default class DragNDrop extends Module {
      * 尝试按放置目标设置当前块。
      * 如果放置目标（将抛出错误）不属于该块，请将最后一个块设置为当前。
      */
-    try {
-      const targetBlock = BlockManager.setCurrentBlockByChildNode(dropEvent.target as Node);
+    const targetBlock = BlockManager.setCurrentBlockByChildNode(dropEvent.target as Node);
 
+    if (targetBlock) {
       this.Editor.Caret.setToBlock(targetBlock, Caret.positions.END);
-    } catch (e) {
-      const targetBlock = BlockManager.setCurrentBlockByChildNode(BlockManager.lastBlock.holder);
+    } else {
+      const lastBlock = BlockManager.setCurrentBlockByChildNode(BlockManager.lastBlock.holder);
 
-      this.Editor.Caret.setToBlock(targetBlock, Caret.positions.END);
+      this.Editor.Caret.setToBlock(lastBlock, Caret.positions.END);
     }
 
     await Paste.processDataTransfer(dropEvent.dataTransfer, true);

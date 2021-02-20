@@ -5,7 +5,7 @@
 [![](https://flat.badgen.net/bundlephobia/minzip/@editorjs/editorjs?color=green)](https://www.npmjs.com/package/@editorjs/editorjs)
 [![Backers on Open Collective](https://opencollective.com/editorjs/backers/badge.svg)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/editorjs/sponsors/badge.svg)](#sponsors)
-[![](https://flat.badgen.net/npm/license/@editorjs/editorjs)](https://www.npmjs.com/package/@editorjs/editorjs)
+[![](https://img.shields.io/npm/l/@editorjs/editorjs?style=flat-square)](https://www.npmjs.com/package/@editorjs/editorjs)
 [![Join the chat at https://gitter.im/codex-team/editor.js](https://badges.gitter.im/codex-team/editor.js.svg)](https://gitter.im/codex-team/editor.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_48x48.png" alt="iOS Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>iOS Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
@@ -126,7 +126,12 @@ var editor = new EditorJS({
 - 从 CDN 加载资源
 - 从项目本地文件加载
 
+<<<<<<< HEAD
 ##### 选项 A. NPM 安装
+=======
+- Node package
+- Source from CDN
+>>>>>>> 8e4b34a6e13db6cb6745cb1bbd9c06f1d6b08a0e
 
 通过 NPM 或 Yarn 安装软件包
 
@@ -152,9 +157,13 @@ import EditorJS from '@editorjs/editorjs';
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 ```
 
+<<<<<<< HEAD
 ##### 选项 C. 保存源码到您的项目
 
 将 [editor.js](dist/editor.js) 文件复制到您的项目中
+=======
+Or download the bundle file and use it from your server.
+>>>>>>> 8e4b34a6e13db6cb6745cb1bbd9c06f1d6b08a0e
 
 ```html
 <script src="editor.js"></script>
