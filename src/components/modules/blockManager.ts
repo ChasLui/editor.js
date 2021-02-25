@@ -1,6 +1,6 @@
 /**
- * @class BlockManager
- * @classdesc Manage editor`s blocks storage and appearance
+ * @class 块管理器
+ * @classdesc 管理编辑器的块存储和外观
  *
  * @module BlockManager
  *
@@ -15,12 +15,12 @@ import { BlockToolConstructable, BlockToolData, PasteEvent } from '../../../type
 
 /**
  * @typedef {BlockManager} BlockManager
- * @property {number} currentBlockIndex - Index of current working block
- * @property {Proxy} _blocks - Proxy for Blocks instance {@link Blocks}
+ * @property {number} currentBlockIndex - 当前工作块的索引
+ * @property {Proxy} _blocks - 块实例的代理 {@link Blocks}
  */
 export default class BlockManager extends Module {
   /**
-   * Returns current Block index
+   * 返回当前块索引
    *
    * @returns {number}
    */
@@ -29,9 +29,9 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Set current Block index and fire Block lifecycle callbacks
+   * 设置当前的块索引并触发块生命周期回调
    *
-   * @param {number} newIndex - index of Block to set as current
+   * @param {number} newIndex - 要设置为当前的块索引
    */
   public set currentBlockIndex(newIndex: number) {
     if (this._blocks[this._currentBlockIndex]) {
@@ -46,7 +46,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * returns first Block
+   * 返回第一个块
    *
    * @returns {Block}
    */
@@ -55,7 +55,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * returns last Block
+   * 返回最后一个块
    *
    * @returns {Block}
    */
@@ -64,7 +64,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Get current Block instance
+   * 获取当前块实例
    *
    * @returns {Block}
    */
@@ -73,7 +73,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Returns next Block instance
+   * 返回下一个块实例
    *
    * @returns {Block|null}
    */
@@ -88,7 +88,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Return first Block with inputs after current Block
+   * 返回第一个块，输入在当前块之后
    *
    * @returns {Block | undefined}
    */
@@ -99,7 +99,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Return first Block with inputs before current Block
+   * 在输入当前块之前返回第一个块并输入
    *
    * @returns {Block | undefined}
    */
@@ -110,7 +110,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Returns previous Block instance
+   * 返回上一块实例
    *
    * @returns {Block|null}
    */
@@ -125,7 +125,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Get array of Block instances
+   * 获取块实例的数组
    *
    * @returns {Block[]} {@link Blocks#array}
    */
@@ -134,7 +134,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Check if each Block is empty
+   * 检查每个块是否为空
    *
    * @returns {boolean}
    */
@@ -143,7 +143,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Index of current working block
+   * 当前工作块的索引
    *
    * @type {number}
    */
@@ -158,22 +158,22 @@ export default class BlockManager extends Module {
   private _blocks: Blocks = null;
 
   /**
-   * Should be called after Editor.UI preparation
-   * Define this._blocks property
+   * 应在Editor.UI准备之后调用
+   * Define this._blocks 原型
    */
   public prepare(): void {
     const blocks = new Blocks(this.Editor.UI.nodes.redactor);
 
     /**
-     * We need to use Proxy to overload set/get [] operator.
-     * So we can use array-like syntax to access blocks
+     * 我们需要使用代理来重载 set/get [] 运算符。
+     * 所以我们可以使用类似数组的语法来访问块
      *
      * @example
      * this._blocks[0] = new Block(...);
      *
      * block = this._blocks[0];
      *
-     * @todo proxy the enumerate method
+     * @todo 代理枚举方法
      *
      * @type {Proxy}
      * @private
@@ -183,7 +183,7 @@ export default class BlockManager extends Module {
       get: Blocks.get,
     });
 
-    /** Copy event */
+    /** 拷贝事件 */
     this.Editor.Listeners.on(
       document,
       'copy',
@@ -192,15 +192,15 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Toggle read-only state
+   * 切换只读状态
    *
-   * If readOnly is true:
-   *  - Unbind event handlers from created Blocks
+   * 如果 readOnly 为 true：
+   *  - 从创建的块中解绑定事件处理程序
    *
-   * if readOnly is false:
-   *  - Bind event handlers to all existing Blocks
+   * 如果 readOnly 为 false：
+   *  - 将事件处理程序绑定到所有现有块
    *
-   * @param {boolean} readOnlyEnabled - "read only" state
+   * @param {boolean} readOnlyEnabled - "read only" 状态
    */
   public toggleReadOnly(readOnlyEnabled: boolean): void {
     if (!readOnlyEnabled) {
@@ -211,11 +211,11 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Creates Block instance by tool name
+   * 通过工具名称创建块实例
    *
-   * @param {object} options - block creation options
-   * @param {string} options.tool - tools passed in editor config {@link EditorConfig#tools}
-   * @param {BlockToolData} [options.data] - constructor params
+   * @param {object} options - 块创建选项
+   * @param {string} options.tool - 编辑器配置中传递的工具 {@link EditorConfig#tools}
+   * @param {BlockToolData} [options.data] - 构造函数参数
    *
    * @returns {Block}
    */
@@ -240,14 +240,14 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Insert new block into _blocks
+   * 将新块插入_blocks
    *
-   * @param {object} options - insert options
-   * @param {string} options.tool - plugin name, by default method inserts the default block type
-   * @param {object} options.data - plugin data
-   * @param {number} options.index - index where to insert new Block
-   * @param {boolean} options.needToFocus - flag shows if needed to update current Block index
-   * @param {boolean} options.replace - flag shows if block by passed index should be replaced with inserted one
+   * @param {object} options - 插入选项
+   * @param {string} options.tool - 插件名称，默认情况下会插入默认的块类型
+   * @param {object} options.data - 插件数据
+   * @param {number} options.index - 插入新块的位置索引
+   * @param {boolean} options.needToFocus - 标志显示是否需要更新当前块索引
+   * @param {boolean} options.replace - 标志显示是否应将按传递的索引块替换为插入的索引
    *
    * @returns {Block}
    */
@@ -287,11 +287,11 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Replace current working block
+   * 替换当前工作块
    *
-   * @param {object} options - replace options
-   * @param {string} options.tool — plugin name
-   * @param {BlockToolData} options.data — plugin data
+   * @param {object} options - 替换选项
+   * @param {string} options.tool — 插件名称
+   * @param {BlockToolData} options.data — 插件数据
    *
    * @returns {Block}
    */
@@ -308,11 +308,11 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Insert pasted content. Call onPaste callback after insert.
+   * 插入粘贴的内容。 插入后调用onPaste回调。
    *
-   * @param {string} toolName - name of Tool to insert
-   * @param {PasteEvent} pasteEvent - pasted data
-   * @param {boolean} replace - should replace current block
+   * @param {string} toolName - 要插入的工具名称
+   * @param {PasteEvent} pasteEvent - 粘贴的数据
+   * @param {boolean} replace - 是否需要替换当前块
    */
   public paste(
     toolName: string,
@@ -334,12 +334,12 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Insert new default block at passed index
+   * 在传递的索引处插入新的默认块
    *
-   * @param {number} index - index where Block should be inserted
-   * @param {boolean} needToFocus - if true, updates current Block index
+   * @param {number} index - 插入块的索引
+   * @param {boolean} needToFocus - 如果为 true, 更新当前块索引
    *
-   * TODO: Remove method and use insert() with index instead (?)
+   * TODO: 删除方法并使用insert()和index (?)
    *
    * @returns {Block} inserted Block
    */
@@ -358,29 +358,29 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Always inserts at the end
+   * 始终插入末尾
    *
    * @returns {Block}
    */
   public insertAtEnd(): Block {
     /**
-     * Define new value for current block index
+     * 为当前块索引定义新值
      */
     this.currentBlockIndex = this.blocks.length - 1;
 
     /**
-     * Insert the default typed block
+     * 插入默认的类型块
      */
     return this.insert();
   }
 
   /**
-   * Merge two blocks
+   * 合并两个块
    *
-   * @param {Block} targetBlock - previous block will be append to this block
-   * @param {Block} blockToMerge - block that will be merged with target block
+   * @param {Block} targetBlock - 前一个块将添加到此块
+   * @param {Block} blockToMerge - 将与目标块合并的块
    *
-   * @returns {Promise} - the sequence that can be continued
+   * @returns {Promise} - 可以继续的顺序
    */
   public async mergeBlocks(targetBlock: Block, blockToMerge: Block): Promise<void> {
     const blockToMergeIndex = this._blocks.indexOf(blockToMerge);
@@ -400,14 +400,14 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Remove block with passed index or remove last
+   * 移除通过索引或删除最后的块
    *
-   * @param {number|null} index - index of Block to remove
-   * @throws {Error} if Block to remove is not found
+   * @param {number|null} index - 要删除的块索引
+   * @throws {Error} 如果找不到阻止删除
    */
   public removeBlock(index = this.currentBlockIndex): void {
     /**
-     * If index is not passed and there is no block selected, show a warning
+     * 如果未传递索引且未选择任何块，则显示警告
      */
     if (!this.validateIndex(index)) {
       throw new Error('Can\'t find a Block to remove');
@@ -420,7 +420,7 @@ export default class BlockManager extends Module {
     }
 
     /**
-     * If first Block was removed, insert new Initial Block and set focus on it`s first input
+     * 如果删除了第一个块，请插入新的“初始块”并将焦点放在第一个输入上
      */
     if (!this.blocks.length) {
       this.currentBlockIndex = -1;
@@ -431,8 +431,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Remove only selected Blocks
-   * and returns first Block index where started removing...
+   * 只删除选定的块，并返回第一个开始删除的块索引…
    *
    * @returns {number|undefined}
    */
@@ -440,7 +439,7 @@ export default class BlockManager extends Module {
     let firstSelectedBlockIndex;
 
     /**
-     * Remove selected Blocks from the end
+     * 从最后删除选定的块
      */
     for (let index = this.blocks.length - 1; index >= 0; index--) {
       if (!this.blocks[index].selected) {
@@ -455,9 +454,9 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Attention!
-   * After removing insert the new default typed Block and focus on it
-   * Removes all blocks
+   * 注意!
+   * 删除后，插入新的默认类型的块并聚焦于它
+   * 删除所有块
    */
   public removeAllBlocks(): void {
     for (let index = this.blocks.length - 1; index >= 0; index--) {
@@ -470,9 +469,9 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Split current Block
-   * 1. Extract content from Caret position to the Block`s end
-   * 2. Insert a new Block below current one with extracted content
+   * 切割当前块
+   * 1. 从插入点位置到块的末尾提取内容
+   * 2. 在提取内容的当前块下插入一个新块
    *
    * @returns {Block}
    */
@@ -483,14 +482,14 @@ export default class BlockManager extends Module {
     wrapper.appendChild(extractedFragment as DocumentFragment);
 
     /**
-     * @todo make object in accordance with Tool
+     * @todo 根据工具制作对象
      */
     const data = {
       text: $.isEmpty(wrapper) ? '' : wrapper.innerHTML,
     };
 
     /**
-     * Renew current Block
+     * 更新当前块
      *
      * @type {Block}
      */
@@ -498,9 +497,9 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Returns Block by passed index
+   * 通过传递的索引返回块
    *
-   * @param {number} index - index to get
+   * @param {number} index - 要获取的索引
    *
    * @returns {Block}
    */
@@ -509,9 +508,9 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Get Block instance by html element
+   * 通过 html 元素获取块实例
    *
-   * @param {Node} element - html element to get Block by
+   * @param {Node} element - html 元素
    *
    * @returns {Block}
    */
@@ -530,16 +529,16 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Remove selection from all Blocks then highlight only Current Block
+   * 从所有块中删除选择，然后仅突出显示当前块
    */
   public highlightCurrentNode(): void {
     /**
-     * Remove previous selected Block's state
+     * 删除先前选择的块的状态
      */
     this.clearFocused();
 
     /**
-     * Mark current Block as selected
+     * 将当前块标记为选中
      *
      * @type {boolean}
      */
@@ -547,7 +546,7 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Remove selection from all Blocks
+   * 删除选择的所有块
    */
   public clearFocused(): void {
     this.blocks.forEach((block) => {
@@ -556,15 +555,15 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * 1) Find first-level Block from passed child Node
-   * 2) Mark it as current
+   * 1) 从传递的子节点中查找一级块
+   * 2) 将其标记为当前工作块
    *
-   * @param {Node} childNode - look ahead from this node.
-   * @returns can return undefined in case when the passed child note is not a part of the current editor instance
+   * @param {Node} childNode - 从这个节点向前看。
+   * @returns 如果传递的子注释不属于当前编辑器实例，则可以返回 undefined
    */
   public setCurrentBlockByChildNode(childNode: Node): Block | undefined {
     /**
-     * If node is Text TextNode
+     * 如果节点是 Text TextNode
      */
     if (!$.isElement(childNode)) {
       childNode = childNode.parentNode;
@@ -577,8 +576,8 @@ export default class BlockManager extends Module {
     }
 
     /**
-     * Support multiple Editor.js instances,
-     * by checking whether the found block belongs to the current instance
+     * 支持多个Editor.js实例，
+     * 通过检查找到的块是否属于当前实例
      *
      * @see {@link Ui#documentTouched}
      */
@@ -590,14 +589,14 @@ export default class BlockManager extends Module {
     }
 
     /**
-     * Update current Block's index
+     * 更新当前块的索引
      *
      * @type {number}
      */
     this.currentBlockIndex = this._blocks.nodes.indexOf(parentFirstLevelBlock as HTMLElement);
 
     /**
-     * Update current block active input
+     * 更新当前块的活动输入
      */
     this.currentBlock.updateCurrentInput();
 
@@ -605,15 +604,15 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Return block which contents passed node
+   * 返回内容通过子节点的块
    *
-   * @param {Node} childNode - node to get Block by
+   * @param {Node} childNode - 找块的节点
    *
    * @returns {Block}
    */
   public getBlockByChildNode(childNode: Node): Block {
     /**
-     * If node is Text TextNode
+     * 如果节点是文本节点
      */
     if (!$.isElement(childNode)) {
       childNode = childNode.parentNode;
@@ -625,29 +624,29 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Swap Blocks Position
+   * 交换块位置
    *
-   * @param {number} fromIndex - index of first block
-   * @param {number} toIndex - index of second block
+   * @param {number} fromIndex - 第一块索引
+   * @param {number} toIndex - 第二区块索引
    *
-   * @deprecated — use 'move' instead
+   * @deprecated — 使用 "move" 代替
    */
   public swap(fromIndex, toIndex): void {
-    /** Move up current Block */
+    /** 向上移动当前区块 */
     this._blocks.swap(fromIndex, toIndex);
 
-    /** Now actual block moved up so that current block index decreased */
+    /** 现在实际的块向上移动，使当前的块索引减少 */
     this.currentBlockIndex = toIndex;
   }
 
   /**
-   * Move a block to a new index
+   * 将块移动到新索引
    *
-   * @param {number} toIndex - index where to move Block
-   * @param {number} fromIndex - index of Block to move
+   * @param {number} toIndex - 索引移动块的位置
+   * @param {number} fromIndex - 要移动的块的索引
    */
   public move(toIndex, fromIndex = this.currentBlockIndex): void {
-    // make sure indexes are valid and within a valid range
+    // 确保索引有效且在有效范围内
     if (isNaN(toIndex) || isNaN(fromIndex)) {
       _.log(`Warning during 'move' call: incorrect indices provided.`, 'warn');
 
@@ -660,16 +659,16 @@ export default class BlockManager extends Module {
       return;
     }
 
-    /** Move up current Block */
+    /** 向上移动当前块 */
     this._blocks.move(toIndex, fromIndex);
 
-    /** Now actual block moved so that current block index changed */
+    /** 现在实际块已移动，因此当前块索引已更改 */
     this.currentBlockIndex = toIndex;
   }
 
   /**
-   * Sets current Block Index -1 which means unknown
-   * and clear highlightings
+   * 设置当前的块索引-1，表示未知
+   * 并清除高亮
    */
   public dropPointer(): void {
     this.currentBlockIndex = -1;
@@ -677,11 +676,10 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Clears Editor
+   * 清除编辑器
    *
-   * @param {boolean} needToAddDefaultBlock - 1) in internal calls (for example, in api.blocks.render)
-   *                                             we don't need to add an empty default block
-   *                                        2) in api.blocks.clear we should add empty block
+   * @param {boolean} needToAddDefaultBlock - 1) 在内部调用中（例如，在 api.blocks.render 中），我们不需要添加空的默认块
+   *                                        2) 在 api.blocks.clear 中，我们应该添加空块
    */
   public clear(needToAddDefaultBlock = false): void {
     this._blocks.removeAll();
@@ -692,14 +690,14 @@ export default class BlockManager extends Module {
     }
 
     /**
-     * Add empty modifier
+     * 添加空修饰符
      */
     this.Editor.UI.checkEmptiness();
   }
 
   /**
-   * Cleans up all the block tools' resources
-   * This is called when editor is destroyed
+   * 清理所有块工具的资源
+   * 在销毁编辑器时调用此函数
    */
   public async destroy(): Promise<void> {
     await Promise.all(this.blocks.map((block) => {
@@ -710,9 +708,9 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Bind Block events
+   * 绑定块事件
    *
-   * @param {Block} block - Block to which event should be bound
+   * @param {Block} block - 将要绑定事件的 block
    */
   private bindBlockEvents(block: Block): void {
     const { BlockEvents } = this.Editor;
@@ -735,17 +733,17 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Disable mutable handlers and bindings
+   * 禁用可变处理程序和绑定
    */
   private disableModuleBindings(): void {
     this.readOnlyMutableListeners.clearAll();
   }
 
   /**
-   * Enables all module handlers and bindings for all Blocks
+   * 启用所有模块的所有模块处理程序和绑定
    */
   private enableModuleBindings(): void {
-    /** Cut event */
+    /** 剪切事件 */
     this.readOnlyMutableListeners.on(
       document,
       'cut',
@@ -758,9 +756,9 @@ export default class BlockManager extends Module {
   }
 
   /**
-   * Validates that the given index is not lower than 0 or higher than the amount of blocks
+   * 验证给定的索引不低于0或高于块的数量
    *
-   * @param {number} index - index of blocks array to validate
+   * @param {number} index - 要验证的块数组索引
    *
    * @returns {boolean}
    */
