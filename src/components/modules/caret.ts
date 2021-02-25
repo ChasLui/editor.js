@@ -156,13 +156,13 @@ export default class Caret extends Module {
     }
 
     /**
-     * If caret was set by external code, it might be set to text node wrapper.
-     * <div>hello|</div> <---- Selection references to <div> instead of text node
+     * 如果插入符号是由外部代码设置的，则可能将其设置为文本节点包装器。
+     * <div>hello|</div> <---- 选择引用 <div> 而不是text node
      *
-     * In this case, anchor node has ELEMENT_NODE node type.
-     * Anchor offset shows amount of children between start of the element and caret position.
+     * 在本例中，锚节点具有 ELEMENT_NODE 节点类型。
+     * 锚定偏移量显示元素开始位置和插入符号位置之间的子元素数量。
      *
-     * So we use child with anchofocusOffset - 1 as new focusNode.
+     * 所以我们使用 child 和 anchofocusOffset - 1 作为新的 focusNode。
      */
     let focusOffset = selection.focusOffset;
 
@@ -177,17 +177,17 @@ export default class Caret extends Module {
     }
 
     /**
-     * In case of
+     * 假设
      * <div contenteditable>
-     *     adaddad|         <-- anchor node
-     *     <p><b></b></p>   <-- first (and deepest) node is <b></b>
+     *     adaddad|         <-- 锚节点
+     *     <p><b></b></p>   <-- 第一个（也是最深的）节点是 <b></b>
      * </div>
      */
     if ($.isLineBreakTag(lastNode as HTMLElement) || $.isEmpty(lastNode)) {
       const rightSiblings = this.getHigherLevelSiblings(focusNode as HTMLElement, 'right');
       const nothingAtRight = rightSiblings.every((node, i) => {
         /**
-         * If last right sibling is BR isEmpty returns false, but there actually nothing at right
+         * 如果最后一个右边兄弟是 BR isEmpty 返回 false，但实际上右边什么都没有
          */
         const isLastBR = i === rightSiblings.length - 1 && $.isLineBreakTag(node as HTMLElement);
 
@@ -200,30 +200,30 @@ export default class Caret extends Module {
     }
 
     /**
-     * Workaround case:
-     * hello |     <--- anchorOffset will be 5, but textContent.length will be 6.
-     * Why not regular .trim():
-     *  in case of ' hello |' trim() will also remove space at the beginning, so length will be lower than anchorOffset
+     * 解决方法：
+     * hello |     <--- anchorOffset 将为 5，但 textContent.length 将为 6。
+     * 为什么不使用常规的 .trim():
+     *  在 ' hello |' trim()的情况下，也将删除开始的空间，所以 length 将低于 anchorOffset
      */
     const rightTrimmedText = lastNode.textContent.replace(/\s+$/, '');
 
     /**
-     * We use >= comparison for case:
-     * "Hello |"  <--- selection.anchorOffset is 7, but rightTrimmedText is 6
+     * 我们使用案例>=比较：
+     * "Hello |"  <--- selection.anchorOffset 为 7，但 rightTrimmedText 为6
      */
     return focusNode === lastNode && focusOffset >= rightTrimmedText.length;
   }
 
   /**
-   * Method gets Block instance and puts caret to the text node with offset
-   * There two ways that method applies caret position:
-   *   - first found text node: sets at the beginning, but you can pass an offset
-   *   - last found text node: sets at the end of the node. Also, you can customize the behaviour
+   * 方法获取块实例，并将插入符号放置到带有偏移量的文本节点中
+   * 该方法有两种方式应用插入符号位置：
+   *   - 第一个找到的文本节点:在开头设置，但是您可以传递一个偏移量
+   *   - 最后找到的文本节点:在节点的末尾设置。此外，您还可以自定义行为
    *
    * @param {Block} block - Block class
-   * @param {string} position - position where to set caret.
-   *                            If default - leave default behaviour and apply offset if it's passed
-   * @param {number} offset - caret offset regarding to the text node
+   * @param {string} position - 设置插入符号的位置。
+   *                            如果是默认值 - 保留默认行为，如果通过则应用偏移量
+   * @param {number} offset - 与文本节点有关的插入符号偏移量
    */
   public setToBlock(block: Block, position: string = this.positions.DEFAULT, offset = 0): void {
     const { BlockManager } = this.Editor;
@@ -258,7 +258,7 @@ export default class Caret extends Module {
     }
 
     /**
-     * @todo try to fix via Promises or use querySelectorAll to not to use timeout
+     * @todo 尝试通过 Promises 修复或使用 querySelectorAll 不使用超时
      */
     _.delay(() => {
       this.set(nodeToSet as HTMLElement, offset);
@@ -269,12 +269,12 @@ export default class Caret extends Module {
   }
 
   /**
-   * Set caret to the current input of current Block.
+   * 设置插入符号为当前块的当前输入。
    *
-   * @param {HTMLElement} input - input where caret should be set
-   * @param {string} position - position of the caret.
-   *                            If default - leave default behaviour and apply offset if it's passed
-   * @param {number} offset - caret offset regarding to the text node
+   * @param {HTMLElement} input - 输入应在何处设置插入号
+   * @param {string} position - 插入符号的位置。
+   *                            如果是默认值 - 保留默认行为，并在它被传递时应用偏移量
+   * @param {number} offset - 关于文本节点的插入符号偏移
    */
   public setToInput(input: HTMLElement, position: string = this.positions.DEFAULT, offset = 0): void {
     const { currentBlock } = this.Editor.BlockManager;
@@ -343,7 +343,7 @@ export default class Caret extends Module {
   }
 
   /**
-   * Extract content fragment of current Block from Caret position to the end of the Block
+   * 从插入符号位置到块末尾提取当前块的内容片段
    */
   public extractFragmentFromCaretPosition(): void|DocumentFragment {
     const selection = Selection.get();
@@ -357,9 +357,8 @@ export default class Caret extends Module {
       if (currentBlockInput) {
         if ($.isNativeInput(currentBlockInput)) {
           /**
-           * If input is native text input we need to use it's value
-           * Text before the caret stays in the input,
-           * while text after the caret is returned as a fragment to be inserted after the block.
+           * 如果输入是本机文本输入，则需要使用它的值
+           * 插入符号前的文本保留在输入框中，而插入符号后的文本作为片段返回，插入到块之后。
            */
           const input = currentBlockInput as HTMLInputElement | HTMLTextAreaElement;
           const newFragment = document.createDocumentFragment();
@@ -384,9 +383,9 @@ export default class Caret extends Module {
   }
 
   /**
-   * Set's caret to the next Block or Tool`s input
-   * Before moving caret, we should check if caret position is at the end of Plugins node
-   * Using {@link Dom#getDeepestNode} to get a last node and match with current selection
+   * 将插入符号插入下一个块或工具的输入
+   * 在移动插入符号之前，我们应该检查插入符号的位置是否在Plugins节点的末尾
+   * 使用 {@link Dom#getDeepestNode} 获取最后一个节点，并与当前选择匹配
    *
    * @returns {boolean}
    */
@@ -400,13 +399,13 @@ export default class Caret extends Module {
 
     if (!nextBlock && !nextInput) {
       /**
-       * This code allows to exit from the last non-initial tool:
+       * 这段代码允许从最后一个非初始化工具退出
        * https://github.com/codex-team/editor.js/issues/1103
        */
 
       /**
-       * 1. If there is a last block and it is default, do nothing
-       * 2. If there is a last block and it is non-default --> and caret not at the end <--, do nothing
+       * 1. 如果有最后一个块并且它是默认块，则什么也不做
+       * 2. 如果存在最后一个块并且它不是默认值 -> 并且插入符号不在末尾 <-，则不执行任何操作
        *    (https://github.com/codex-team/editor.js/issues/1414)
        */
       if (Tools.isDefault(currentBlock.tool) || !isAtEnd) {
@@ -414,14 +413,14 @@ export default class Caret extends Module {
       }
 
       /**
-       * If there is no nextBlock, but currentBlock is not default,
-       * insert new default block at the end and navigate to it
+       * 如果没有nextBlock，但currentBlock不是default
+       * 在末尾插入新的默认块并导航到它
        */
       nextBlock = BlockManager.insertAtEnd();
     }
 
     if (isAtEnd) {
-      /** If next Tool`s input exists, focus on it. Otherwise set caret to the next Block */
+      /** 如果下一个工具的输入存在，那么聚焦它。否则，将插入符号设置为下一个块 */
       if (!nextInput) {
         this.setToBlock(nextBlock, this.positions.START);
       } else {
@@ -435,9 +434,9 @@ export default class Caret extends Module {
   }
 
   /**
-   * Set's caret to the previous Tool`s input or Block
-   * Before moving caret, we should check if caret position is start of the Plugins node
-   * Using {@link Dom#getDeepestNode} to get a last node and match with current selection
+   * 将插入符号设置为先前工具的输入或块
+   * 在移动插入符号之前，我们应该检查插入符号的位置是否是插件节点的开始
+   * 使用{@link Dom#getDeepestNode}获取最后一个节点，并与当前 selection 匹配
    *
    * @returns {boolean}
    */
@@ -455,7 +454,7 @@ export default class Caret extends Module {
     }
 
     if (this.isAtStart) {
-      /** If previous Tool`s input exists, focus on it. Otherwise set caret to the previous Block */
+      /** 如果先前工具的输入存在，请聚焦它。否则，将插入符号设置为前一个块 */
       if (!previousInput) {
         this.setToBlock(previousContentfulBlock, this.positions.END);
       } else {
@@ -469,9 +468,9 @@ export default class Caret extends Module {
   }
 
   /**
-   * Inserts shadow element after passed element where caret can be placed
+   * 在可以放置插入符号的元素后面插入阴影元素
    *
-   * @param {Element} element - element after which shadow caret should be inserted
+   * @param {Element} element - 之后应插入阴影插入符号的元素
    */
   public createShadow(element: Element): void {
     const shadowCaret = document.createElement('span');
@@ -481,9 +480,9 @@ export default class Caret extends Module {
   }
 
   /**
-   * Restores caret position
+   * 恢复插入符号位置
    *
-   * @param {HTMLElement} element - element where caret should be restored
+   * @param {HTMLElement} element - 元素中应该恢复插入符号的位置
    */
   public restoreCaret(element: HTMLElement): void {
     const shadowCaret = element.querySelector(`.${Caret.CSS.shadowCaret}`);
@@ -493,12 +492,12 @@ export default class Caret extends Module {
     }
 
     /**
-     * After we set the caret to the required place
-     * we need to clear shadow caret
+     * 在我们将插入符号设置到需要的位置后，
+     * 我们需要清除阴影插入符号
      *
-     * - make new range
-     * - select shadowed span
-     * - use extractContent to remove it from DOM
+     * - 创建显得 range
+     * - 选中 shadowed span
+     * - 使用 extractContent 将其从 DOM 中删除
      */
     const sel = new Selection();
 
@@ -513,7 +512,7 @@ export default class Caret extends Module {
   }
 
   /**
-   * Inserts passed content at caret position
+   * 将插入的内容插入插入符位置
    *
    * @param {string} content - content to insert
    */
@@ -528,7 +527,7 @@ export default class Caret extends Module {
     Array.from(wrapper.childNodes).forEach((child: Node) => fragment.appendChild(child));
 
     /**
-     * If there is no child node, append empty one
+     * 如果没有子节点，则追加一个空节点
      */
     if (fragment.childNodes.length === 0) {
       fragment.appendChild(new Text(''));
@@ -539,7 +538,7 @@ export default class Caret extends Module {
     range.deleteContents();
     range.insertNode(fragment);
 
-    /** Cross-browser caret insertion */
+    /** 跨浏览器插入符号插入 */
     const newRange = document.createRange();
 
     newRange.setStart(lastChild, lastChild.textContent.length);
@@ -549,22 +548,22 @@ export default class Caret extends Module {
   }
 
   /**
-   * Get all first-level (first child of [contenteditabel]) siblings from passed node
-   * Then you can check it for emptiness
+   * 从被传递的节点中获取所有的一级(contentteditabel 的第一个子)兄弟
+   * 然后你可以检查它是否空
    *
    * @example
    * <div contenteditable>
    * <p></p>                            |
-   * <p></p>                            | left first-level siblings
+   * <p></p>                            | 左一级的兄弟
    * <p></p>                            |
-   * <blockquote><a><b>adaddad</b><a><blockquote>       <-- passed node for example <b>
+   * <blockquote><a><b>adaddad</b><a><blockquote>       <-- 例如传递节点 <b>
    * <p></p>                            |
-   * <p></p>                            | right first-level siblings
+   * <p></p>                            | 对一级的兄弟姐妹
    * <p></p>                            |
    * </div>
    *
-   * @param {HTMLElement} from - element from which siblings should be searched
-   * @param {'left' | 'right'} direction - direction of search
+   * @param {HTMLElement} from - 从中搜索兄弟元素
+   * @param {'left' | 'right'} direction - 搜索方向
    *
    * @returns {HTMLElement[]}
    */
@@ -573,7 +572,7 @@ export default class Caret extends Module {
     const siblings = [];
 
     /**
-     * Find passed node's firs-level parent (in example - blockquote)
+     * 查找所传递节点的一级父节点(例如: blockquote)
      */
     while (current.parentNode && (current.parentNode as HTMLElement).contentEditable !== 'true') {
       current = current.parentNode as HTMLElement;
@@ -582,7 +581,7 @@ export default class Caret extends Module {
     const sibling = direction === 'left' ? 'previousSibling' : 'nextSibling';
 
     /**
-     * Find all left/right siblings
+     * 查找所有 左/右 的兄弟
      */
     while (current[sibling]) {
       current = current[sibling] as HTMLElement;
