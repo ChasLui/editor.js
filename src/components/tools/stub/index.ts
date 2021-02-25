@@ -7,17 +7,17 @@ export interface StubData extends BlockToolData {
 }
 
 /**
- * This tool will be shown in place of a block without corresponding plugin
- * It will store its data inside and pass it back with article saving
+ * 将显示该工具代替没有相应插件的块
+ * 它将在内部存储数据，并通过文章保存将其传递回来
  */
 export default class Stub implements BlockTool {
   /**
-   * Notify core that tool supports read-only mode
+   * 通知核心该工具支持只读模式
    */
   public static isReadOnlySupported = true;
 
   /**
-   * Stub styles
+   * Stub 样式
    *
    * @type {{wrapper: string, info: string, title: string, subtitle: string}}
    */
@@ -29,7 +29,7 @@ export default class Stub implements BlockTool {
   };
 
   /**
-   * Main stub wrapper
+   * 主 stub 包裹器
    */
   private readonly wrapper: HTMLElement;
 
@@ -39,17 +39,17 @@ export default class Stub implements BlockTool {
   private readonly api: API;
 
   /**
-   * Stub title — tool name
+   * Stub 标题 — tool name
    */
   private readonly title: string;
 
   /**
-   * Stub hint
+   * Stub 提示
    */
   private readonly subtitle: string;
 
   /**
-   * Original Tool data
+   * 原始 Tool data
    */
   private readonly savedData: BlockToolData;
 
@@ -68,7 +68,7 @@ export default class Stub implements BlockTool {
   }
 
   /**
-   * Returns stub holder
+   * 返回 stub holder
    *
    * @returns {HTMLElement}
    */
@@ -77,7 +77,7 @@ export default class Stub implements BlockTool {
   }
 
   /**
-   * Return original Tool data
+   * 返回原始 Tool data
    *
    * @returns {BlockToolData}
    */
@@ -86,7 +86,7 @@ export default class Stub implements BlockTool {
   }
 
   /**
-   * Create Tool html markup
+   * 创建工具 html 标签
    *
    * @returns {HTMLElement}
    */

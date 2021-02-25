@@ -12,11 +12,11 @@ import Block from '../block';
 import { SavedData } from '../../../types/data-formats';
 
 /**
- * Tag substitute object.
+ * 标签替代对象。
  */
 interface TagSubstitute {
   /**
-   * Name of related Tool
+   * 相关工具的名称
    *
    * @type {string}
    */
@@ -24,25 +24,25 @@ interface TagSubstitute {
 }
 
 /**
- * Pattern substitute object.
+ * 模式替代对象。
  */
 interface PatternSubstitute {
   /**
-   * Pattern`s key
+   * 模式键
    *
    * @type {string}
    */
   key: string;
 
   /**
-   * Pattern regexp
+   * 模式正则
    *
    * @type {RegExp}
    */
   pattern: RegExp;
 
   /**
-   * Name of related Tool
+   * 相关工具的名称
    *
    * @type {string}
    */
@@ -50,18 +50,18 @@ interface PatternSubstitute {
 }
 
 /**
- * Files` types substitutions object.
+ * 文件的类型替换对象。
  */
 interface FilesSubstitution {
   /**
-   * Array of file extensions Tool can handle
+   * 文件扩展名数组工具可以处理
    *
    * @type {string[]}
    */
   extensions: string[];
 
   /**
-   * Array of MIME types Tool can handle
+   * MIME类型数组工具可以处理
    *
    * @type {string[]}
    */
@@ -69,32 +69,32 @@ interface FilesSubstitution {
 }
 
 /**
- * Processed paste data object.
+ * 已处理的粘贴数据对象。
  *
  * @interface PasteData
  */
 interface PasteData {
   /**
-   * Name of related Tool
+   * 相关工具的名称
    *
    * @type {string}
    */
   tool: string;
 
   /**
-   * Pasted data. Processed and wrapped to HTML element
+   * 粘贴数据。处理并包装为 HTML 元素
    *
    * @type {HTMLElement}
    */
   content: HTMLElement;
 
   /**
-   * Pasted data
+   * 粘贴后的数据
    */
   event: PasteEvent;
 
   /**
-   * True if content should be inserted as new Block
+   * 如果内容应作为新块插入，则为 True
    *
    * @type {boolean}
    */
@@ -102,54 +102,54 @@ interface PasteData {
 }
 
 /**
- * @class Paste
- * @classdesc Contains methods to handle paste on editor
+ * @class 粘贴
+ * @classdesc 包含在编辑器上处理粘贴的方法
  *
  * @module Paste
  *
  * @version 2.0.0
  */
 export default class Paste extends Module {
-  /** If string`s length is greater than this number we don't check paste patterns */
+  /** 如果字符串的长度大于这个数字，我们不检查粘贴模式 */
   public static readonly PATTERN_PROCESSING_MAX_LENGTH = 450;
 
-  /** Custom EditorJS mime-type to handle in-editor copy/paste actions */
+  /** 自定义EditorJS mime-type处理编辑器中的复制/粘贴操作 */
   public readonly MIME_TYPE = 'application/x-editor-js';
 
   /**
-   * Tags` substitutions parameters
+   * 标签的替代参数
    */
   private toolsTags: {[tag: string]: TagSubstitute} = {};
 
   /**
-   * Store tags to substitute by tool name
+   * 存储标签以替换工具名称
    */
   private tagsByTool: {[tools: string]: string[]} = {};
 
-  /** Patterns` substitutions parameters */
+  /** 模式的替换参数 */
   private toolsPatterns: PatternSubstitute[] = [];
 
-  /** Files` substitutions parameters */
+  /** 文件的替换参数 */
   private toolsFiles: {
     [tool: string]: FilesSubstitution;
   } = {};
 
   /**
-   * List of tools which do not need a paste handling
+   * 不需要粘贴处理的工具列表
    */
   private exceptionList: string[] = [];
 
   /**
-   * Set onPaste callback and collect tools` paste configurations
+   * 设置 onPaste 回调并收集工具的粘贴配置
    */
   public async prepare(): Promise<void> {
     this.processTools();
   }
 
   /**
-   * Set read-only state
+   * 设置只读状态
    *
-   * @param {boolean} readOnlyEnabled - read only flag value
+   * @param {boolean} readOnlyEnabled - 只读标志值
    */
   public toggleReadOnly(readOnlyEnabled: boolean): void {
     if (!readOnlyEnabled) {
@@ -160,10 +160,10 @@ export default class Paste extends Module {
   }
 
   /**
-   * Handle pasted or dropped data transfer object
+   * 处理粘贴或删除的数据传输对象
    *
-   * @param {DataTransfer} dataTransfer - pasted or dropped data transfer object
-   * @param {boolean} isDragNDrop - true if data transfer comes from drag'n'drop events
+   * @param {DataTransfer} dataTransfer - 粘贴或删除的数据传输对象
+   * @param {boolean} isDragNDrop - 如果数据传输来自拖放事件，则为true
    */
   public async processDataTransfer(dataTransfer: DataTransfer, isDragNDrop = false): Promise<void> {
     const { Sanitizer } = this.Editor;
@@ -171,7 +171,7 @@ export default class Paste extends Module {
     const types = dataTransfer.types;
 
     /**
-     * In Microsoft Edge types is DOMStringList. So 'contains' is used to check if 'Files' type included
+     * 在Microsoft Edge中，类型为DOMStringList。 因此，“包含”用于检查是否包含“文件”类型
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const includesFiles = types.includes ? types.includes('Files') : (types as any).contains('Files');
@@ -187,24 +187,24 @@ export default class Paste extends Module {
     let htmlData = dataTransfer.getData('text/html');
 
     /**
-     * If EditorJS json is passed, insert it
+     * 如果传递了 EditorJS json，则将其插入
      */
     if (editorJSData) {
       try {
         this.insertEditorJSData(JSON.parse(editorJSData));
 
         return;
-      } catch (e) {} // Do nothing and continue execution as usual if error appears
+      } catch (e) {} // 如果出现错误，什么也不做并继续执行
     }
 
     /**
-     *  If text was drag'n'dropped, wrap content with P tag to insert it as the new Block
+     *  如果文本被拖放，则用P标记对内容进行换行，将其作为新块插入
      */
     if (isDragNDrop && plainData.trim() && htmlData.trim()) {
       htmlData = '<p>' + (htmlData.trim() ? htmlData : plainData) + '</p>';
     }
 
-    /** Add all tags that can be substituted to sanitizer configuration */
+    /** 添加所有可以替换为消毒剂配置的标签 */
     const toolsTags = Object.keys(this.toolsTags).reduce((result, tag) => {
       result[tag.toLowerCase()] = true;
 
@@ -215,7 +215,7 @@ export default class Paste extends Module {
 
     const cleanData = Sanitizer.clean(htmlData, customConfig);
 
-    /** If there is no HTML or HTML string is equal to plain one, process it as plain text */
+    /** 如果没有 HTML 或 HTML 字符串等于纯文本，则将其作为纯文本处理 */
     if (!cleanData.trim() || cleanData.trim() === plainData || !$.isHTMLString(cleanData)) {
       await this.processText(plainData);
     } else {
@@ -224,10 +224,10 @@ export default class Paste extends Module {
   }
 
   /**
-   * Process pasted text and divide them into Blocks
+   * 处理粘贴的文本并将其分成块
    *
-   * @param {string} data - text to process. Can be HTML or plain.
-   * @param {boolean} isHTML - if passed string is HTML, this parameter should be true
+   * @param {string} data - 要处理的文字。 可以是 HTML 或纯文本。
+   * @param {boolean} isHTML - 如果传递的字符串是 HTML，这个参数应该是 true
    */
   public async processText(data: string, isHTML = false): Promise<void> {
     const { Caret, BlockManager, Tools } = this.Editor;
@@ -260,7 +260,7 @@ export default class Paste extends Module {
   }
 
   /**
-   * Set onPaste callback handler
+   * 设置 onPaste 回调处理程序
    */
   private setCallback(): void {
     const { Listeners } = this.Editor;
@@ -269,7 +269,7 @@ export default class Paste extends Module {
   }
 
   /**
-   * Unset onPaste callback handler
+   * 取消设置 onPaste 回调处理程序
    */
   private unsetCallback(): void {
     const { Listeners } = this.Editor;
@@ -278,7 +278,7 @@ export default class Paste extends Module {
   }
 
   /**
-   * Get and process tool`s paste configs
+   * 获取并处理工具的粘贴配置
    */
   private processTools(): void {
     const tools = this.Editor.Tools.blockTools;
@@ -287,7 +287,7 @@ export default class Paste extends Module {
   }
 
   /**
-   * Process paste config for each tool
+   * 为每个工具处理粘贴配置
    */
   private processTool = ([name, tool]: [string, BlockToolConstructable]): void => {
     try {
@@ -323,10 +323,10 @@ export default class Paste extends Module {
   }
 
   /**
-   * Get tags to substitute by Tool
+   * 获取标签以替换为工具
    *
-   * @param {string} name - Tool name
-   * @param {PasteConfig} toolPasteConfig - Tool onPaste configuration
+   * @param {string} name - 工具名称
+   * @param {PasteConfig} toolPasteConfig - 工具 onPaste 配置
    */
   private getTagsConfig(name: string, toolPasteConfig: PasteConfig): void {
     const tags = toolPasteConfig.tags || [];
@@ -351,10 +351,10 @@ export default class Paste extends Module {
   }
 
   /**
-   * Get files` types and extensions to substitute by Tool
+   * 获取文件的类型和扩展名以用工具替代
    *
-   * @param {string} name - Tool name
-   * @param {PasteConfig} toolPasteConfig - Tool onPaste configuration
+   * @param {string} name - 工具名称
+   * @param {PasteConfig} toolPasteConfig - 工具 onPaste 配置
    */
   private getFilesConfig(name: string, toolPasteConfig: PasteConfig): void {
     const { files = {} } = toolPasteConfig;
@@ -393,10 +393,10 @@ export default class Paste extends Module {
   }
 
   /**
-   * Get RegExp patterns to substitute by Tool
+   * 获取 RegExp 模式以用工具替代
    *
-   * @param {string} name - Tool name
-   * @param {PasteConfig} toolPasteConfig - Tool onPaste configuration
+   * @param {string} name - 工具名称
+   * @param {PasteConfig} toolPasteConfig - 工具 onPaste 配置
    */
   private getPatternsConfig(name: string, toolPasteConfig: PasteConfig): void {
     if (!toolPasteConfig.patterns || _.isEmpty(toolPasteConfig.patterns)) {
@@ -404,7 +404,7 @@ export default class Paste extends Module {
     }
 
     Object.entries(toolPasteConfig.patterns).forEach(([key, pattern]: [string, RegExp]) => {
-      /** Still need to validate pattern as it provided by user */
+      /** 仍然需要验证用户提供的模式 */
       if (!(pattern instanceof RegExp)) {
         _.log(
           `Pattern ${pattern} for «${name}» Tool is skipped because it should be a Regexp instance.`,
@@ -421,9 +421,9 @@ export default class Paste extends Module {
   }
 
   /**
-   * Check if browser behavior suits better
+   * 检查浏览器的行为是否更适合
    *
-   * @param {EventTarget} element - element where content has been pasted
+   * @param {EventTarget} element - 粘贴内容的元素
    *
    * @returns {boolean}
    */
@@ -432,14 +432,14 @@ export default class Paste extends Module {
   }
 
   /**
-   * Check if Editor should process pasted data and pass data transfer object to handler
+   * 检查编辑器是否应处理粘贴的数据并将数据传输对象传递给处理程序
    *
    * @param {ClipboardEvent} event - clipboard event
    */
   private handlePasteEvent = async (event: ClipboardEvent): Promise<void> => {
     const { BlockManager, Toolbar } = this.Editor;
 
-    /** If target is native input or is not Block, use browser behaviour */
+    /** 如果目标是本机输入或不是阻止，请使用浏览器行为 */
     if (
       !BlockManager.currentBlock || (this.isNativeBehaviour(event.target) && !event.clipboardData.types.includes('Files'))
     ) {
@@ -447,7 +447,7 @@ export default class Paste extends Module {
     }
 
     /**
-     * If Tools is in list of errors, skip processing of paste event
+     * 如果工具在错误列表中，请跳过粘贴事件的处理
      */
     if (BlockManager.currentBlock && this.exceptionList.includes(BlockManager.currentBlock.name)) {
       return;
@@ -461,7 +461,7 @@ export default class Paste extends Module {
   }
 
   /**
-   * Get files from data transfer object and insert related Tools
+   * 从数据传输对象获取文件并插入相关工具
    *
    * @param {FileList} items - pasted or dropped items
    */
@@ -488,7 +488,7 @@ export default class Paste extends Module {
   }
 
   /**
-   * Get information about file and find Tool to handle it
+   * 获取有关文件的信息并找到用于处理文件的工具
    *
    * @param {File} file - file to process
    */
@@ -526,9 +526,9 @@ export default class Paste extends Module {
   }
 
   /**
-   * Split HTML string to blocks and return it as array of Block data
+   * 将 HTML 字符串拆分为块，并将其作为块数据数组返回
    *
-   * @param {string} innerHTML - html string to process
+   * @param {string} innerHTML - 待处理的 html 字符串
    *
    * @returns {PasteData[]}
    */
@@ -546,13 +546,13 @@ export default class Paste extends Module {
         let content, tool = initialTool, isBlock = false;
 
         switch (node.nodeType) {
-          /** If node is a document fragment, use temp wrapper to get innerHTML */
+          /** 如果 node 是文档片段，请使用临时包装器获取 innerHTML */
           case Node.DOCUMENT_FRAGMENT_NODE:
             content = $.make('div');
             content.appendChild(node);
             break;
 
-          /** If node is an element, then there might be a substitution */
+          /** 如果 node 是元素，则可能存在替换 */
           case Node.ELEMENT_NODE:
             content = node as HTMLElement;
             isBlock = true;
@@ -589,9 +589,9 @@ export default class Paste extends Module {
   }
 
   /**
-   * Split plain text by new line symbols and return it as array of Block data
+   * 用新的线符号分割纯文本，并将其作为块数据数组返回
    *
-   * @param {string} plain - string to process
+   * @param {string} plain - 待处理字符串
    *
    * @returns {PasteData[]}
    */
@@ -626,16 +626,16 @@ export default class Paste extends Module {
   }
 
   /**
-   * Process paste of single Block tool content
+   * 处理单个块工具内容的粘贴
    *
-   * @param {PasteData} dataToInsert - data of Block to inseret
+   * @param {PasteData} dataToInsert - 块插入数据
    */
   private async processSingleBlock(dataToInsert: PasteData): Promise<void> {
     const { Caret, BlockManager, Tools } = this.Editor;
     const { currentBlock } = BlockManager;
 
     /**
-     * If pasted tool isn`t equal current Block or if pasted content contains block elements, insert it as new Block
+     * 如果粘贴的工具不等于当前块，或者粘贴的内容包含块元素，则将其插入为新的块
      */
     if (
       !currentBlock ||
@@ -651,12 +651,12 @@ export default class Paste extends Module {
   }
 
   /**
-   * Process paste to single Block:
-   * 1. Find patterns` matches
-   * 2. Insert new block if it is not the same type as current one
-   * 3. Just insert text if there is no substitutions
+   * 处理粘贴到单个块：
+   * 1. 查找模式的匹配项
+   * 2. 如果与当前块类型不同，则插入新块
+   * 3. 如果没有替代，只需插入文本
    *
-   * @param {PasteData} dataToInsert - data of Block to insert
+   * @param {PasteData} dataToInsert - 插入块的数据
    */
   private async processInlinePaste(dataToInsert: PasteData): Promise<void> {
     const { BlockManager, Caret, Sanitizer, Tools } = this.Editor;
@@ -680,7 +680,7 @@ export default class Paste extends Module {
       }
     }
 
-    /** If there is no pattern substitute - insert string as it is */
+    /** 如果没有模式替换-按原样插入字符串 */
     if (BlockManager.currentBlock && BlockManager.currentBlock.currentInput) {
       const currentToolSanitizeConfig = Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name);
 
@@ -695,9 +695,9 @@ export default class Paste extends Module {
   }
 
   /**
-   * Get patterns` matches
+   * 获取模式匹配
    *
-   * @param {string} text - text to process
+   * @param {string} text - 待处理的文本
    *
    * @returns {Promise<{event: PasteEvent, tool: string}>}
    */
@@ -728,10 +728,10 @@ export default class Paste extends Module {
   }
 
   /**
-   * Insert pasted Block content to Editor
+   * 插入粘贴块内容到编辑器
    *
-   * @param {PasteData} data - data to insert
-   * @param {boolean} canReplaceCurrentBlock - if true and is current Block is empty, will replace current Block
+   * @param {PasteData} data - 要插入的数据
+   * @param {boolean} canReplaceCurrentBlock - 如果为 true 并且当前块为空，则将替换当前块
    *
    * @returns {void}
    */
@@ -753,9 +753,9 @@ export default class Paste extends Module {
   }
 
   /**
-   * Insert data passed as application/x-editor-js JSON
+   * 插入作为 application/x-editor-js JSON 传递的数据
    *
-   * @param {Array} blocks — Blocks' data to insert
+   * @param {Array} blocks — 要插入的数据块
    *
    * @returns {void}
    */
@@ -783,11 +783,11 @@ export default class Paste extends Module {
   }
 
   /**
-   * Fetch nodes from Element node
+   * 从元素节点获取节点
    *
-   * @param {Node} node - current node
-   * @param {Node[]} nodes - processed nodes
-   * @param {Node} destNode - destination node
+   * @param {Node} node - 当前节点
+   * @param {Node[]} nodes - 处理的节点
+   * @param {Node} destNode - 目的节点
    *
    * @returns {Node[]}
    */
@@ -811,7 +811,7 @@ export default class Paste extends Module {
       ({ tagName }) => $.blockElements.includes(tagName.toLowerCase())
     );
 
-    /** Append inline elements to previous fragment */
+    /** 将内联元素附加到以前的片段 */
     if (!isBlockElement && !isSubstitutable && !containsAnotherToolTags) {
       destNode.appendChild(element);
 
@@ -827,11 +827,11 @@ export default class Paste extends Module {
   }
 
   /**
-   * Recursively divide HTML string to two types of nodes:
+   * 将 HTML 字符串递归地分为两种类型的节点：
    * 1. Block element
-   * 2. Document Fragments contained text and markup tags like a, b, i etc.
+   * 2. Document Fragments 包含文本和标记标签 like a, b, i 等。
    *
-   * @param {Node} wrapper - wrapper of paster HTML content
+   * @param {Node} wrapper - 粘贴 HTML 内容的包装器
    *
    * @returns {Node[]}
    */
@@ -854,9 +854,9 @@ export default class Paste extends Module {
 
       switch (node.nodeType) {
         /**
-         * If node is HTML element:
-         * 1. Check if it is inline element
-         * 2. Check if it contains another block or substitutable elements
+         * 如果 node 是 HTML 元素:
+         * 1. 检查它是否是内联元素
+         * 2. 检查它是否包含另一个块或可替换元素
          */
         case Node.ELEMENT_NODE:
           elementNodeProcessingResult = this.processElementNode(node, nodes, destNode);
@@ -867,7 +867,7 @@ export default class Paste extends Module {
           break;
 
         /**
-         * If node is text node, wrap it with DocumentFragment
+         * 如果节点是文本节点，则用 DocumentFragment 包裹它
          */
         case Node.TEXT_NODE:
           destNode.appendChild(node);
@@ -885,10 +885,10 @@ export default class Paste extends Module {
   }
 
   /**
-   * Compose paste event with passed type and detail
+   * 使用传递的类型和详细信息组合粘贴事件
    *
-   * @param {string} type - event type
-   * @param {PasteEventDetail} detail - event detail
+   * @param {string} type - 事件类型
+   * @param {PasteEventDetail} detail - 事件详情
    */
   private composePasteEvent(type: string, detail: PasteEventDetail): PasteEvent {
     return new CustomEvent(type, {
