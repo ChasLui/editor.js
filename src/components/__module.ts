@@ -39,11 +39,11 @@ export default class Module<T extends ModuleNodes = {}> {
   protected config: EditorConfig;
 
   /**
-   * 该对象提供了一些方法，可用于启用启用只读模式时放入的侦听器集
+   * 该对象提供了一些方法，可用于启用启用只读模式时放入的监听器集
    */
   protected readOnlyMutableListeners = {
     /**
-     * 在DOM元素上分配事件侦听器，并推送到可能会删除的特殊数组中
+     * 在DOM元素上分配事件监听器，并推送到可能会删除的特殊数组中
      *
      * @param {EventTarget} element - DOM 元素
      * @param {string} eventType - 事件名称
@@ -78,7 +78,7 @@ export default class Module<T extends ModuleNodes = {}> {
   };
 
   /**
-   * 侦听器标识符集，将以只读模式删除
+   * 监听器标识符集，将以只读模式删除
    */
   private mutableListenerIds: string[] = [];
 

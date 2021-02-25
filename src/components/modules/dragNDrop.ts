@@ -33,7 +33,7 @@ export default class DragNDrop extends Module {
   }
 
   /**
-   * 将拖动事件侦听器添加到编辑器区域
+   * 将拖动事件监听器添加到编辑器区域
    */
   private enableModuleBindings(): void {
     const { UI } = this.Editor;

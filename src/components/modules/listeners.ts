@@ -2,28 +2,28 @@ import Module from '../__module';
 import * as _ from '../utils';
 
 /**
- * Event listener information
+ * 事件监听器的信息
  *
  * @interface ListenerData
  */
 export interface ListenerData {
   /**
-   * Listener unique identifier
+   * 监听器唯一标识符
    */
   id: string;
 
   /**
-   * Element where to listen to dispatched events
+   * 元素在哪里监听调度事件
    */
   element: EventTarget;
 
   /**
-   * Event to listen
+   * 事件驱动
    */
   eventType: string;
 
   /**
-   * Event handler
+   * 事件处理器
    *
    * @param {Event} event - event object
    */
@@ -36,11 +36,11 @@ export interface ListenerData {
 }
 
 /**
- * Editor.js Listeners module
+ * Editor.js 监听器模块
  *
  * @module Listeners
  *
- * Module-decorator for event listeners assignment
+ * 用于事件监听器分配的模块装饰器
  *
  * @author Codex Team
  * @version 2.0.0
@@ -48,23 +48,23 @@ export interface ListenerData {
 
 /**
  * @typedef {Listeners} Listeners
- * @property {ListenerData[]} allListeners - listeners store
+ * @property {ListenerData[]} allListeners - 监听器存储
  */
 export default class Listeners extends Module {
   /**
-   * Stores all listeners data to find/remove/process it
+   * 存储所有监听器数据以查找/删除/处理它
    *
    * @type {ListenerData[]}
    */
   private allListeners: ListenerData[] = [];
 
   /**
-   * Assigns event listener on element and returns unique identifier
+   * 在元素上分配事件侦听器并返回唯一标识符
    *
-   * @param {EventTarget} element - DOM element that needs to be listened
-   * @param {string} eventType - event type
-   * @param {Function} handler - method that will be fired on event
-   * @param {boolean|AddEventListenerOptions} options - useCapture or {capture, passive, once}
+   * @param {EventTarget} element - 需要监听的DOM元素
+   * @param {string} eventType - 事件类型
+   * @param {Function} handler - 将在事件上触发的方法
+   * @param {boolean|AddEventListenerOptions} options - useCapture 或 {capture, passive, once}
    *
    * @returns {string}
    */
@@ -96,12 +96,12 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Removes event listener from element
+   * 从元素中移除事件监听器
    *
-   * @param {EventTarget} element - DOM element that we removing listener
-   * @param {string} eventType - event type
-   * @param {Function} handler - remove handler, if element listens several handlers on the same event type
-   * @param {boolean|AddEventListenerOptions} options - useCapture or {capture, passive, once}
+   * @param {EventTarget} element - 将删除监听器的 DOM 元素
+   * @param {string} eventType - 事件类型
+   * @param {Function} handler - 如果元素在同一事件类型上侦听多个处理程序，则删除处理程序
+   * @param {boolean|AddEventListenerOptions} options - useCapture 或 {capture, passive, once}
    */
   public off(
     element: EventTarget,
@@ -123,9 +123,9 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Removes listener by id
+   * 根据 id 删除监听器
    *
-   * @param {string} id - listener identifier
+   * @param {string} id - 监听器标志
    */
   public offById(id: string): void {
     const listener = this.findById(id);
@@ -138,11 +138,11 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Finds and returns first listener by passed params
+   * 通过传递的参数查找并返回第一个侦听器
    *
-   * @param {EventTarget} element - event target
-   * @param {string} [eventType] - event type
-   * @param {Function} [handler] - event handler
+   * @param {EventTarget} element - 事件目标元素
+   * @param {string} [eventType] - 事件类型
+   * @param {Function} [handler] - 事件处理器
    *
    * @returns {ListenerData|null}
    */
@@ -153,11 +153,11 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Return all stored listeners by passed params
+   * 通过传递的参数返回所有存储的侦听器
    *
-   * @param {EventTarget} element - event target
-   * @param {string} eventType - event type
-   * @param {Function} handler - event handler
+   * @param {EventTarget} element - 事件目标元素
+   * @param {string} eventType - 事件类型
+   * @param {Function} handler - 事件处理器
    *
    * @returns {ListenerData[]}
    */
@@ -177,7 +177,7 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Removes all listeners
+   * 移除所有监听器
    */
   public removeAll(): void {
     this.allListeners.map((current) => {
@@ -188,18 +188,18 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Module cleanup on destruction
+   * 销毁模块清理
    */
   public destroy(): void {
     this.removeAll();
   }
 
   /**
-   * Search method: looks for listener by passed element
+   * 搜索方法：按传递的元素查找侦听器
    *
-   * @param {EventTarget} element - searching element
+   * @param {EventTarget} element - 搜索元素
    *
-   * @returns {Array} listeners that found on element
+   * @returns {Array} 元素上找到的监听器
    */
   private findByEventTarget(element: EventTarget): ListenerData[] {
     return this.allListeners.filter((listener) => {
@@ -210,11 +210,11 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Search method: looks for listener by passed event type
+   * 搜索方法：按传递的事件类型查找侦听器
    *
-   * @param {string} eventType - event type
+   * @param {string} eventType - 事件类型
    *
-   * @returns {ListenerData[]} listeners that found on element
+   * @returns {ListenerData[]} 元素上找到的监听器
    */
   private findByType(eventType: string): ListenerData[] {
     return this.allListeners.filter((listener) => {
@@ -225,11 +225,11 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Search method: looks for listener by passed handler
+   * 搜索方法：按传递的事件处理器查找侦听器
    *
-   * @param {Function} handler - event handler
+   * @param {Function} handler - 事件处理器
    *
-   * @returns {ListenerData[]} listeners that found on element
+   * @returns {ListenerData[]} 元素上找到的监听器
    */
   private findByHandler(handler: (event: Event) => void): ListenerData[] {
     return this.allListeners.filter((listener) => {
@@ -240,9 +240,9 @@ export default class Listeners extends Module {
   }
 
   /**
-   * Returns listener data found by id
+   * 返回根据 id 找到的侦听器数据
    *
-   * @param {string} id - listener identifier
+   * @param {string} id - 监听器标志
    *
    * @returns {ListenerData}
    */

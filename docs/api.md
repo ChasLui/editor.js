@@ -114,9 +114,9 @@ this.api.sanitizer.clean(taintString, customConfig);
 
 ### 监听器 API
 
-允许与 DOM 监听器一起使用的方法。 当您忘记删除监听器时很有用。 模块收集所有侦听器并自动销毁
+允许与 DOM 监听器一起使用的方法。 当您忘记删除监听器时很有用。 模块收集所有监听器并自动销毁
 
-`on(element: HTMLElement, eventType: string, handler: Function, useCapture?: boolean)` - 将事件侦听器添加到 HTML 元素
+`on(element: HTMLElement, eventType: string, handler: Function, useCapture?: boolean)` - 将事件监听器添加到 HTML 元素
 
 `off(element: HTMLElement, eventType: string, handler: Function)` - 从 HTML 元素中删除事件处理程序
 
