@@ -64,7 +64,7 @@ export default class Listeners extends Module {
    * @param {EventTarget} element - 需要监听的DOM元素
    * @param {string} eventType - 事件类型
    * @param {Function} handler - 将在事件上触发的方法
-   * @param {boolean|AddEventListenerOptions} options - useCapture 或 {capture, passive, once}
+   * @param {boolean|AddEventListenerOptions} options - useCapture 或 {捕获, 被动, 一次}
    *
    * @returns {string}
    */
@@ -101,7 +101,7 @@ export default class Listeners extends Module {
    * @param {EventTarget} element - 将删除监听器的 DOM 元素
    * @param {string} eventType - 事件类型
    * @param {Function} handler - 如果元素在同一事件类型上侦听多个处理程序，则删除处理程序
-   * @param {boolean|AddEventListenerOptions} options - useCapture 或 {capture, passive, once}
+   * @param {boolean|AddEventListenerOptions} options - useCapture 或 {捕获, 被动, 一次}
    */
   public off(
     element: EventTarget,
