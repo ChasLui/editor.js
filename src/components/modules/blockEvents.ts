@@ -1,5 +1,5 @@
 /**
- * Contains keyboard and mouse events binded on each Block by Block Manager
+ * 包含按块管理器绑定在每个块上的键盘和鼠标事件
  */
 import Module from '../__module';
 import * as _ from '../utils';
@@ -11,18 +11,18 @@ import Flipper from '../flipper';
  */
 export default class BlockEvents extends Module {
   /**
-   * All keydowns on Block
+   * 块上的所有键盘按下事件
    *
-   * @param {KeyboardEvent} event - keydown
+   * @param {KeyboardEvent} event - 键盘事件
    */
   public keydown(event: KeyboardEvent): void {
     /**
-     * Run common method for all keydown events
+     * 对所有按键事件运行通用方法
      */
     this.beforeKeydownProcessing(event);
 
     /**
-     * Fire keydown processor by event.keyCode
+     * 通过 event.keyCode 触发 keydown 处理器
      */
     switch (event.keyCode) {
       case _.keyCodes.BACKSPACE:
@@ -50,30 +50,30 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Fires on keydown before event processing
+   * 事件处理前在按下 keydown 时触发
    *
-   * @param {KeyboardEvent} event - keydown
+   * @param {KeyboardEvent} event - keydown 事件对象
    */
   public beforeKeydownProcessing(event: KeyboardEvent): void {
     /**
-     * Do not close Toolbox on Tabs or on Enter with opened Toolbox
+     * 不要在选项卡或打开的工具箱中输入时关闭工具箱
      */
     if (!this.needToolbarClosing(event)) {
       return;
     }
 
     /**
-     * When user type something:
-     *  - close Toolbar
-     *  - close Conversion Toolbar
-     *  - clear block highlighting
+     * 用户输入内容时：
+     *  - 关闭 Toolbar
+     *  - 关闭转换 Toolbar
+     *  - 清除块高亮
      */
     if (_.isPrintableKey(event.keyCode)) {
       this.Editor.Toolbar.close();
       this.Editor.ConversionToolbar.close();
 
       /**
-       * Allow to use shortcuts with selected blocks
+       * 允许对选定的块使用快捷键
        *
        * @type {boolean}
        */
@@ -87,34 +87,34 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Key up on Block:
-   * - shows Inline Toolbar if something selected
-   * - shows conversion toolbar with 85% of block selection
+   * 块上的所有键盘抬起事件
+   * - 如果选中某项，则显示“内联工具栏”
+   * - 显示具有85％块选择的转换工具栏
    *
    * @param {KeyboardEvent} event - keyup event
    */
   public keyup(event: KeyboardEvent): void {
     /**
-     * If shift key was pressed some special shortcut is used (eg. cross block selection via shift + arrows)
+     * 如果按下了Shift键，则使用一些特殊的快捷方式（例如，通过Shift +箭头选择跨块）
      */
     if (event.shiftKey) {
       return;
     }
 
     /**
-     * Check if editor is empty on each keyup and add special css class to wrapper
+     * 检查每个按键上的编辑器是否为空，并向包装器添加特殊的CSS类
      */
     this.Editor.UI.checkEmptiness();
   }
 
   /**
-   * Open Toolbox to leaf Tools
+   * 打开工具箱叶工具
    *
-   * @param {KeyboardEvent} event - tab keydown event
+   * @param {KeyboardEvent} event - 选项卡keydown事件
    */
   public tabPressed(event): void {
     /**
-     * Clear blocks selection by tab
+     * 通过选项卡清除块选择
      */
     this.Editor.BlockSelection.clearSelection(event);
 
@@ -130,7 +130,7 @@ export default class BlockEvents extends Module {
     const inlineToolbarOpened = !currentBlock.isEmpty && !SelectionUtils.isCollapsed && InlineToolbar.opened;
 
     /**
-     * For empty Blocks we show Plus button via Toolbox only for default Blocks
+     * 对于空块，我们仅通过默认块通过工具箱显示加号按钮
      */
     if (canOpenToolbox) {
       this.activateToolbox();
@@ -140,7 +140,7 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Add drop target styles
+   * 添加拖放目标样式
    *
    * @param {DragEvent} event - drag over event
    */
@@ -151,7 +151,7 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Remove drop target style
+   * 删除放置目标样式
    *
    * @param {DragEvent} event - drag leave event
    */
@@ -162,10 +162,10 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Copying selected blocks
-   * Before putting to the clipboard we sanitize all blocks and then copy to the clipboard
+   * 复制选定的块
+   * 在放入剪贴板之前，我们先清除所有块，然后将其复制到剪贴板
    *
-   * @param {ClipboardEvent} event - clipboard event
+   * @param {ClipboardEvent} event - 剪贴板事件
    */
   public handleCommandC(event: ClipboardEvent): Promise<void> {
     const { BlockSelection } = this.Editor;
@@ -174,14 +174,14 @@ export default class BlockEvents extends Module {
       return;
     }
 
-    // Copy Selected Blocks
+    // 拷贝选中的块
     return BlockSelection.copySelectedBlocks(event);
   }
 
   /**
-   * Copy and Delete selected Blocks
+   * 复制并删除选定的块
    *
-   * @param {ClipboardEvent} event - clipboard event
+   * @param {ClipboardEvent} event - 剪贴板事件
    */
   public async handleCommandX(event: ClipboardEvent): Promise<void> {
     const { BlockSelection, BlockManager, Caret } = this.Editor;
@@ -196,12 +196,12 @@ export default class BlockEvents extends Module {
 
     Caret.setToBlock(BlockManager.insertDefaultBlockAtIndex(selectionPositionIndex, true), Caret.positions.START);
 
-    /** Clear selection */
+    /** 清除选择器 */
     BlockSelection.clearSelection(event);
   }
 
   /**
-   * ENTER pressed on block
+   * 块上按下回车键
    *
    * @param {KeyboardEvent} event - keydown
    */
@@ -211,23 +211,23 @@ export default class BlockEvents extends Module {
     const tool = Tools.available[currentBlock.name];
 
     /**
-     * Don't handle Enter keydowns when Tool sets enableLineBreaks to true.
-     * Uses for Tools like <code> where line breaks should be handled by default behaviour.
+     * 当工具将 enableLineBreaks 设置为 true 时，请勿处理Enter keydown。
+     * 用于像<code>这样的工具，其中的换行符应该被默认的行为处理。
      */
     if (tool && tool[Tools.INTERNAL_SETTINGS.IS_ENABLED_LINE_BREAKS]) {
       return;
     }
 
     /**
-     * Opened Toolbars uses Flipper with own Enter handling
-     * Allow split block when no one button in Flipper is focused
+     * 打开的工具栏将Flipper与自己的Enter处理配合使用
+     * 当Flipper中的任何一个按钮都没有聚焦时允许分割
      */
     if (UI.someToolbarOpened && UI.someFlipperButtonFocused) {
       return;
     }
 
     /**
-     * Allow to create linebreaks by Shift+Enter
+     * 允许通过 Shift + Enter 创建换行符
      */
     if (event.shiftKey) {
       return;
@@ -236,14 +236,14 @@ export default class BlockEvents extends Module {
     let newCurrent = this.Editor.BlockManager.currentBlock;
 
     /**
-     * If enter has been pressed at the start of the text, just insert paragraph Block above
+     * 如果在文本开始处按下了回车键，只需在上面插入段落块
      */
     if (this.Editor.Caret.isAtStart && !this.Editor.BlockManager.currentBlock.hasMedia) {
       this.Editor.BlockManager.insertDefaultBlockAtIndex(this.Editor.BlockManager.currentBlockIndex);
     } else {
       /**
-       * Split the Current Block into two blocks
-       * Renew local current node after split
+       * 将当前块分成两个块
+       * 分裂后更新本地当前节点
        */
       newCurrent = this.Editor.BlockManager.split();
     }
@@ -251,16 +251,16 @@ export default class BlockEvents extends Module {
     this.Editor.Caret.setToBlock(newCurrent);
 
     /**
-     * If new Block is empty
+     * 如果新的块是空的
      */
     if (this.Editor.Tools.isDefault(newCurrent.tool) && newCurrent.isEmpty) {
       /**
-       * Show Toolbar
+       * 显示 Toolbar
        */
       this.Editor.Toolbar.open(false);
 
       /**
-       * Show Plus Button
+       * 显示 + 按钮
        */
       this.Editor.Toolbar.plusButton.show();
     }
@@ -269,7 +269,7 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Handle backspace keydown on Block
+   * 处理块上的退格键按下
    *
    * @param {KeyboardEvent} event - keydown
    */
@@ -279,7 +279,7 @@ export default class BlockEvents extends Module {
     const tool = this.Editor.Tools.available[currentBlock.name];
 
     /**
-     * Check if Block should be removed by current Backspace keydown
+     * 检查是否应该通过当前退格键删除块
      */
     if (currentBlock.selected || (currentBlock.isEmpty && currentBlock.currentInput === currentBlock.firstInput)) {
       event.preventDefault();
@@ -287,10 +287,10 @@ export default class BlockEvents extends Module {
       const index = BlockManager.currentBlockIndex;
 
       if (BlockManager.previousBlock && BlockManager.previousBlock.inputs.length === 0) {
-        /** If previous block doesn't contain inputs, remove it */
+        /** 如果上一个块不包含输入，请将其删除 */
         BlockManager.removeBlock(index - 1);
       } else {
-        /** If block is empty, just remove it */
+        /** 如果块为空，则将其删除 */
         BlockManager.removeBlock();
       }
 
@@ -299,20 +299,20 @@ export default class BlockEvents extends Module {
         index ? Caret.positions.END : Caret.positions.START
       );
 
-      /** Close Toolbar */
+      /** 关闭 Toolbar */
       this.Editor.Toolbar.close();
 
-      /** Clear selection */
+      /** 清除选区 */
       BlockSelection.clearSelection(event);
 
       return;
     }
 
     /**
-     * Don't handle Backspaces when Tool sets enableLineBreaks to true.
-     * Uses for Tools like <code> where line breaks should be handled by default behaviour.
+     * 当工具将 enableLineBreaks 设置为 true 时，请勿处理退格键事件。
+     * 用于像<code>这样的工具，其中的换行符应该被默认的行为处理。
      *
-     * But if caret is at start of the block, we allow to remove it by backspaces
+     * 但是，如果插入符位于该块的开头，我们允许通过退格键将其删除
      */
     if (tool && tool[this.Editor.Tools.INTERNAL_SETTINGS.IS_ENABLED_LINE_BREAKS] && !Caret.isAtStart) {
       return;
@@ -326,19 +326,19 @@ export default class BlockEvents extends Module {
 
     if (canMergeBlocks) {
       /**
-       * preventing browser default behaviour
+       * 防止浏览器默认行为
        */
       event.preventDefault();
 
       /**
-       * Merge Blocks
+       * 合并块
        */
       this.mergeBlocks();
     }
   }
 
   /**
-   * Merge current and previous Blocks if they have the same type
+   * 合并当前和先前的块（如果它们具有相同的类型）
    */
   private mergeBlocks(): void {
     const { BlockManager, Caret, Toolbar } = this.Editor;
@@ -346,14 +346,14 @@ export default class BlockEvents extends Module {
     const blockToMerge = BlockManager.currentBlock;
 
     /**
-     * Blocks that can be merged:
-     * 1) with the same Name
-     * 2) Tool has 'merge' method
+     * 可以合并的块：
+     * 1) 具有相同名称的
+     * 2) 工具有 `merge` 方法
      *
      * other case will handle as usual ARROW LEFT behaviour
      */
     if (blockToMerge.name !== targetBlock.name || !targetBlock.mergeable) {
-      /** If target Block doesn't contain inputs or empty, remove it */
+      /** 如果目标块不包含输入或为空，则将其删除 */
       if (targetBlock.inputs.length === 0 || targetBlock.isEmpty) {
         BlockManager.removeBlock(BlockManager.currentBlockIndex - 1);
 
@@ -373,7 +373,7 @@ export default class BlockEvents extends Module {
     Caret.createShadow(targetBlock.pluginsContent);
     BlockManager.mergeBlocks(targetBlock, blockToMerge)
       .then(() => {
-        /** Restore caret position after merge */
+        /** 合并后恢复插入符号位置 */
         Caret.restoreCaret(targetBlock.pluginsContent as HTMLElement);
         targetBlock.pluginsContent.normalize();
         Toolbar.close();
@@ -381,7 +381,7 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Handle right and down keyboard keys
+   * 处理又和下方向键
    *
    * @param {KeyboardEvent} event - keyboard event
    */
@@ -390,15 +390,15 @@ export default class BlockEvents extends Module {
       (!event.shiftKey || event.keyCode === _.keyCodes.TAB);
 
     /**
-     * Arrows might be handled on toolbars by flipper
-     * Check for Flipper.usedKeys to allow navigate by DOWN and disallow by RIGHT
+     * 箭头可以由flipper在工具栏上处理
+     * 检查Flipper.usedKeys以允许按下导航，按右不允许
      */
     if (this.Editor.UI.someToolbarOpened && isFlipperCombination) {
       return;
     }
 
     /**
-     * Close Toolbar and highlighting when user moves cursor
+     * 当用户移动光标时关闭工具栏并高亮显示
      */
     this.Editor.BlockManager.clearFocused();
     this.Editor.Toolbar.close();
@@ -416,15 +416,15 @@ export default class BlockEvents extends Module {
 
     if (isNavigated) {
       /**
-       * Default behaviour moves cursor by 1 character, we need to prevent it
+       * 默认行为将光标移动1个字符，我们需要阻止它
        */
       event.preventDefault();
     } else {
       /**
-       * After caret is set, update Block input index
+       * 插入符号设置后，更新块输入索引
        */
       _.delay(() => {
-        /** Check currentBlock for case when user moves selection out of Editor */
+        /** 当用户将选择项移出编辑器时，检查 currentBlock 的情况 */
         if (this.Editor.BlockManager.currentBlock) {
           this.Editor.BlockManager.currentBlock.updateCurrentInput();
         }
@@ -432,20 +432,20 @@ export default class BlockEvents extends Module {
     }
 
     /**
-     * Clear blocks selection by arrows
+     * 通过箭头清除块选区
      */
     this.Editor.BlockSelection.clearSelection(event);
   }
 
   /**
-   * Handle left and up keyboard keys
+   * 处理左和上方向键
    *
    * @param {KeyboardEvent} event - keyboard event
    */
   private arrowLeftAndUp(event: KeyboardEvent): void {
     /**
-     * Arrows might be handled on toolbars by flipper
-     * Check for Flipper.usedKeys to allow navigate by UP and disallow by LEFT
+     * 箭头可以由flipper在工具栏上处理
+     * 检查Flipper.usedKeys以允许通过上导航，而通过左禁止
      */
     if (this.Editor.UI.someToolbarOpened) {
       if (Flipper.usedKeys.includes(event.keyCode) && (!event.shiftKey || event.keyCode === _.keyCodes.TAB)) {
@@ -456,7 +456,7 @@ export default class BlockEvents extends Module {
     }
 
     /**
-     * Close Toolbar and highlighting when user moves cursor
+     * 当用户移动光标时关闭工具栏并高亮显示
      */
     this.Editor.BlockManager.clearFocused();
     this.Editor.Toolbar.close();
@@ -474,15 +474,15 @@ export default class BlockEvents extends Module {
 
     if (isNavigated) {
       /**
-       * Default behaviour moves cursor by 1 character, we need to prevent it
+       * 默认行为移动光标1个字符，我们需要防止它
        */
       event.preventDefault();
     } else {
       /**
-       * After caret is set, update Block input index
+       * 插入符号设置后，更新块输入索引
        */
       _.delay(() => {
-        /** Check currentBlock for case when user ends selection out of Editor and then press arrow-key */
+        /** 当用户结束从编辑器中的选择时检查 currentBlock 的情况，然后按箭头键 */
         if (this.Editor.BlockManager.currentBlock) {
           this.Editor.BlockManager.currentBlock.updateCurrentInput();
         }
@@ -490,13 +490,13 @@ export default class BlockEvents extends Module {
     }
 
     /**
-     * Clear blocks selection by arrows
+     * 通过箭头清除块选区
      */
     this.Editor.BlockSelection.clearSelection(event);
   }
 
   /**
-   * Cases when we need to close Toolbar
+   * 需要关闭工具栏的情况
    *
    * @param {KeyboardEvent} event - keyboard event
    */
@@ -508,10 +508,10 @@ export default class BlockEvents extends Module {
         flippingToolbarItems = event.keyCode === _.keyCodes.TAB;
 
     /**
-     * Do not close Toolbar in cases:
-     * 1. ShiftKey pressed (or combination with shiftKey)
-     * 2. When Toolbar is opened and Tab leafs its Tools
-     * 3. When Toolbar's component is opened and some its item selected
+     * 在以下情况下，请勿关闭 Toolbar：
+     * 1. 按下ShiftKey（或与ShiftKey结合使用）
+     * 2. 打开工具栏并且Tab弹出其工具时
+     * 3. 当工具栏的组件被打开并且它的某些项被选中时
      */
     return !(event.shiftKey ||
       flippingToolbarItems ||
@@ -523,7 +523,7 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * If Toolbox is not open, then just open it and show plus button
+   * 如果工具箱未打开，则只需打开它并显示加号按钮
    */
   private activateToolbox(): void {
     if (!this.Editor.Toolbar.opened) {
@@ -535,7 +535,7 @@ export default class BlockEvents extends Module {
   }
 
   /**
-   * Open Toolbar and show BlockSettings before flipping Tools
+   * 打开工具栏，在翻转工具之前显示块设置
    */
   private activateBlockSettings(): void {
     if (!this.Editor.Toolbar.opened) {
@@ -545,8 +545,8 @@ export default class BlockEvents extends Module {
     }
 
     /**
-     * If BlockSettings is not open, then open BlockSettings
-     * Next Tab press will leaf Settings Buttons
+     * 如果BlockSettings未打开，则打开BlockSettings
+     * 下一步按 Tab 将弹出设置按钮
      */
     if (!this.Editor.BlockSettings.opened) {
       this.Editor.BlockSettings.open();
