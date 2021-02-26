@@ -1,6 +1,6 @@
 /**
- * @class RectangleSelection
- * @classdesc Manages Block selection with mouse
+ * @class 矩形选择器
+ * @classdesc 用鼠标管理块选择
  *
  * @module RectangleSelection
  * @version 1.0.0
@@ -16,7 +16,7 @@ import Block from '../block';
  */
 export default class RectangleSelection extends Module {
   /**
-   * CSS classes for the Block
+   * Block 的 CSS 类
    *
    * @returns {{wrapper: string, content: string}}
    */
@@ -31,50 +31,50 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Using the selection rectangle
+   * 使用选择矩形
    *
    * @type {boolean}
    */
   private isRectSelectionActivated = false;
 
   /**
-   *  Speed of Scrolling
+   *  滚动的速度
    */
   private readonly SCROLL_SPEED: number = 3;
 
   /**
-   *  Height of scroll zone on boundary of screen
+   *  屏幕边界上滚动区域的高度
    */
   private readonly HEIGHT_OF_SCROLL_ZONE = 40;
 
   /**
-   *  Scroll zone type indicators
+   *  滚动区域类型指示器
    */
   private readonly BOTTOM_SCROLL_ZONE = 1;
   private readonly TOP_SCROLL_ZONE = 2;
 
   /**
-   * Id of main button for event.button
+   * event.button的主按钮的ID
    */
   private readonly MAIN_MOUSE_BUTTON = 0;
 
   /**
-   *  Mouse is clamped
+   *  鼠标被按住
    */
   private mousedown = false;
 
   /**
-   *  Is scrolling now
+   *  正在滚动
    */
   private isScrolling = false;
 
   /**
-   *  Mouse is in scroll zone
+   *  鼠标在滚动区
    */
   private inScrollZone: number | null = null;
 
   /**
-   *  Coords of rect
+   *  矩形坐标
    */
   private startX = 0;
   private startY = 0;
@@ -82,45 +82,44 @@ export default class RectangleSelection extends Module {
   private mouseY = 0;
 
   /**
-   * Selected blocks
+   * 选中的块
    */
   private stackOfSelected: number[] = [];
 
   /**
-   * Does the rectangle intersect blocks
+   * 这个矩形与块相交吗
    */
   private rectCrossesBlocks: boolean;
 
   /**
-   * Selection rectangle
+   * 选取矩形
    */
   private overlayRectangle: HTMLDivElement;
 
   /**
-   * Listener identifiers
+   * 监听器标志
    */
   private listenerIds: string[] = [];
 
   /**
-   * Module Preparation
-   * Creating rect and hang handlers
+   * 模块准备
+   * 创建矩形和绑定事件处理器
    */
   public prepare(): void {
     this.enableModuleBindings();
   }
 
   /**
-   * Init rect params
+   * 初始化矩形参数
    *
-   * @param {number} pageX - X coord of mouse
-   * @param {number} pageY - Y coord of mouse
+   * @param {number} pageX - 鼠标 X 坐标
+   * @param {number} pageY - 鼠标 Y 坐标
    */
   public startSelection(pageX, pageY): void {
     const elemWhereSelectionStart = document.elementFromPoint(pageX - window.pageXOffset, pageY - window.pageYOffset);
 
     /**
-     * Don't clear selected block by clicks on the Block settings
-     * because we need to keep highlighting working block
+     * 不要通过点击块设置按钮来清除选中的块，因为我们需要继续高亮显示工作块
      */
     const startsInsideToolbar = elemWhereSelectionStart.closest(`.${this.Editor.Toolbar.CSS.toolbar}`);
 
@@ -140,7 +139,7 @@ export default class RectangleSelection extends Module {
     const startsInSelectorToAvoid = selectorsToAvoid.some((selector) => !!elemWhereSelectionStart.closest(selector));
 
     /**
-     * If selection starts outside of the editor or inside the blocks or on Editor UI elements, do not handle it
+     * 如果选择在编辑器外部、块内部或编辑器 UI 元素上开始，不要处理它
      */
     if (!startsInsideEditor || startsInSelectorToAvoid) {
       return;
@@ -152,7 +151,7 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Clear all params to end selection
+   * 清除所有参数以结束选择
    */
   public endSelection(): void {
     this.mousedown = false;
@@ -162,21 +161,21 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * is RectSelection Activated
+   * 矩形选择是否激活
    */
   public isRectActivated(): boolean {
     return this.isRectSelectionActivated;
   }
 
   /**
-   * Mark that selection is end
+   * 标记选择结束
    */
   public clearSelection(): void {
     this.isRectSelectionActivated = false;
   }
 
   /**
-   * Sets Module necessary event handlers
+   * 设置模块必需的事件处理器
    */
   private enableModuleBindings(): void {
     const { Listeners } = this.Editor;
@@ -204,9 +203,9 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Handle mouse down events
+   * 处理鼠标按下事件
    *
-   * @param {MouseEvent} mouseEvent - mouse event payload
+   * @param {MouseEvent} mouseEvent - 鼠标事件负载
    */
   private processMouseDown(mouseEvent: MouseEvent): void {
     if (mouseEvent.button !== this.MAIN_MOUSE_BUTTON) {
@@ -216,9 +215,9 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Handle mouse move events
+   * 处理鼠标移动事件
    *
-   * @param {MouseEvent} mouseEvent - mouse event payload
+   * @param {MouseEvent} mouseEvent - 鼠标事件负载
    */
   private processMouseMove(mouseEvent: MouseEvent): void {
     this.changingRectangle(mouseEvent);
@@ -226,7 +225,7 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Handle mouse leave
+   * 处理鼠标离开
    */
   private processMouseLeave(): void {
     this.clearSelection();
@@ -234,23 +233,23 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * @param {MouseEvent} mouseEvent - mouse event payload
+   * @param {MouseEvent} mouseEvent - 鼠标事件负载
    */
   private processScroll(mouseEvent: MouseEvent): void {
     this.changingRectangle(mouseEvent);
   }
 
   /**
-   * Handle mouse up
+   * 处理鼠标抬起
    */
   private processMouseUp(): void {
     this.endSelection();
   }
 
   /**
-   * Scroll If mouse in scroll zone
+   * 如果鼠标在滚动区，则滚动
    *
-   * @param {number} clientY - Y coord of mouse
+   * @param {number} clientY - 鼠标 Y 坐标
    */
   private scrollByZones(clientY): void {
     this.inScrollZone = null;
@@ -274,7 +273,7 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Generates required HTML elements
+   * 生成所需的 HTML 元素
    *
    * @returns {object<string, Element>}
    */
@@ -299,9 +298,9 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Activates scrolling if blockSelection is active and mouse is in scroll zone
+   * 如果块选择处于活动状态且鼠标位于滚动区域，则激活滚动
    *
-   * @param {number} speed - speed of scrolling
+   * @param {number} speed - 滚动速度
    */
   private scrollVertical(speed): void {
     if (!(this.inScrollZone && this.mousedown)) {
@@ -317,9 +316,9 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Handles the change in the rectangle and its effect
+   * 处理矩形中的更改及其效果
    *
-   * @param {MouseEvent} event - mouse event
+   * @param {MouseEvent} event - 鼠标事件
    */
   private changingRectangle(event: MouseEvent): void {
     if (!this.mousedown) {
@@ -332,7 +331,7 @@ export default class RectangleSelection extends Module {
     }
 
     const { rightPos, leftPos, index } = this.genInfoForMouseSelection();
-    // There is not new block in selection
+    // 选择中没有新块
 
     const rectIsOnRighSideOfredactor = this.startX > rightPos && this.mouseX > rightPos;
     const rectISOnLeftSideOfRedactor = this.startX < leftPos && this.mouseX < leftPos;
@@ -353,7 +352,7 @@ export default class RectangleSelection extends Module {
     }
 
     this.trySelectNextBlock(index);
-    // For case, when rect is out from blocks
+    // 例如，当 rect 从块中移出时
     this.inverseSelection();
 
     SelectionUtils.get().removeAllRanges();
@@ -361,7 +360,7 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Shrink rect to singular point
+   * 收缩矩形到奇点
    */
   private shrinkRectangleToPoint(): void {
     this.overlayRectangle.style.left = `${this.startX - window.pageXOffset}px`;
@@ -371,7 +370,7 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Select or unselect all of blocks in array if rect is out or in selectable area
+   * 选择或取消选择数组中的所有块（如果rect为out或在可选区域中）
    */
   private inverseSelection(): void {
     const firstBlockInStack = this.Editor.BlockManager.getBlockByIndex(this.stackOfSelected[0]);
@@ -391,11 +390,10 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Updates size of rectangle
+   * 更新矩形的大小
    */
   private updateRectangleSize(): void {
-    // Depending on the position of the mouse relative to the starting point,
-    // change this.e distance from the desired edge of the screen*/
+    // 根据鼠标相对于起始点的位置，更改距屏幕所需边缘 this.e 距离
     if (this.mouseY >= this.startY) {
       this.overlayRectangle.style.top = `${this.startY - window.pageYOffset}px`;
       this.overlayRectangle.style.bottom = `calc(100% - ${this.mouseY - window.pageYOffset}px`;
@@ -414,9 +412,9 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Collects information needed to determine the behavior of the rectangle
+   * 收集确定矩形行为所需的信息
    *
-   * @returns {object} index - index next Block, leftPos - start of left border of Block, rightPos - right border
+   * @returns {object} index - 索引下一个块，leftPos -开始块的左边框，rightPos -右边框
    */
   private genInfoForMouseSelection(): {index: number; leftPos: number; rightPos: number} {
     const widthOfRedactor = document.body.offsetWidth;
@@ -442,9 +440,9 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Select block with index index
+   * 用索引选择块
    *
-   * @param index - index of block in redactor
+   * @param index - 编辑器中的块索引
    */
   private addBlockInSelection(index): void {
     if (this.rectCrossesBlocks) {
@@ -454,9 +452,9 @@ export default class RectangleSelection extends Module {
   }
 
   /**
-   * Adds a block to the selection and determines which blocks should be selected
+   * 将一个块添加到选择中，并确定应该选择哪些块
    *
-   * @param {object} index - index of new block in the reactor
+   * @param {object} index - 反应器中新块的索引
    */
   private trySelectNextBlock(index): void {
     const sameBlock = this.stackOfSelected[this.stackOfSelected.length - 1] === index;
@@ -480,7 +478,7 @@ export default class RectangleSelection extends Module {
     const generalSelection = selectionInDownDirection || selectionInUpDirection || direction === undef;
     const reduction = !generalSelection;
 
-    // When the selection is too fast, some blocks do not have time to be noticed. Fix it.
+    // 当选择太快时，有些方块没有时间被注意到。解决它。
     if (!reduction && (index > this.stackOfSelected[sizeStack - 1] ||
       this.stackOfSelected[sizeStack - 1] === undefined)) {
       let ind = this.stackOfSelected[sizeStack - 1] + 1 || index;
@@ -492,7 +490,7 @@ export default class RectangleSelection extends Module {
       return;
     }
 
-    // for both directions
+    // 对于两个方向
     if (!reduction && (index < this.stackOfSelected[sizeStack - 1])) {
       for (let ind = this.stackOfSelected[sizeStack - 1] - 1; ind >= index; ind--) {
         this.addBlockInSelection(ind);
@@ -508,15 +506,15 @@ export default class RectangleSelection extends Module {
     let i = sizeStack - 1;
     let cmp;
 
-    // cmp for different directions
+    // 不同方向的cmp
     if (index > this.stackOfSelected[sizeStack - 1]) {
       cmp = (): boolean => index > this.stackOfSelected[i];
     } else {
       cmp = (): boolean => index < this.stackOfSelected[i];
     }
 
-    // Remove blocks missed due to speed.
-    // cmp checks if we have removed all the necessary blocks
+    // 移除因速度而丢失的块。
+    // cmp 检查我们是否已经移除了所有必要的块
     while (cmp()) {
       if (this.rectCrossesBlocks) {
         this.Editor.BlockSelection.unSelectBlockByIndex(this.stackOfSelected[i]);
