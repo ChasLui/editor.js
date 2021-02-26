@@ -357,7 +357,7 @@ export default class Caret extends Module {
       if (currentBlockInput) {
         if ($.isNativeInput(currentBlockInput)) {
           /**
-           * 如果输入是本机文本输入，则需要使用它的值
+           * 如果输入是原生文本输入，则需要使用它的值
            * 插入符号前的文本保留在输入框中，而插入符号后的文本作为片段返回，插入到块之后。
            */
           const input = currentBlockInput as HTMLInputElement | HTMLTextAreaElement;

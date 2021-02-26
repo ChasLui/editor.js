@@ -18,7 +18,7 @@ import { SanitizerConfig } from '../../../types/configs';
  */
 export default class BlockSelection extends Module {
   /**
-   * 有时 .anyBlockSelected 可以被频繁调用，例如在 ui@selectionChange 上（以清除CBS中的本机浏览器选择）
+   * 有时 .anyBlockSelected 可以被频繁调用，例如在 ui@selectionChange 上（以清除CBS中的原生浏览器选择）
    * 我们使用缓存来防止遍历所有块
    *
    * @private
@@ -116,7 +116,7 @@ export default class BlockSelection extends Module {
   private needToSelectAll = false;
 
   /**
-   * 用于定义本机输入选择的标志
+   * 用于定义原生输入选择的标志
    * 在这种情况下，我们允许双 CMD + A 选择块
    *
    * @type {boolean}
@@ -383,7 +383,7 @@ export default class BlockSelection extends Module {
     const inputs = workingBlock.inputs;
 
     /**
-     * 如果“块”具有多个可编辑元素，则允许进行本机选择
+     * 如果“块”具有多个可编辑元素，则允许进行原生选择
      * 第二个 CMD+A 将选择整个块
      */
     if (inputs.length > 1 && !this.readyToBlockSelection) {

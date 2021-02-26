@@ -1,8 +1,7 @@
 /**
  * @module ModificationsObserver
  *
- * Handles any mutations
- * and gives opportunity to handle outside
+ * 处理任何突变，并给外部处理的机会
  */
 
 import Module from '../__module';
@@ -14,24 +13,24 @@ import Block from '../block';
  */
 export default class ModificationsObserver extends Module {
   /**
-   * Debounce Timer
+   * 防抖定时器
    *
    * @type {number}
    */
   public static readonly DebounceTimer = 450;
 
   /**
-   * MutationObserver instance
+   * MutationObserver 实例
    */
   private observer: MutationObserver;
 
   /**
-   * Allows to temporary disable mutations handling
+   * 允许临时禁用突变处理
    */
   private disabled = false;
 
   /**
-   * Used to prevent several mutation callback execution
+   * 用于防止执行多个突变回调
    *
    * @type {Function}
    */
@@ -44,13 +43,13 @@ export default class ModificationsObserver extends Module {
   }, ModificationsObserver.DebounceTimer);
 
   /**
-   * Array of native inputs in Blocks.
-   * Changes in native inputs are not handled by modification observer, so we need to set change event listeners on them
+   * 块中的原生输入数组。
+   * 原生输入中的更改不会由修改观察器处理，因此我们需要在它们上设置更改事件监听器
    */
   private nativeInputs: HTMLElement[] = [];
 
   /**
-   * Clear timeout and set null to mutationDebouncer property
+   * 清除 timeout 并将 mutationDebouncer 属性设置为 null
    */
   public destroy(): void {
     this.mutationDebouncer = null;
@@ -63,9 +62,9 @@ export default class ModificationsObserver extends Module {
   }
 
   /**
-   * Set read-only state
+   * 设置只读状态
    *
-   * @param {boolean} readOnlyEnabled - read only flag value
+   * @param {boolean} readOnlyEnabled - 只读标志值
    */
   public toggleReadOnly(readOnlyEnabled: boolean): void {
     if (readOnlyEnabled) {
@@ -76,26 +75,25 @@ export default class ModificationsObserver extends Module {
   }
 
   /**
-   * Allows to disable observer,
-   * for example when Editor wants to stealthy mutate DOM
+   * 允许禁用观察者，例如当编辑器想偷偷地改变 DOM
    */
   public disable(): void {
     this.disabled = true;
   }
 
   /**
-   * Enables mutation handling
-   * Should be called after .disable()
+   * 启用突变处理器
+   * 应该在 .disable() 之后调用
    */
   public enable(): void {
     this.disabled = false;
   }
 
   /**
-   * setObserver
+   * 设置观察者
    *
-   * sets 'DOMSubtreeModified' listener on Editor's UI.nodes.redactor
-   * so that User can handle outside from API
+   * 在编辑器的UI.nodes上设置'DOMSubtreeModified'监听器
+   * 这样用户就可以从API中进行外部处理
    */
   private setObserver(): void {
     const { UI } = this.Editor;
@@ -114,23 +112,23 @@ export default class ModificationsObserver extends Module {
   }
 
   /**
-   * MutationObserver events handler
+   * MutationObserver 事件处理器
    *
-   * @param {MutationRecord[]} mutationList - list of mutations
-   * @param {MutationObserver} observer - observer instance
+   * @param {MutationRecord[]} mutationList - mutations 列表
+   * @param {MutationObserver} observer - 观察者实例
    */
   private mutationHandler(mutationList: MutationRecord[], observer: MutationObserver): void {
     /**
-     * Skip mutations in stealth mode
+     * 在隐身模式下跳过突变
      */
     if (this.disabled) {
       return;
     }
 
     /**
-     * We divide two Mutation types:
-     * 1) mutations that concerns client changes: settings changes, symbol added, deletion, insertions and so on
-     * 2) functional changes. On each client actions we set functional identifiers to interact with user
+     * 我们分为两种突变类型:
+     * 1) 与客户端更改有关的突变：设置更改、添加符号、删除、插入等等
+     * 2) 功能的变化。在每个客户端操作上，我们设置与用户交互的功能标识符
      */
     let contentMutated = false;
 
@@ -142,7 +140,7 @@ export default class ModificationsObserver extends Module {
           break;
         case 'attributes':
           /**
-           * Changes on Element.ce-block usually is functional
+           * Element.ce-block 上变更通常是功能性的
            */
           if (!(mutation.target as Element).classList.contains(Block.CSS.wrapper)) {
             contentMutated = true;
@@ -151,14 +149,14 @@ export default class ModificationsObserver extends Module {
       }
     });
 
-    /** call once */
+    /** 调用一次 */
     if (contentMutated) {
       this.mutationDebouncer();
     }
   }
 
   /**
-   * Gets native inputs and set oninput event handler
+   * 获取原生输入并设置 oninput 事件处理程序
    */
   private updateNativeInputs(): void {
     if (this.nativeInputs) {
@@ -173,11 +171,11 @@ export default class ModificationsObserver extends Module {
   }
 
   /**
-   * Sets observer and enables it
+   * 设置观察器并启用它
    */
   private enableModule(): void {
     /**
-     * wait till Browser render Editor's Blocks
+     * 等待浏览器渲染编辑器块
      */
     window.setTimeout(() => {
       this.setObserver();
@@ -187,7 +185,7 @@ export default class ModificationsObserver extends Module {
   }
 
   /**
-   * Disables observer
+   * 禁用观察者
    */
   private disableModule(): void {
     this.disable();

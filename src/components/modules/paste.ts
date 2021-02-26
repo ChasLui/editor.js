@@ -439,7 +439,7 @@ export default class Paste extends Module {
   private handlePasteEvent = async (event: ClipboardEvent): Promise<void> => {
     const { BlockManager, Toolbar } = this.Editor;
 
-    /** 如果目标是本机输入或不是阻止，请使用浏览器行为 */
+    /** 如果目标是原生输入或不是阻止，请使用浏览器行为 */
     if (
       !BlockManager.currentBlock || (this.isNativeBehaviour(event.target) && !event.clipboardData.types.includes('Files'))
     ) {

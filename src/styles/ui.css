@@ -108,7 +108,7 @@
 }
 
 /**
- * 为本机选中器设置颜色
+ * 为原生选中器设置颜色
  */
 ::selection{
   background-color: var(--inlineSelectionColor);
