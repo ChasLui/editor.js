@@ -3,11 +3,11 @@ import Module from '../../__module';
 import * as _ from './../../utils';
 /**
  * @class ToolbarAPI
- * Provides methods for working with the Toolbar
+ * 提供使用工具栏的方法
  */
 export default class ToolbarAPI extends Module {
   /**
-   * Available methods
+   * 可用方法
    *
    * @returns {Toolbar}
    */
@@ -20,23 +20,23 @@ export default class ToolbarAPI extends Module {
   }
 
   /**
-   * Open toolbar
+   * 打开工具栏
    */
   public open(): void {
     this.Editor.Toolbar.open();
   }
 
   /**
-   * Close toolbar and all included elements
+   * 关闭工具栏和所有包含的元素
    */
   public close(): void {
     this.Editor.Toolbar.close();
   }
 
   /**
-   * Toggles Block Setting of the current block
+   * 切换当前块的块设置按钮
    *
-   * @param {boolean} openingState —  opening state of Block Setting
+   * @param {boolean} openingState —  块设置按钮的打开状态
    */
   public toggleBlockSettings(openingState?: boolean): void {
     if (this.Editor.BlockManager.currentBlockIndex === -1) {
@@ -45,10 +45,10 @@ export default class ToolbarAPI extends Module {
       return;
     }
 
-    /** Check that opening state is set or not */
+    /** 检查是否设置按钮了开启状态 */
     const canOpenBlockSettings = openingState ?? !this.Editor.BlockSettings.opened;
 
-    /** Check if state same as current state */
+    /** 检查状态是否与当前状态相同 */
     if (openingState === this.Editor.BlockSettings.opened) {
       return;
     }
