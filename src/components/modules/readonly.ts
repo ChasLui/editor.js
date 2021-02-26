@@ -4,36 +4,36 @@ import { CriticalError } from '../errors/critical';
 /**
  * @module ReadOnly
  *
- * Has one important method:
- *    - {Function} toggleReadonly - Set read-only mode or toggle current state
+ * 有一个重要的方法：
+ *    - {Function} toggleReadonly - 设置只读模式或切换当前状态设置只读模式或切换当前状态
  *
  * @version 1.0.0
  *
  * @typedef {ReadOnly} ReadOnly
- * @property {boolean} readOnlyEnabled - read-only state
+ * @property {boolean} readOnlyEnabled - 只读状态
  */
 export default class ReadOnly extends Module {
   /**
-   * Array of tools name which don't support read-only mode
+   * 不支持只读模式的工具名称数组
    */
   private toolsDontSupportReadOnly: string[] = [];
 
   /**
-   * Value to track read-only state
+   * 用于跟踪只读状态的值
    *
    * @type {boolean}
    */
   private readOnlyEnabled = false;
 
   /**
-   * Returns state of read only mode
+   * 返回只读模式的状态
    */
   public get isEnabled(): boolean {
     return this.readOnlyEnabled;
   }
 
   /**
-   * Set initial state
+   * 设置初始状态
    */
   public async prepare(): Promise<void> {
     const { Tools } = this.Editor;
@@ -56,10 +56,10 @@ export default class ReadOnly extends Module {
   }
 
   /**
-   * Set read-only mode or toggle current state
-   * Call all Modules `toggleReadOnly` method and re-render Editor
+   * 设置只读模式或切换当前状态设置只读模式或切换当前状态
+   * 调用所有模块的 `toggleReadOnly` 方法并重新渲染编辑器
    *
-   * @param {boolean} state - (optional) read-only state or toggle
+   * @param {boolean} state - (optional) 只读状态或切换
    */
   public async toggle(state = !this.readOnlyEnabled): Promise<boolean> {
     if (state && this.toolsDontSupportReadOnly.length > 0) {
@@ -72,27 +72,27 @@ export default class ReadOnly extends Module {
 
     for (const name in this.Editor) {
       /**
-       * Verify module has method `toggleReadOnly` method
+       * 验证模块是否具有方法`toggleReadOnly`
        */
       if (!this.Editor[name].toggleReadOnly) {
         continue;
       }
 
       /**
-       * set or toggle read-only state
+       * 设置或切换只读状态
        */
       this.Editor[name].toggleReadOnly(state);
     }
 
     /**
-     * If new state equals old one, do not re-render blocks
+     * 如果新状态等于旧状态，请不要重新渲染块
      */
     if (oldState === state) {
       return this.readOnlyEnabled;
     }
 
     /**
-     * Save current Editor Blocks and render again
+     * 保存当前的编辑器块并再次渲染
      */
     const savedBlocks = await this.Editor.Saver.save();
 
@@ -103,7 +103,7 @@ export default class ReadOnly extends Module {
   }
 
   /**
-   * Throws an error about tools which don't support read-only mode
+   * 抛出一个关于不支持只读模式的工具的错误
    */
   private throwCriticalError(): never {
     throw new CriticalError(
